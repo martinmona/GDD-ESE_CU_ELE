@@ -250,3 +250,5 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+Base de Datos/gd_esquema.Maestra.Table.sql
+Base de Datos/resultado_output.txt
