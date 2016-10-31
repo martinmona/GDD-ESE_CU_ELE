@@ -30,7 +30,7 @@ namespace ClinicaFrba.Class{
                 SqlDataReader reader = MiComando.ExecuteReader();
 
                 while(reader.Read()) {
-                    myuser.id = (int)reader["usua_codigo"];
+                    myuser.id = (decimal)reader["usua_codigo"];
                     myuser.user = (string)reader["usua_username"];
                 }
 
