@@ -15,7 +15,6 @@ namespace ClinicaFrba.Config
             string datosConexion = "Data Source = localhost/SQLSERVER2012;"
             + "Initial Catalog = GD2C2016; Integrated Security = true; user id=gd; password=gd2016";
             SqlConnection con = new SqlConnection(datosConexion);
-            con.Open();
             return con;
         }
              

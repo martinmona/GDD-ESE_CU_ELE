@@ -20,13 +20,13 @@ namespace ClinicaFrba.Class{
         public static Usuario login(string user, string pass) 
         {
             Usuario myuser = new Usuario();
-            string passSha = sha256(user);
+            string passSha = sha256(pass);
             try
             {
                 SqlConnection conn = conectar();
                 SqlCommand MiComando = new SqlCommand();
                 MiComando.Connection = conn;
-                MiComando.CommandText = "Select * From ESE_CU_ELE.Usuario Where usua_username = '" + user + "'";
+                MiComando.CommandText = "Select * From ESE_CU_ELE.Usuario Where usua_username = '" + user + "' AND usua_contrasena = '" + passSha + "'";
                 SqlDataReader reader = MiComando.ExecuteReader();
 
                 while(reader.Read()) {
