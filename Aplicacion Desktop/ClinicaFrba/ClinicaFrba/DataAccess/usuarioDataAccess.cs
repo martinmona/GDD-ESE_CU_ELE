@@ -20,13 +20,12 @@ namespace ClinicaFrba.Class{
         public static Usuario login(string user, string pass) 
         {
             Usuario myuser = new Usuario();
-            string passSha = sha256(pass);
             try
             {
                 SqlConnection conn = conectar();
                 SqlCommand MiComando = new SqlCommand();
                 MiComando.Connection = conn;
-                MiComando.CommandText = "Select * From ESE_CU_ELE.Usuario Where usua_username = '" + user + "' AND usua_contrasena = '" + passSha + "'";
+                MiComando.CommandText = "Select * From ESE_CU_ELE.Usuario Where usua_username = '" + user + "' AND usua_contrasena = HASHBYTES('SHA2_256', '"+ pass+"')";
                 SqlDataReader reader = MiComando.ExecuteReader();
 
                 while(reader.Read()) {
@@ -48,18 +47,6 @@ namespace ClinicaFrba.Class{
                 myuser.id = -1;
             }
             return myuser;
-        }
-
-        static string sha256(string password)
-        {
-            System.Security.Cryptography.SHA256Managed crypt = new System.Security.Cryptography.SHA256Managed();
-            System.Text.StringBuilder hash = new System.Text.StringBuilder();
-            byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(password), 0, Encoding.UTF8.GetByteCount(password));
-            foreach (byte theByte in crypto)
-            {
-                hash.Append(theByte.ToString("x2"));
-            }
-            return hash.ToString();
         }
     }
 }
