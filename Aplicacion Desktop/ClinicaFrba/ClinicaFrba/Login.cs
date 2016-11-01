@@ -23,6 +23,7 @@ namespace ClinicaFrba
             if (txtuser.Text == "")
             {
                 MessageBox.Show("Debe ingresar su nombre de usuario");
+                return;
             }
             if (txtpass.Text == "")
             {
@@ -43,15 +44,9 @@ namespace ClinicaFrba
             }
             else
             {
-                MessageBox.Show("El usuario y contraseña no coinciden. Vuelva a intentarlo", "Error");
                 txtuser.Text = "";
                 txtpass.Text = "";
             }
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
