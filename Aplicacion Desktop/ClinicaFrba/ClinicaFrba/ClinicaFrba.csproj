@@ -80,6 +80,8 @@
     <Compile Include="Cancelar Atencion\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Class\Funcionalidad.cs" />
+    <Compile Include="Class\Rol.cs" />
     <Compile Include="Class\Usuario.cs" />
     <Compile Include="Compra Bono\Form1.cs">
       <SubType>Form</SubType>
@@ -88,7 +90,15 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Config\BD.cs" />
+    <Compile Include="DataAccess\funcionalidadDataAccess.cs" />
+    <Compile Include="DataAccess\rolDataAccess.cs" />
     <Compile Include="DataAccess\usuarioDataAccess.cs" />
+    <Compile Include="Funcionalidad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Funcionalidad.Designer.cs">
+      <DependentUpon>Funcionalidad.cs</DependentUpon>
+    </Compile>
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -132,6 +142,9 @@
     <Compile Include="Registro Resultado\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Funcionalidad.resx">
+      <DependentUpon>Funcionalidad.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
