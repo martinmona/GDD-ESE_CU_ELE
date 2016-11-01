@@ -52,6 +52,7 @@ insert into ESE_CU_ELE.Planes (plan_codigo,plan_descripcion,plan_bono_Consulta,p
 insert into ESE_CU_ELE.Persona (pers_nombre,pers_apellido,pers_sexo,pers_fecha_nacimiento,pers_tipo_documento,pers_numero_documento,pers_mail,pers_direccion,pers_telefono,pers_tipo) select Paciente_Nombre, Paciente_Apellido, 'No Definido',Paciente_Fecha_Nac,'DNI',Paciente_Dni,Paciente_Mail,Paciente_Direccion,Paciente_Telefono,'Afiliado' from gd_esquema.Maestra where Paciente_Dni is not null group by Paciente_Nombre, Paciente_Apellido, Paciente_Fecha_Nac,Paciente_Dni,Paciente_Mail,Paciente_Direccion,Paciente_Telefono order by Paciente_Dni
 
 insert into ESE_CU_ELE.Persona (pers_nombre,pers_apellido,pers_sexo,pers_fecha_nacimiento,pers_tipo_documento,pers_numero_documento,pers_mail,pers_direccion,pers_telefono,pers_tipo) select Medico_Nombre, Medico_Apellido, 'No Definido',Medico_Fecha_Nac,'DNI',Medico_Dni,Medico_Mail,Medico_Direccion,Medico_Telefono,'Medico' from gd_esquema.Maestra where Medico_Dni is not null group by Medico_Nombre, Medico_Apellido, Medico_Fecha_Nac,Medico_Dni,Medico_Mail,Medico_Direccion,Medico_Telefono order by Medico_Dni
+
 --Se le asigna el numero de afiliado igual al codigo autoincremental
 insert into ESE_CU_ELE.Afiliado (afil_codigo_persona, afil_estado_civil, afil_numero, afil_numero_familiar,afil_codigo_plan) select  pers_codigo,'No definido',pers_codigo,0,Plan_Med_Codigo from gd_esquema.Maestra, ESE_CU_ELE.Persona where Paciente_Dni=pers_numero_documento group by pers_codigo,pers_codigo,Plan_Med_Codigo
 --Se le asigna el numero de matricula igual al codigo autoincremental
@@ -70,7 +71,8 @@ insert into ESE_CU_ELE.Especialidad (espe_codigo, espe_descripcion) select Espec
 insert into ESE_CU_ELE.EspecialidadXProfesional (espexp_codigo_especialidad,espexp_codigo_profesional) select Especialidad_Codigo, (select pers_codigo from ESE_CU_ELE.Persona where m1.Medico_Dni=pers_numero_documento) from gd_esquema.Maestra "m1" where Especialidad_Codigo is not null group by Especialidad_Codigo, Medico_Dni
 --El nombre de usuario y la contraseña son el nombre y apellido de la persona
 insert into ESE_CU_ELE.Usuario (usua_codigo,usua_username,usua_contrasena,usua_habilitado,usua_intentos) select pers_codigo,pers_nombre,HASHBYTES('SHA2_256', pers_apellido),1,0 from ESE_CU_ELE.Persona
-insert into ESE_CU_ELE.Usuario(usua_codigo,usua_username,usua_contrasena,usua_habilitado,usua_intentos) values (9999,'admin',HASHBYTES('SHA2_256', 'w23e'),1,0)
+insert into ESE_CU_ELE.Persona (pers_nombre,pers_tipo) values ('Admin','Admin')
+insert into ESE_CU_ELE.Usuario(usua_codigo,usua_username,usua_contrasena,usua_habilitado,usua_intentos) values ((select pers_codigo from ESE_CU_ELE.Persona where pers_tipo='admin'),'admin',HASHBYTES('SHA2_256', 'w23e'),1,0)
 
 insert into ESE_CU_ELE.Rol (rol_nombre, rol_habilitado) values('Afiliado',1)
 insert into ESE_CU_ELE.Rol (rol_nombre, rol_habilitado) values('Administrativo',1)
@@ -78,4 +80,4 @@ insert into ESE_CU_ELE.Rol (rol_nombre, rol_habilitado) values('Profesional',1)
 
 insert into ESE_CU_ELE.RolXUsuario (rolxu_rol_codigo,rolxu_usua_codigo) select 1,afil_codigo_persona from ESE_CU_ELE.Afiliado
 insert into ESE_CU_ELE.RolXUsuario (rolxu_rol_codigo,rolxu_usua_codigo) select 3,prof_codigo_persona from ESE_CU_ELE.Profesional
-insert into ESE_CU_ELE.RolXUsuario (rolxu_rol_codigo,rolxu_usua_codigo) values (2,9999)
+insert into ESE_CU_ELE.RolXUsuario (rolxu_rol_codigo,rolxu_usua_codigo) values (2,(select pers_codigo from ESE_CU_ELE.Persona where pers_tipo='Admin'))
