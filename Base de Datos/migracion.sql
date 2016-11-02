@@ -69,15 +69,47 @@ insert into ESE_CU_ELE.Consulta_Medica (cons_codigo_turno, cons_bono,cons_hora_l
 insert into ESE_CU_ELE.Especialidad (espe_codigo, espe_descripcion) select Especialidad_Codigo,Especialidad_Descripcion from gd_esquema.Maestra where Especialidad_Codigo is not null group by Especialidad_Codigo,Especialidad_Descripcion order by Especialidad_Codigo
 
 insert into ESE_CU_ELE.EspecialidadXProfesional (espexp_codigo_especialidad,espexp_codigo_profesional) select Especialidad_Codigo, (select pers_codigo from ESE_CU_ELE.Persona where m1.Medico_Dni=pers_numero_documento) from gd_esquema.Maestra "m1" where Especialidad_Codigo is not null group by Especialidad_Codigo, Medico_Dni
---El nombre de usuario y la contraseña son el nombre y apellido de la persona
-insert into ESE_CU_ELE.Usuario (usua_codigo,usua_username,usua_contrasena,usua_habilitado,usua_intentos) select pers_codigo,pers_nombre,HASHBYTES('SHA2_256', pers_apellido),1,0 from ESE_CU_ELE.Persona
+--El nombre de usuario y la contraseña son el nombre+codigo y apellido de la persona
+insert into ESE_CU_ELE.Usuario (usua_codigo,usua_username,usua_contrasena,usua_habilitado,usua_intentos) select pers_codigo,CONCAT(pers_nombre,pers_codigo),HASHBYTES('SHA2_256', pers_apellido),1,0 from ESE_CU_ELE.Persona
 insert into ESE_CU_ELE.Persona (pers_nombre,pers_tipo) values ('Admin','Admin')
 insert into ESE_CU_ELE.Usuario(usua_codigo,usua_username,usua_contrasena,usua_habilitado,usua_intentos) values ((select pers_codigo from ESE_CU_ELE.Persona where pers_tipo='admin'),'admin',HASHBYTES('SHA2_256', 'w23e'),1,0)
 
+--Creo los roles
 insert into ESE_CU_ELE.Rol (rol_nombre, rol_habilitado) values('Afiliado',1)
 insert into ESE_CU_ELE.Rol (rol_nombre, rol_habilitado) values('Administrativo',1)
 insert into ESE_CU_ELE.Rol (rol_nombre, rol_habilitado) values('Profesional',1)
 
+--Asigno roles a los usuarios
 insert into ESE_CU_ELE.RolXUsuario (rolxu_rol_codigo,rolxu_usua_codigo) select 1,afil_codigo_persona from ESE_CU_ELE.Afiliado
 insert into ESE_CU_ELE.RolXUsuario (rolxu_rol_codigo,rolxu_usua_codigo) select 3,prof_codigo_persona from ESE_CU_ELE.Profesional
 insert into ESE_CU_ELE.RolXUsuario (rolxu_rol_codigo,rolxu_usua_codigo) values (2,(select pers_codigo from ESE_CU_ELE.Persona where pers_tipo='Admin'))
+
+--Creo las funcionalidades
+insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('ABM de Rol')--Admin
+insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('Registro de Usuario')--Admin *No implementar
+insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('ABM de Afiliados')--Admin 
+insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('ABM de Profesional')--Admin *No implementar
+insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('ABM de Especialidades Medicas')--Admin *No implementar
+insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('ABM de Plan')--Admin *No Implementar
+insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('Registrar Agenda Profesional')--Admin y Profesional *No implementar
+insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('Compra de Bonos')--Afiliado
+insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('Pedir Turno')--Afiliado
+insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('Regsitro de Llegada para Atencion Medica')--Admin
+insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('Cancelar Atencion Medica')--Afiliado y Profesional
+insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('Listado Estadistico')--Admin
+
+--Asigno funcionalidades a los usuarios
+insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (1,2)
+insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (2,2)
+insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (3,2)
+insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (4,2)
+insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (5,2)
+insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (6,2)
+insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (7,2)
+insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (10,2)
+insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (12,2)
+insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (7,3)
+insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (11,3)
+insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (8,1)
+insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (9,1)
+insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (11,1)
