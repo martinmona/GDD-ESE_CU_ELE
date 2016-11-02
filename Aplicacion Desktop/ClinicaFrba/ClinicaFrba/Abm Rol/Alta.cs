@@ -21,21 +21,21 @@ namespace ClinicaFrba.Abm_Rol
         private void button2_Click(object sender, EventArgs e)
         {
            
-            List<Funcionalidad> listaFunc = (List<Funcionalidad>)dataGridFun.DataSource;
-            Abm_Rol.SeleccionFuncionalidades testDialog = new Abm_Rol.SeleccionFuncionalidades(listaFunc);
+            List<Funcionalidad> listaFuncVieja = (List<Funcionalidad>)dataGridFun.DataSource;
+            Abm_Rol.SeleccionFuncionalidades testDialog = new Abm_Rol.SeleccionFuncionalidades(listaFuncVieja);
 
             testDialog.ShowDialog();
 
             if (testDialog.dataGridFunc.SelectedRows.Count == 1)
             {
                 Funcionalidad selected = (Funcionalidad)testDialog.dataGridFunc.SelectedRows[0].DataBoundItem;
-                listaFunc.Add(selected);
-                dataGridFun.DataSource=listaFunc;
+
+                List<Funcionalidad> listaFuncNueva = new List<Funcionalidad>();
+                listaFuncNueva.Add(selected);
+                dataGridFun.DataSource = listaFuncNueva;
             }
            
-            testDialog.Dispose();
-            
-            
+            testDialog.Dispose(); 
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -47,8 +47,11 @@ namespace ClinicaFrba.Abm_Rol
         {
             List<Funcionalidad> listaFunc = new List<Funcionalidad>();
             dataGridFun.DataSource = listaFunc;
-            List<Funcionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas("");
-            dataGridFun.DataSource = funcionalidades;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
