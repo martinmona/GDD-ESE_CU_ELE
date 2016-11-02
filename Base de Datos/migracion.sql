@@ -40,7 +40,7 @@ CREATE TABLE ESE_CU_ELE.Bono (bono_codigo numeric(18,0) primary key, bono_numero
 --Ver como manejar consulta medica y cancelacion
 CREATE TABLE ESE_CU_ELE.Consulta_Medica (cons_codigo_turno numeric(18,0) foreign key references ESE_CU_ELE.Turno(turn_codigo),cons_bono numeric(18,0) foreign key references ESE_CU_ELE.Bono(bono_codigo), cons_resultado varchar(255), cons_hora_llegada datetime, cons_sintomas varchar(255), cons_enfermedades varchar(255),primary key(cons_codigo_turno))
 
-CREATE TABLE ESE_CU_ELE.Compra (comp_codigo numeric(18,0) primary key , comp_afiliado numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Afiliado(afil_codigo_persona))
+CREATE TABLE ESE_CU_ELE.Compra (comp_codigo numeric(18,0) primary key IDENTITY(1,1), comp_afiliado numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Afiliado(afil_codigo_persona), comp_fecha datetime)
 
 CREATE TABLE ESE_CU_ELE.Item (item_codigo numeric(18,0) primary key identity(1,1), item_compra numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Compra(comp_codigo), item_bono numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Bono(bono_codigo))
 
@@ -113,3 +113,6 @@ insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) val
 insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (8,1)
 insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (9,1)
 insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (11,1)
+
+insert into ESE_CU_ELE.Compra (comp_afiliado,comp_fecha) select bono_afiliado,bono_fecha_compra from ESE_CU_ELE.Bono group by bono_afiliado,bono_fecha_compra order by bono_afiliado
+insert into ESE_CU_ELE.Item (item_bono, item_compra) select bono_codigo,(select comp_codigo from ESE_CU_ELE.Compra where bono_fecha_compra=comp_fecha and bono_afiliado=comp_afiliado) from ESE_CU_ELE.Bono
