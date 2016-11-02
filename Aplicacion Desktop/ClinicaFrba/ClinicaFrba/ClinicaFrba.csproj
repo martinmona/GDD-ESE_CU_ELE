@@ -68,11 +68,23 @@
     <Compile Include="Abm Profesional\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Rol\Alta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Rol\Alta.Designer.cs">
+      <DependentUpon>Alta.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Rol\Listado.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Abm Rol\Listado.Designer.cs">
       <DependentUpon>Listado.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Rol\SeleccionFuncionalidades.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Rol\SeleccionFuncionalidades.Designer.cs">
+      <DependentUpon>SeleccionFuncionalidades.cs</DependentUpon>
     </Compile>
     <Compile Include="Cancelar Atencion\Form1.cs">
       <SubType>Form</SubType>
@@ -142,8 +154,14 @@
     <Compile Include="Registro Resultado\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Abm Rol\Alta.resx">
+      <DependentUpon>Alta.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Abm Rol\Listado.resx">
       <DependentUpon>Listado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Rol\SeleccionFuncionalidades.resx">
+      <DependentUpon>SeleccionFuncionalidades.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Funcionalidad.resx">
       <DependentUpon>Funcionalidad.cs</DependentUpon>

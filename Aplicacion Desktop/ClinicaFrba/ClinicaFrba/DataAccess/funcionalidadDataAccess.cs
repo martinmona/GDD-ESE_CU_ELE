@@ -36,6 +36,27 @@ namespace ClinicaFrba.DataAccess
             conn.Close();
             return listaFuncionalidades;
         }
+
+
+        public static List<Funcionalidad> obtenerFuncionalidadesFiltradas(string where )
+        {
+            List<Funcionalidad> listaFuncionalidades = new List<Funcionalidad>();
+            SqlConnection conn = conectar();
+            SqlCommand MiComando = new SqlCommand();
+            MiComando.Connection = conn;
+            MiComando.CommandText = "select * from ESE_CU_ELE.Funcionalidad "+ where;
+            SqlDataReader reader = MiComando.ExecuteReader();
+            while (reader.Read())
+            {
+                Funcionalidad funcionalidad = new Funcionalidad();
+                funcionalidad.id = (decimal)reader["func_codigo"];
+                funcionalidad.descripcion = (string)reader["func_descripcion"];
+                listaFuncionalidades.Add(funcionalidad);
+            }
+            reader.Close();
+            conn.Close();
+            return listaFuncionalidades;
+        }
     }
 
 }

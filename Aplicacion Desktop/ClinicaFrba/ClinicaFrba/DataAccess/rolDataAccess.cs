@@ -51,6 +51,7 @@ namespace ClinicaFrba.Class
                 Rol rol = new Rol();
                 rol.id = (decimal)reader["rol_codigo"];
                 rol.nombre = (string)reader["rol_nombre"];
+                rol.habilitado = (bool)reader["rol_habilitado"];
                 listaRoles.Add(rol);
             }
             reader.Close();

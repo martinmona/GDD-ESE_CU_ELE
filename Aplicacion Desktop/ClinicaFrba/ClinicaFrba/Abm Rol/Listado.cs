@@ -21,17 +21,17 @@ namespace ClinicaFrba.AbmRol
         {
             List<Rol> roles = rolDataAccess.ObtenerRoles("");
             dataGridRol.DataSource = roles;
-
-        }
-
-        private void dataGridRol_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
+            checkHab.Checked = true;
 
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            txtId.Text = "";
+            txtNombre.Text = "";
+            checkHab.Checked = true;
+            List<Rol> roles = rolDataAccess.ObtenerRoles("");
+            dataGridRol.DataSource = roles;
         }
 
         private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
@@ -62,7 +62,7 @@ namespace ClinicaFrba.AbmRol
             }
             where = where + "AND rol_habilitado = " + hab.ToString();
 
-            MessageBox.Show(where);
+          
             List<Rol> roles = rolDataAccess.ObtenerRoles(where);
             dataGridRol.DataSource = roles;
         }
@@ -76,14 +76,10 @@ namespace ClinicaFrba.AbmRol
             }
         }
 
-        private void dataGridRol_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        private void btnAlta_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void dataGridRol_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-        {
-          
+            Abm_Rol.Alta formAlta = new Abm_Rol.Alta();
+            formAlta.Show();
         }
 
     }

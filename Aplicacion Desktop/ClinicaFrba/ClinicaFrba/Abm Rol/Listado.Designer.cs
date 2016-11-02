@@ -50,6 +50,7 @@
             this.dataGridRol.AllowUserToDeleteRows = false;
             this.dataGridRol.AllowUserToResizeColumns = false;
             this.dataGridRol.AllowUserToResizeRows = false;
+            this.dataGridRol.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridRol.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
             this.dataGridRol.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridRol.Location = new System.Drawing.Point(12, 180);
@@ -60,8 +61,6 @@
             this.dataGridRol.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridRol.Size = new System.Drawing.Size(638, 292);
             this.dataGridRol.TabIndex = 0;
-            this.dataGridRol.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridRol_CellContentClick_1);
-            this.dataGridRol.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridRol_CellFormatting);
             // 
             // btnAlta
             // 
@@ -71,6 +70,7 @@
             this.btnAlta.TabIndex = 1;
             this.btnAlta.Text = "Alta";
             this.btnAlta.UseVisualStyleBackColor = true;
+            this.btnAlta.Click += new System.EventHandler(this.btnAlta_Click);
             // 
             // btnBaja
             // 
