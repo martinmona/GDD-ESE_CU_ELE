@@ -37,5 +37,25 @@ namespace ClinicaFrba.Class
             conn.Close();
             return listaRoles;
         }
+
+        public static List<Rol> ObtenerRoles(string where)
+        {
+            List<Rol> listaRoles = new List<Rol>();
+            SqlConnection conn = conectar();
+            SqlCommand MiComando = new SqlCommand();
+            MiComando.Connection = conn;
+            MiComando.CommandText = "select * from ESE_CU_ELE.Rol "+ where;
+            SqlDataReader reader = MiComando.ExecuteReader();
+            while (reader.Read())
+            {
+                Rol rol = new Rol();
+                rol.id = (decimal)reader["rol_codigo"];
+                rol.nombre = (string)reader["rol_nombre"];
+                listaRoles.Add(rol);
+            }
+            reader.Close();
+            conn.Close();
+            return listaRoles;
+        }
     }
 }

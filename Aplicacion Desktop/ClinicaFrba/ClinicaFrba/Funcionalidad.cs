@@ -33,7 +33,18 @@ namespace ClinicaFrba
 
         private void btnFunc_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(cmbFuncionalidades.Text);
+            irAFuncionalidad((decimal)cmbFuncionalidades.SelectedValue);
+        }
+
+        private void irAFuncionalidad(decimal idFunc)
+        {
+            switch (idFunc.ToString())
+            {
+                case "1":
+                    AbmRol.Listado formRol = new AbmRol.Listado();
+                    formRol.Show();
+                    break;
+            }
         }
     }
 }
