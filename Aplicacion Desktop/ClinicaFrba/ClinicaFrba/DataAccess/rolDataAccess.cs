@@ -58,5 +58,92 @@ namespace ClinicaFrba.Class
             conn.Close();
             return listaRoles;
         }
+
+        public static bool AgregarRol(string nombre,List<Funcionalidad> listaFuncionalidades)
+        {
+            try
+            {
+                decimal codigoRol = obtenerUltimoCodigo() +1;
+                SqlConnection conn = conectar();
+                SqlCommand MiComando = new SqlCommand();
+                MiComando.Connection = conn;
+                MiComando.CommandText = "INSERT INTO ESE_CU_ELE.Rol(rol_nombre,rol_habilitado) VALUES('" + nombre + "',1)";
+                MiComando.ExecuteNonQuery();
+
+                foreach (Funcionalidad func in listaFuncionalidades)
+                {
+                    MiComando.CommandText = "INSERT INTO ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) VALUES("+func.codigo+", "+ codigoRol+")";
+                    MiComando.ExecuteNonQuery();
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+            
+        }
+        private static decimal obtenerUltimoCodigo()
+        {
+            decimal codigo = 1;
+            try
+            {
+                SqlConnection conn = conectar();
+                SqlCommand MiComando = new SqlCommand();
+                MiComando.Connection = conn;
+                MiComando.CommandText = "SELECT TOP 1 rol_codigo from ESE_CU_ELE.Rol order by rol_codigo DESC";
+                codigo = (decimal)MiComando.ExecuteScalar();
+                conn.Close();
+            }
+            catch
+            {
+            }
+            return codigo;
+        }
+        public static bool EliminarRol(decimal codigo)
+        {
+            try
+            {
+                SqlConnection conn = conectar();
+                SqlCommand MiComando = new SqlCommand();
+                MiComando.Connection = conn;
+                MiComando.CommandText = "DELETE FROM ESE_CU_ELE.RolXFuncionalidad where rolxf_rol_codigo = " + codigo;
+                MiComando.ExecuteNonQuery();
+                MiComando.CommandText = "UPDATE ESE_CU_ELE.Rol set rol_habilitado=0 where rol_codigo = " + codigo;
+                MiComando.ExecuteNonQuery();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
+
+        public static bool ModificarRol(decimal codigo, string nombre, List<Funcionalidad> listaFuncionalidades, int habilitado)
+        {
+            try
+            {
+                SqlConnection conn = conectar();
+                SqlCommand MiComando = new SqlCommand();
+                MiComando.Connection = conn;
+                MiComando.CommandText = "DELETE FROM ESE_CU_ELE.RolXFuncionalidad where rolxf_rol_codigo = " + codigo;
+                MiComando.ExecuteNonQuery();
+                foreach (Funcionalidad func in listaFuncionalidades)
+                {
+                    MiComando.CommandText = "INSERT INTO ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) VALUES("+func.codigo+", "+ codigo+")";
+                    MiComando.ExecuteNonQuery();
+                }
+                MiComando.CommandText = "UPDATE ESE_CU_ELE.Rol set rol_habilitado="+habilitado+", rol_nombre = '"+nombre+"' where rol_codigo = " + codigo;
+                MiComando.ExecuteNonQuery();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
+
     }
 }

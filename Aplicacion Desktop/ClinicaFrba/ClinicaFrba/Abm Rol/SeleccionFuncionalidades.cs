@@ -37,22 +37,16 @@ namespace ClinicaFrba.Abm_Rol
 
         private void SeleccionFuncionalidades_Load(object sender, EventArgs e)
         {
-            foreach (Funcionalidad func in funcionalidadesElegidas)
-            {
-                MessageBox.Show(func.descripcion);
-            }
-            List<Funcionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas("");
+            List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
             if (funcionalidadesElegidas.Count > 0)
             {
-                foreach (Funcionalidad func in funcionalidades)
-                {
-                    if (funcionalidadesElegidas.Exists(x => x.codigo == func.codigo))
-                    {
-                        funcionalidades.Remove(func);
-                    }
-                }
+                string whereNotInFunc = crearFiltroNotIn();
+                funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas(whereNotInFunc);
             }
-
+            else
+            {
+                funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas("");
+            }
             dataGridFunc.DataSource = funcionalidades;
         }
 
@@ -67,18 +61,19 @@ namespace ClinicaFrba.Abm_Rol
                 where = where + "AND func_codigo = " + id;
             }
 
-            List<Funcionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas(where);
+           
            if (funcionalidadesElegidas.Count > 0)
            {
-               foreach (Funcionalidad func in funcionalidades)
+               where += "AND func_codigo NOT IN (";
+               foreach (Funcionalidad func in funcionalidadesElegidas)
                {
-                   if (funcionalidadesElegidas.Exists(x => x.codigo == func.codigo))
-                   {
-                       funcionalidades.Remove(func);
-                   }
+                   where += func.codigo.ToString() + ", ";
                }
+               where = where.Substring(0, where.Length - 2);
+               where += ")";
            }
 
+           List<Funcionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas(where);
            dataGridFunc.DataSource = funcionalidades;
         }
 
@@ -86,13 +81,53 @@ namespace ClinicaFrba.Abm_Rol
         {
             txtId.Text = "";
             txtFunc.Text = "";
-            List<Funcionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas("");
+            List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
+            if (funcionalidadesElegidas.Count > 0)
+            {
+                string whereNotInFunc = crearFiltroNotIn();
+                funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas(whereNotInFunc);
+            }
+            else
+            {
+                funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas("");
+            }
             dataGridFunc.DataSource = funcionalidades;
+            txtId.Focus();
+        }
+
+        private string crearFiltroNotIn()
+        {
+            string whereNotInFunc = "WHERE func_codigo NOT IN (";
+            foreach (Funcionalidad func in funcionalidadesElegidas)
+            {
+                whereNotInFunc += func.codigo.ToString() + ", ";
+            }
+            whereNotInFunc = whereNotInFunc.Substring(0, whereNotInFunc.Length - 2);
+            whereNotInFunc += ")";
+            return whereNotInFunc;
         }
 
         private void btnSel_Click(object sender, EventArgs e)
         {
             this.Hide();
+        }
+
+        private void txtFunc_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if ((char.IsNumber(e.KeyChar)) && (e.KeyChar != (char)Keys.Back))
+            {
+                e.Handled = true;
+                return;
+            }
+        }
+
+        private void txtId_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!(char.IsNumber(e.KeyChar)) && (e.KeyChar != (char)Keys.Back))
+            {
+                e.Handled = true;
+                return;
+            }
         }
     }
 }

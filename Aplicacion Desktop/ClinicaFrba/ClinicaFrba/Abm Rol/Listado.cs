@@ -16,12 +16,11 @@ namespace ClinicaFrba.AbmRol
         {
             InitializeComponent();
         }
-
         private void Listado_Load(object sender, EventArgs e)
         {
             List<Rol> roles = rolDataAccess.ObtenerRoles("");
             dataGridRol.DataSource = roles;
-            checkHab.Checked = true;
+            comboBox1.Text = "";
 
         }
 
@@ -29,7 +28,7 @@ namespace ClinicaFrba.AbmRol
         {
             txtId.Text = "";
             txtNombre.Text = "";
-            checkHab.Checked = true;
+            comboBox1.Text = "";
             List<Rol> roles = rolDataAccess.ObtenerRoles("");
             dataGridRol.DataSource = roles;
         }
@@ -45,13 +44,25 @@ namespace ClinicaFrba.AbmRol
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
+            filtrar();
+        }
+        private void filtrar()
+        {
             string id = txtId.Text;
             string nombre = txtNombre.Text;
-            bool habilitado = checkHab.Checked;
+            string habilitado = comboBox1.Text;
             int hab = 0;
-            if (habilitado == true)
+            if (habilitado == "Si")
             {
                 hab = 1;
+            }
+            else if (habilitado == "No")
+            {
+                hab = 0;
+            }
+            else
+            {
+                hab = -1;
             }
 
 
@@ -60,12 +71,18 @@ namespace ClinicaFrba.AbmRol
             {
                 where = where + "AND rol_codigo = " + id;
             }
-            where = where + "AND rol_habilitado = " + hab.ToString();
+            if (hab != -1)
+            {
+                where = where + "AND rol_habilitado = " + hab.ToString();
+            }
+
+            
 
           
             List<Rol> roles = rolDataAccess.ObtenerRoles(where);
             dataGridRol.DataSource = roles;
         }
+
 
         private void txtNombre_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -80,6 +97,45 @@ namespace ClinicaFrba.AbmRol
         {
             Abm_Rol.Alta formAlta = new Abm_Rol.Alta();
             formAlta.Show();
+            this.Hide();
+        }
+
+        private void txtId_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnBaja_Click(object sender, EventArgs e)
+        {
+            decimal selected = (decimal)dataGridRol.SelectedRows[0].Cells[0].Value;
+            bool habilitado = (bool)dataGridRol.SelectedRows[0].Cells[2].Value;
+            if (!habilitado)
+            {
+                MessageBox.Show("El rol ya esta eliminado logicamente");
+                return;
+            }
+            if (rolDataAccess.EliminarRol(selected))
+            {
+                MessageBox.Show("Se deshabilito el rol seleccionado correctamente");
+                filtrar();
+            }
+            else
+            {
+                MessageBox.Show("Fallo la conexion a la BD", "Error");
+            }
+        }
+
+        private void checkHab_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnMod_Click(object sender, EventArgs e)
+        {
+            Rol selected = (Rol)dataGridRol.SelectedRows[0].DataBoundItem;
+            Abm_Rol.Modificacion modificacion = new Abm_Rol.Modificacion(selected);
+            modificacion.Show();
+            this.Hide();
         }
 
     }

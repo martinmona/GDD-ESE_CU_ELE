@@ -99,6 +99,7 @@
             this.txtFunc.Name = "txtFunc";
             this.txtFunc.Size = new System.Drawing.Size(100, 20);
             this.txtFunc.TabIndex = 9;
+            this.txtFunc.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtFunc_KeyPress);
             // 
             // txtId
             // 
@@ -107,6 +108,7 @@
             this.txtId.Name = "txtId";
             this.txtId.Size = new System.Drawing.Size(100, 20);
             this.txtId.TabIndex = 10;
+            this.txtId.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtId_KeyPress);
             // 
             // dataGridFunc
             // 

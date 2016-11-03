@@ -11,14 +11,46 @@ using ClinicaFrba.Class;
 using ClinicaFrba.DataAccess;
 namespace ClinicaFrba.Abm_Rol
 {
-    public partial class Alta : Form
+    public partial class Modificacion : Form
     {
-        public Alta()
+        List<Funcionalidad> listaFuncionalidades;
+        Rol rol;
+        public Modificacion(Rol rolModificar)
         {
             InitializeComponent();
+            rol = rolModificar;
         }
 
-        List<Funcionalidad> listaFuncionalidades;
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Modificacion_Load(object sender, EventArgs e)
+        {
+            listaFuncionalidades = funcionalidadDataAccess.obtenerFuncionalidadesPorRol(rol.codigo);
+            txtNom.Text = rol.nombre;
+            if (rol.habilitado)
+            {
+                checkHab.Visible = false;
+                checkHab.Checked = true;
+            }
+            else
+            {
+                checkHab.Checked = false;
+            }
+            dataGridFun.DataSource = listaFuncionalidades;
+        }
+
+        private void refrescarDataGrid()
+        {
+            List<Funcionalidad> listaFuncionalidadesNew = new List<Funcionalidad>();//CREO NUEVA LISTA PQ NO DEJA ASIGNAR LA LISTA GLOBAL A LA DATAGRID
+            foreach (Funcionalidad fun in listaFuncionalidades)
+            {
+                listaFuncionalidadesNew.Add(fun);
+            }
+            dataGridFun.DataSource = listaFuncionalidadesNew;
+        }
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -34,28 +66,11 @@ namespace ClinicaFrba.Abm_Rol
             testDialog.Dispose(); 
         }
 
- 
-        private void Alta_Load(object sender, EventArgs e)
-        {
-            listaFuncionalidades = new List<Funcionalidad>();
-            dataGridFun.DataSource = listaFuncionalidades;
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             Funcionalidad selected = (Funcionalidad)dataGridFun.SelectedRows[0].DataBoundItem;
             listaFuncionalidades.Remove(selected);
             refrescarDataGrid();
-        }
-
-        private void refrescarDataGrid()
-        {
-            List<Funcionalidad> listaFuncionalidadesNew = new List<Funcionalidad>();//CREO NUEVA LISTA PQ NO DEJA ASIGNAR LA LISTA GLOBAL A LA DATAGRID
-            foreach (Funcionalidad fun in listaFuncionalidades)
-            {
-                listaFuncionalidadesNew.Add(fun);
-            }
-            dataGridFun.DataSource = listaFuncionalidadesNew;
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -72,20 +87,11 @@ namespace ClinicaFrba.Abm_Rol
             txtNom.Focus();
         }
 
-        private void txtNom_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if ((char.IsNumber(e.KeyChar)) && (e.KeyChar != (char)Keys.Back))
-            {
-                e.Handled = true;
-                return;
-            }
-        }
-
         private void btnAg_Click(object sender, EventArgs e)
         {
             if (txtNom.Text == "")
             {
-                MessageBox.Show("Debe ingresar un nombre","error");
+                MessageBox.Show("Debe ingresar un nombre", "error");
             }
             else
             {
@@ -95,7 +101,12 @@ namespace ClinicaFrba.Abm_Rol
                 }
                 else
                 {
-                    if (rolDataAccess.AgregarRol(txtNom.Text, listaFuncionalidades))
+                    int hab = 0;
+                    if (checkHab.Visible == true)
+                    {
+                        hab = 1;
+                    }
+                    if (rolDataAccess.ModificarRol(rol.codigo,txtNom.Text, listaFuncionalidades, hab))
                     {
                         AbmRol.Listado listado = new AbmRol.Listado();
                         listado.Show();
@@ -117,6 +128,5 @@ namespace ClinicaFrba.Abm_Rol
             listado.Show();
             this.Hide();
         }
-
     }
 }
