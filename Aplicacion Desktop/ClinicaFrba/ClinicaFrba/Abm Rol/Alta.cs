@@ -21,14 +21,14 @@ namespace ClinicaFrba.Abm_Rol
         private void button2_Click(object sender, EventArgs e)
         {
            
-            List<Funcionalidad> listaFunc = (List<Funcionalidad>)dataGridFun.DataSource;
+            List<IlanFuncionalidad> listaFunc = (List<IlanFuncionalidad>)dataGridFun.DataSource;
             Abm_Rol.SeleccionFuncionalidades testDialog = new Abm_Rol.SeleccionFuncionalidades(listaFunc);
 
             testDialog.ShowDialog();
 
             if (testDialog.dataGridFunc.SelectedRows.Count == 1)
             {
-                Funcionalidad selected = (Funcionalidad)testDialog.dataGridFunc.SelectedRows[0].DataBoundItem;
+                IlanFuncionalidad selected = (IlanFuncionalidad)testDialog.dataGridFunc.SelectedRows[0].DataBoundItem;
                 listaFunc.Add(selected);
                 dataGridFun.DataSource=listaFunc;
             }
@@ -45,9 +45,9 @@ namespace ClinicaFrba.Abm_Rol
 
         private void Alta_Load(object sender, EventArgs e)
         {
-            List<Funcionalidad> listaFunc = new List<Funcionalidad>();
+            List<IlanFuncionalidad> listaFunc = new List<IlanFuncionalidad>();
             dataGridFun.DataSource = listaFunc;
-            List<Funcionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas("");
+            List<IlanFuncionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas("");
             dataGridFun.DataSource = funcionalidades;
         }
     }

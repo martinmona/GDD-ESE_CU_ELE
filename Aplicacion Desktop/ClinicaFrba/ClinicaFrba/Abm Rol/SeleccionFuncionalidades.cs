@@ -15,8 +15,8 @@ namespace ClinicaFrba.Abm_Rol
     public partial class SeleccionFuncionalidades : Form
     {
 
-        List<Funcionalidad> funcionalidadesElegidas;
-        public SeleccionFuncionalidades(List<Funcionalidad> funcionalidadesEle)
+        List<IlanFuncionalidad> funcionalidadesElegidas;
+        public SeleccionFuncionalidades(List<IlanFuncionalidad> funcionalidadesEle)
         {
             InitializeComponent();
 
@@ -26,7 +26,7 @@ namespace ClinicaFrba.Abm_Rol
             }
             else
             {
-                funcionalidadesElegidas = new List<Funcionalidad>();
+                funcionalidadesElegidas = new List<IlanFuncionalidad>();
             }
         }
 
@@ -37,10 +37,10 @@ namespace ClinicaFrba.Abm_Rol
 
         private void SeleccionFuncionalidades_Load(object sender, EventArgs e)
         {
-            List<Funcionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas("");
+            List<IlanFuncionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas("");
             if (funcionalidadesElegidas.Count > 0)
             {
-                foreach (Funcionalidad func in funcionalidades)
+                foreach (IlanFuncionalidad func in funcionalidades)
                 {
                     if (funcionalidadesElegidas.Exists(x => x.id == func.id))
                     {
@@ -63,10 +63,10 @@ namespace ClinicaFrba.Abm_Rol
                 where = where + "AND func_codigo = " + id;
             }
 
-           List<Funcionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas(where);
+           List<IlanFuncionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas(where);
            if (funcionalidadesElegidas.Count > 0)
            {
-               foreach (Funcionalidad func in funcionalidades)
+               foreach (IlanFuncionalidad func in funcionalidades)
                {
                    if (funcionalidadesElegidas.Exists(x => x.id == func.id))
                    {
@@ -82,7 +82,7 @@ namespace ClinicaFrba.Abm_Rol
         {
             txtId.Text = "";
             txtFunc.Text = "";
-            List<Funcionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas("");
+            List<IlanFuncionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas("");
             dataGridFunc.DataSource = funcionalidades;
         }
 

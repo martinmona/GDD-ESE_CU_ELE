@@ -43,7 +43,7 @@ namespace ClinicaFrba
                 }
                 else 
                 { 
-                    Usuario myuser = usuarioDataAccess.login(txtuser.Text, txtpass.Text);
+                    IlanUsuario myuser = usuarioDataAccess.login(txtuser.Text, txtpass.Text);
                     if (myuser.id == -1)//No existe el usuario
                     {
                         int intentos = usuarioDataAccess.sumarIntentoFallido(idUser);
@@ -83,7 +83,7 @@ namespace ClinicaFrba
                         //ENTRO, AHORA LOS ROLES
                         if (usuarioDataAccess.resetIntentos(idUser))
                         {
-                            List<Rol> roles = rolDataAccess.ObtenerRolesPorUsuario(idUser);
+                            List<IlanRol> roles = rolDataAccess.ObtenerRolesPorUsuario(idUser);
                             
                             if (roles.Count() > 1) //Si tiene mas de un rol, debe seleccionar con cual entrar 
                             {
@@ -102,7 +102,7 @@ namespace ClinicaFrba
                             else
                             {
                                 MessageBox.Show("Se ingresó al sistema");
-                                Rol rol = roles[0];
+                                IlanRol rol = roles[0];
                                 irAForm(rol.id);
                             }
                         }

@@ -92,25 +92,25 @@
     <Compile Include="Cancelar Atencion\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Class\Funcionalidad.cs" />
-    <Compile Include="Class\Rol.cs" />
-    <Compile Include="Class\Usuario.cs" />
+    <Compile Include="Class\IlanFuncionalidad.cs" />
+    <Compile Include="Class\IlanRol.cs" />
+    <Compile Include="Class\IlanUsuario.cs" />
     <Compile Include="Compra Bono\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Compra Bono\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Config\Afiliado.cs" />
+    <Compile Include="Class\Afiliado.cs" />
     <Compile Include="Config\BD.cs" />
-    <Compile Include="Config\Bono.cs" />
-    <Compile Include="Config\ConsultaMedica.cs" />
-    <Compile Include="Config\Funcionalidad.cs" />
-    <Compile Include="Config\Modificacion.cs" />
-    <Compile Include="Config\Persona.cs" />
-    <Compile Include="Config\Plan.cs" />
-    <Compile Include="Config\Rol.cs" />
-    <Compile Include="Config\Usuario.cs" />
+    <Compile Include="Class\Bono.cs" />
+    <Compile Include="Class\ConsultaMedica.cs" />
+    <Compile Include="Class\Funcionalidad.cs" />
+    <Compile Include="Class\Modificacion.cs" />
+    <Compile Include="Class\Persona.cs" />
+    <Compile Include="Class\Plan.cs" />
+    <Compile Include="Class\Rol.cs" />
+    <Compile Include="Class\Usuario.cs" />
     <Compile Include="DataAccess\funcionalidadDataAccess.cs" />
     <Compile Include="DataAccess\rolDataAccess.cs" />
     <Compile Include="DataAccess\usuarioDataAccess.cs" />

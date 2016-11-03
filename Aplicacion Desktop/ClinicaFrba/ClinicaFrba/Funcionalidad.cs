@@ -24,7 +24,7 @@ namespace ClinicaFrba
 
         private void Funcionalidad_Load(object sender, EventArgs e)
         {
-            List<Funcionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesPorRol(idRol);
+            List<IlanFuncionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesPorRol(idRol);
             cmbFuncionalidades.DataSource = funcionalidades;
             cmbFuncionalidades.DisplayMember = "descripcion";
             cmbFuncionalidades.ValueMember = "id";

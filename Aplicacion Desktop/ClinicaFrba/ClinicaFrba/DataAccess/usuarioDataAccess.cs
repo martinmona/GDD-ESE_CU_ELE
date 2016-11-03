@@ -17,9 +17,9 @@ namespace ClinicaFrba.Class{
             return connection;
         }
 
-        public static Usuario login(string user, string pass) 
+        public static IlanUsuario login(string user, string pass) 
         {
-            Usuario myuser = new Usuario();
+            IlanUsuario myuser = new IlanUsuario();
             try
             {
                 SqlConnection conn = conectar();

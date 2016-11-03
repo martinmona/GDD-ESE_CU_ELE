@@ -17,9 +17,9 @@ namespace ClinicaFrba.DataAccess
             return connection;
         }
 
-        public static List<Class.Funcionalidad> obtenerFuncionalidadesPorRol(decimal idRol)
+        public static List<Class.IlanFuncionalidad> obtenerFuncionalidadesPorRol(decimal idRol)
         {
-            List<Class.Funcionalidad> listaFuncionalidades = new List<Class.Funcionalidad>();
+            List<Class.IlanFuncionalidad> listaFuncionalidades = new List<Class.IlanFuncionalidad>();
             SqlConnection conn = conectar();
             SqlCommand MiComando = new SqlCommand();
             MiComando.Connection = conn;
@@ -38,9 +38,9 @@ namespace ClinicaFrba.DataAccess
         }
 
 
-        public static List<Class.Funcionalidad> obtenerFuncionalidadesFiltradas(string where )
+        public static List<Class.IlanFuncionalidad> obtenerFuncionalidadesFiltradas(string where )
         {
-            List<Class.Funcionalidad> listaFuncionalidades = new List<Class.Funcionalidad>();
+            List<Class.IlanFuncionalidad> listaFuncionalidades = new List<Class.IlanFuncionalidad>();
             SqlConnection conn = conectar();
             SqlCommand MiComando = new SqlCommand();
             MiComando.Connection = conn;
