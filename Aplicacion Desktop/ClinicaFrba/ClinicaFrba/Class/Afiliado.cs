@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClinicaFrba.Config
+namespace ClinicaFrba.Class
 {
     public class Afiliado : Persona 
     {
