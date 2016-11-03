@@ -101,7 +101,16 @@
     <Compile Include="Compra Bono\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Config\Afiliado.cs" />
     <Compile Include="Config\BD.cs" />
+    <Compile Include="Config\Bono.cs" />
+    <Compile Include="Config\ConsultaMedica.cs" />
+    <Compile Include="Config\Funcionalidad.cs" />
+    <Compile Include="Config\Modificacion.cs" />
+    <Compile Include="Config\Persona.cs" />
+    <Compile Include="Config\Plan.cs" />
+    <Compile Include="Config\Rol.cs" />
+    <Compile Include="Config\Usuario.cs" />
     <Compile Include="DataAccess\funcionalidadDataAccess.cs" />
     <Compile Include="DataAccess\rolDataAccess.cs" />
     <Compile Include="DataAccess\usuarioDataAccess.cs" />
