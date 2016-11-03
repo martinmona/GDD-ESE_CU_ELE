@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace ClinicaFrba.Class
 {
-    abstract class Persona
+    public abstract class Persona
     {
-        private int _codigo;
+        private decimal _codigo;
         private string _nombre;
         private string _apellido;
         private string _sexo;
         private DateTime _fechaNacimiento;
         private string _tipoDocumento;
-        private int _numeroDocumento;
+        private decimal _numeroDocumento;
         private string _mail;
         private string _direccion;
-        private int _telefono;
+        private decimal _telefono;
         private string _tipo;
 
-        public int codigo
+        public decimal codigo
         {
             get { return _codigo; }
             set { _codigo = value; }
@@ -50,7 +50,7 @@ namespace ClinicaFrba.Class
             get { return _tipoDocumento; }
             set { _tipoDocumento = value; }
         }
-        public int numeroDocumento
+        public decimal numeroDocumento
         {
             get { return _numeroDocumento; }
             set { _numeroDocumento = value; }
@@ -65,7 +65,7 @@ namespace ClinicaFrba.Class
             get { return _direccion; }
             set { _direccion = value; }
         }
-        public int telefono
+        public decimal telefono
         {
             get { return _telefono; }
             set { _telefono = value; }

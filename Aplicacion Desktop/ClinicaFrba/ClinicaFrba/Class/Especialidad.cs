@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace ClinicaFrba.Class
 {
-    public class Plan
+    public class Especialidad
     {
         private decimal _codigo;
         private string _descripcion;
-        private decimal _bonoConsulta;
-        private decimal _bonoFarmacia;
 
         public decimal codigo
         {
@@ -22,16 +20,6 @@ namespace ClinicaFrba.Class
         {
             get { return _descripcion; }
             set { _descripcion = value; }
-        }
-        public decimal bonoConsulta
-        {
-            get { return _bonoConsulta; }
-            set { _bonoConsulta = value; }
-        }
-        public decimal bonoFarmacia
-        {
-            get { return _bonoFarmacia; }
-            set { _bonoFarmacia = value; }
         }
     }
 }

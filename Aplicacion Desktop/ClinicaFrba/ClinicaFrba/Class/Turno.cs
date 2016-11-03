@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace ClinicaFrba.Class
 {
-    public class Modificacion
+    public class Turno
     {
         private decimal _codigo;
         private DateTime _fecha;
-        private string _motivo;
-        private Plan _planAntiguo;
+        private Profesional _profesional;
+        private Cancelacion _cancelacion;
 
         public decimal codigo
         {
@@ -23,15 +23,15 @@ namespace ClinicaFrba.Class
             get { return _fecha; }
             set { _fecha = value; }
         }
-        public string motivo
+        public Profesional profesional
         {
-            get { return _motivo; }
-            set { _motivo = value; }
+            get { return _profesional; }
+            set { _profesional = value; }
         }
-        public Plan planAntiguo
+        public Cancelacion cancelacion
         {
-            get { return _planAntiguo; }
-            set { _planAntiguo = value; }
+            get { return _cancelacion; }
+            set { _cancelacion = value; }
         }
     }
 }

@@ -92,6 +92,12 @@
     <Compile Include="Cancelar Atencion\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Class\Agenda.cs" />
+    <Compile Include="Class\Cancelacion.cs" />
+    <Compile Include="Class\Compra.cs" />
+    <Compile Include="Class\Especialidad.cs" />
+    <Compile Include="Class\Profesional.cs" />
+    <Compile Include="Class\Turno.cs" />
     <Compile Include="Compra Bono\Form1.cs">
       <SubType>Form</SubType>
     </Compile>

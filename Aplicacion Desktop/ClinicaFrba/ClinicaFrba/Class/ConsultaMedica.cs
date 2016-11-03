@@ -8,14 +8,14 @@ namespace ClinicaFrba.Class
 {
     public class ConsultaMedica
     {
-        private int _codigo;
+        private decimal _codigo;
         private Bono _bono;
         private string _resultado;
         private DateTime _horaLlegada;
         private string _sintomas;
         private string _enfermedades;
 
-        public int codigo
+        public decimal codigo
         {
             get { return _codigo; }
             set { _codigo = value; }
@@ -37,8 +37,8 @@ namespace ClinicaFrba.Class
         }
         public string enfermedades
         {
-            get { return _sintomas; }
-            set { _sintomas = value; }
+            get { return _enfermedades; }
+            set { _enfermedades = value; }
         }
         public DateTime horaLlegada
         {

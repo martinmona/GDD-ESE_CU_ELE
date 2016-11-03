@@ -6,28 +6,28 @@ using System.Threading.Tasks;
 
 namespace ClinicaFrba.Class
 {
-    public class Afiliado /*: Persona */
+    public class Afiliado : Persona
     {
         private string _estadoCivil;
-        private int _numeroAfiliado;
-        private int _codigoFamiliar;
+        private decimal _numeroAfiliado;
+        private decimal _codigoFamiliar;
         private Plan _plan;
         private List<Modificacion> _modificaciones;
         private List<Bono> _bonos;
-        //private List<Turno> _turnos;
-        //private List<Compra> _compras;
+        private List<Turno> _turnos;
+        private List<Compra> _compras;
 
         public string estadoCivil
         {
             get { return _estadoCivil; }
             set { _estadoCivil = value; }
         }
-        public int numeroAfiliado
+        public decimal numeroAfiliado
         {
             get { return _numeroAfiliado; }
             set { _numeroAfiliado = value; }
         }
-        public int codigoFamiliar
+        public decimal codigoFamiliar
         {
             get { return _codigoFamiliar; }
             set { _codigoFamiliar = value; }
@@ -46,6 +46,16 @@ namespace ClinicaFrba.Class
         {
             get { return _bonos; }
             set { _bonos = value; }
+        }
+        public List<Compra> compras
+        {
+            get { return _compras; }
+            set { _compras = value; }
+        }
+        public List<Turno> turnos
+        {
+            get { return _turnos; }
+            set { _turnos = value; }
         }
     }
 }

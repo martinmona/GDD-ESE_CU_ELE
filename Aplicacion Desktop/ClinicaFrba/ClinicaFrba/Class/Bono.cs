@@ -8,23 +8,23 @@ namespace ClinicaFrba.Class
 {
     public class Bono
     {
-        private int _codigo;
-        //private ConsultaMedica _numeroConsultaMedica;
+        private decimal _codigo;
+        private ConsultaMedica _consultaMedica;
         private Plan _plan;
-        private int _precio;
+        private decimal _precio;
         private DateTime _fechaCompra;
 
-        public int codigo
+        public decimal codigo
         {
             get { return _codigo; }
             set { _codigo = value; }
         }
-        /*public int numeroConsultaMedica
+        public ConsultaMedica consultaMedica
         {
-            get { return _numeroConsultaMedica; }
-            set { _numeroConsultaMedica = value; }
-        }*/
-        public int precio
+            get { return _consultaMedica; }
+            set { _consultaMedica = value; }
+        }
+        public decimal precio
         {
             get { return _precio; }
             set { _precio = value; }
