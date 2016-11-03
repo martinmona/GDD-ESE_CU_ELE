@@ -42,9 +42,9 @@ namespace ClinicaFrba
                     return;
                 }
                 else 
-                { 
-                    IlanUsuario myuser = usuarioDataAccess.login(txtuser.Text, txtpass.Text);
-                    if (myuser.id == -1)//No existe el usuario
+                {
+                    Usuario myuser = usuarioDataAccess.login(txtuser.Text, txtpass.Text);
+                    if (myuser.codigo == -1)//No existe el usuario
                     {
                         int intentos = usuarioDataAccess.sumarIntentoFallido(idUser);
                         if (intentos == -1)
@@ -83,7 +83,7 @@ namespace ClinicaFrba
                         //ENTRO, AHORA LOS ROLES
                         if (usuarioDataAccess.resetIntentos(idUser))
                         {
-                            List<IlanRol> roles = rolDataAccess.ObtenerRolesPorUsuario(idUser);
+                            List<Rol> roles = rolDataAccess.ObtenerRolesPorUsuario(idUser);
                             
                             if (roles.Count() > 1) //Si tiene mas de un rol, debe seleccionar con cual entrar 
                             {
@@ -96,14 +96,14 @@ namespace ClinicaFrba
                                 txtuser.Enabled = false;
                                 cmbRoles.DataSource = roles;
                                 cmbRoles.DisplayMember = "nombre";
-                                cmbRoles.ValueMember = "id";
+                                cmbRoles.ValueMember = "codigo";
                                 cmbRoles.Focus();
                             }
                             else
                             {
                                 MessageBox.Show("Se ingresó al sistema");
-                                IlanRol rol = roles[0];
-                                irAForm(rol.id);
+                                Rol rol = roles[0];
+                                irAForm(rol.codigo);
                             }
                         }
                         else
@@ -132,6 +132,11 @@ namespace ClinicaFrba
         {
             decimal idRol = (decimal)cmbRoles.SelectedValue;
             irAForm(idRol);
+        }
+
+        private void Login_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

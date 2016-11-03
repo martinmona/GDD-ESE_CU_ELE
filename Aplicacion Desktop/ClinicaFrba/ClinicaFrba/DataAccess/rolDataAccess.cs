@@ -18,9 +18,9 @@ namespace ClinicaFrba.Class
             return connection;
         }
 
-        public static List<IlanRol> ObtenerRolesPorUsuario(decimal idUser)
+        public static List<Rol> ObtenerRolesPorUsuario(decimal idUser)
         {
-            List<IlanRol> listaRoles = new List<IlanRol>();
+            List<Rol> listaRoles = new List<Rol>();
             SqlConnection conn = conectar();
             SqlCommand MiComando = new SqlCommand();
             MiComando.Connection = conn;
@@ -28,8 +28,8 @@ namespace ClinicaFrba.Class
             SqlDataReader reader = MiComando.ExecuteReader();
             while (reader.Read())
             {
-                IlanRol rol = new IlanRol();
-                rol.id = (decimal)reader["rol_codigo"];
+                Rol rol = new Rol();
+                rol.codigo = (decimal)reader["rol_codigo"];
                 rol.nombre= (string)reader["rol_nombre"];
                 listaRoles.Add(rol);
             }
@@ -38,9 +38,9 @@ namespace ClinicaFrba.Class
             return listaRoles;
         }
 
-        public static List<IlanRol> ObtenerRoles(string where)
+        public static List<Rol> ObtenerRoles(string where)
         {
-            List<IlanRol> listaRoles = new List<IlanRol>();
+            List<Rol> listaRoles = new List<Rol>();
             SqlConnection conn = conectar();
             SqlCommand MiComando = new SqlCommand();
             MiComando.Connection = conn;
@@ -48,8 +48,8 @@ namespace ClinicaFrba.Class
             SqlDataReader reader = MiComando.ExecuteReader();
             while (reader.Read())
             {
-                IlanRol rol = new IlanRol();
-                rol.id = (decimal)reader["rol_codigo"];
+                Rol rol = new Rol();
+                rol.codigo = (decimal)reader["rol_codigo"];
                 rol.nombre = (string)reader["rol_nombre"];
                 rol.habilitado = (bool)reader["rol_habilitado"];
                 listaRoles.Add(rol);

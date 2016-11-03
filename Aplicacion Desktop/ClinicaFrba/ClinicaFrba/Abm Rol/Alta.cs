@@ -20,7 +20,6 @@ namespace ClinicaFrba.Abm_Rol
 
         private void button2_Click(object sender, EventArgs e)
         {
-           
             List<Funcionalidad> listaFuncVieja = (List<Funcionalidad>)dataGridFun.DataSource;
             Abm_Rol.SeleccionFuncionalidades testDialog = new Abm_Rol.SeleccionFuncionalidades(listaFuncVieja);
 
@@ -45,7 +44,7 @@ namespace ClinicaFrba.Abm_Rol
 
         private void Alta_Load(object sender, EventArgs e)
         {
-            List<Funcionalidad> funcionalidades = Funcionalidad.obtenerFuncionalidadesFiltradas("");
+            List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
             dataGridFun.DataSource = funcionalidades;
         }
 

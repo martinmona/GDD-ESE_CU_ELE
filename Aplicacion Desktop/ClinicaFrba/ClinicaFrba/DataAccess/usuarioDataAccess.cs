@@ -17,9 +17,9 @@ namespace ClinicaFrba.Class{
             return connection;
         }
 
-        public static IlanUsuario login(string user, string pass) 
+        public static Usuario login(string user, string pass) 
         {
-            IlanUsuario myuser = new IlanUsuario();
+            Usuario myuser = new Usuario();
             try
             {
                 SqlConnection conn = conectar();
@@ -29,22 +29,22 @@ namespace ClinicaFrba.Class{
                 SqlDataReader reader = MiComando.ExecuteReader();
 
                 while(reader.Read()) {
-                    myuser.id = (decimal)reader["usua_codigo"];
-                    myuser.user = (string)reader["usua_username"];
+                    myuser.codigo = (decimal)reader["usua_codigo"];
+                    myuser.username = (string)reader["usua_username"];
                     myuser.intentos = (int)reader["usua_intentos"];
                     myuser.habilitado = (bool)reader["usua_habilitado"];
                 }
 
-                if (!( myuser.id > 0))
+                if (!( myuser.codigo > 0))
                 {
-                    myuser.id = -1;
+                    myuser.codigo = -1;
                 }
             reader.Close();
             conn.Close();
             }
             catch 
             {
-                myuser.id = -1;
+                myuser.codigo = -1;
             }
             return myuser;
         }

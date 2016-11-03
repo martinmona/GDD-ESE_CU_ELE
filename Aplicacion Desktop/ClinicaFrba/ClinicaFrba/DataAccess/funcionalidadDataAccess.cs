@@ -17,9 +17,9 @@ namespace ClinicaFrba.DataAccess
             return connection;
         }
 
-        public static List<Class.IlanFuncionalidad> obtenerFuncionalidadesPorRol(decimal idRol)
+        public static List<Funcionalidad> obtenerFuncionalidadesPorRol(decimal idRol)
         {
-            List<Class.IlanFuncionalidad> listaFuncionalidades = new List<Class.IlanFuncionalidad>();
+            List<Class.Funcionalidad> listaFuncionalidades = new List<Class.Funcionalidad>();
             SqlConnection conn = conectar();
             SqlCommand MiComando = new SqlCommand();
             MiComando.Connection = conn;
@@ -28,7 +28,7 @@ namespace ClinicaFrba.DataAccess
             while (reader.Read())
             {
                 Funcionalidad funcionalidad = new Funcionalidad();
-                funcionalidad.id = (decimal)reader["func_codigo"];
+                funcionalidad.codigo = (decimal)reader["func_codigo"];
                 funcionalidad.descripcion = (string)reader["func_descripcion"];
                 listaFuncionalidades.Add(funcionalidad);
             }
@@ -38,9 +38,9 @@ namespace ClinicaFrba.DataAccess
         }
 
 
-        public static List<Class.IlanFuncionalidad> obtenerFuncionalidadesFiltradas(string where )
+        public static List<Funcionalidad> obtenerFuncionalidadesFiltradas(string where)
         {
-            List<Class.IlanFuncionalidad> listaFuncionalidades = new List<Class.IlanFuncionalidad>();
+            List<Class.Funcionalidad> listaFuncionalidades = new List<Class.Funcionalidad>();
             SqlConnection conn = conectar();
             SqlCommand MiComando = new SqlCommand();
             MiComando.Connection = conn;
@@ -49,7 +49,7 @@ namespace ClinicaFrba.DataAccess
             while (reader.Read())
             {
                 Funcionalidad funcionalidad = new Funcionalidad();
-                funcionalidad.id = (decimal)reader["func_codigo"];
+                funcionalidad.codigo = (decimal)reader["func_codigo"];
                 funcionalidad.descripcion = (string)reader["func_descripcion"];
                 listaFuncionalidades.Add(funcionalidad);
             }

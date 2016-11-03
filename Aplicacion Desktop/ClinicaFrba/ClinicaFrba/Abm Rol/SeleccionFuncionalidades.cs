@@ -15,8 +15,8 @@ namespace ClinicaFrba.Abm_Rol
     public partial class SeleccionFuncionalidades : Form
     {
 
-        List<IlanFuncionalidad> funcionalidadesElegidas;
-        public SeleccionFuncionalidades(List<IlanFuncionalidad> funcionalidadesEle)
+        List<Funcionalidad> funcionalidadesElegidas;
+        public SeleccionFuncionalidades(List<Funcionalidad> funcionalidadesEle)
         {
             InitializeComponent();
 
@@ -26,7 +26,7 @@ namespace ClinicaFrba.Abm_Rol
             }
             else
             {
-                funcionalidadesElegidas = new List<IlanFuncionalidad>();
+                funcionalidadesElegidas = new List<Funcionalidad>();
             }
         }
 
@@ -37,12 +37,16 @@ namespace ClinicaFrba.Abm_Rol
 
         private void SeleccionFuncionalidades_Load(object sender, EventArgs e)
         {
-            List<IlanFuncionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas("");
+            foreach (Funcionalidad func in funcionalidadesElegidas)
+            {
+                MessageBox.Show(func.descripcion);
+            }
+            List<Funcionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas("");
             if (funcionalidadesElegidas.Count > 0)
             {
-                foreach (IlanFuncionalidad func in funcionalidades)
+                foreach (Funcionalidad func in funcionalidades)
                 {
-                    if (funcionalidadesElegidas.Exists(x => x.id == func.id))
+                    if (funcionalidadesElegidas.Exists(x => x.codigo == func.codigo))
                     {
                         funcionalidades.Remove(func);
                     }
@@ -63,12 +67,12 @@ namespace ClinicaFrba.Abm_Rol
                 where = where + "AND func_codigo = " + id;
             }
 
-           List<IlanFuncionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas(where);
+            List<Funcionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas(where);
            if (funcionalidadesElegidas.Count > 0)
            {
-               foreach (IlanFuncionalidad func in funcionalidades)
+               foreach (Funcionalidad func in funcionalidades)
                {
-                   if (funcionalidadesElegidas.Exists(x => x.id == func.id))
+                   if (funcionalidadesElegidas.Exists(x => x.codigo == func.codigo))
                    {
                        funcionalidades.Remove(func);
                    }
@@ -82,7 +86,7 @@ namespace ClinicaFrba.Abm_Rol
         {
             txtId.Text = "";
             txtFunc.Text = "";
-            List<IlanFuncionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas("");
+            List<Funcionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas("");
             dataGridFunc.DataSource = funcionalidades;
         }
 

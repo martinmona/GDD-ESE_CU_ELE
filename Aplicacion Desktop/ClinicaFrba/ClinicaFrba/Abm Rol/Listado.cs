@@ -19,7 +19,7 @@ namespace ClinicaFrba.AbmRol
 
         private void Listado_Load(object sender, EventArgs e)
         {
-            List<IlanRol> roles = rolDataAccess.ObtenerRoles("");
+            List<Rol> roles = rolDataAccess.ObtenerRoles("");
             dataGridRol.DataSource = roles;
             checkHab.Checked = true;
 
@@ -30,7 +30,7 @@ namespace ClinicaFrba.AbmRol
             txtId.Text = "";
             txtNombre.Text = "";
             checkHab.Checked = true;
-            List<IlanRol> roles = rolDataAccess.ObtenerRoles("");
+            List<Rol> roles = rolDataAccess.ObtenerRoles("");
             dataGridRol.DataSource = roles;
         }
 
@@ -63,7 +63,7 @@ namespace ClinicaFrba.AbmRol
             where = where + "AND rol_habilitado = " + hab.ToString();
 
           
-            List<IlanRol> roles = rolDataAccess.ObtenerRoles(where);
+            List<Rol> roles = rolDataAccess.ObtenerRoles(where);
             dataGridRol.DataSource = roles;
         }
 

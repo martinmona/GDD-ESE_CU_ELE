@@ -92,9 +92,6 @@
     <Compile Include="Cancelar Atencion\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Class\IlanFuncionalidad.cs" />
-    <Compile Include="Class\IlanRol.cs" />
-    <Compile Include="Class\IlanUsuario.cs" />
     <Compile Include="Compra Bono\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
