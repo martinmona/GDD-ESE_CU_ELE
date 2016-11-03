@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClinicaFrba.Config
 {
-    class Plan
+    public class Plan
     {
         private int _codigo;
         private string _descripcion;

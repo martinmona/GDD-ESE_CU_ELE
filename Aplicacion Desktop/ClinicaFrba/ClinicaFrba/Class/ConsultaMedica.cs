@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClinicaFrba.Config
 {
-    class ConsultaMedica
+    public class ConsultaMedica
     {
         private int _codigo;
         private Bono _bono;

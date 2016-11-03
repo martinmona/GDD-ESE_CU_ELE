@@ -21,21 +21,21 @@ namespace ClinicaFrba.Abm_Rol
         private void button2_Click(object sender, EventArgs e)
         {
            
-            List<IlanFuncionalidad> listaFunc = (List<IlanFuncionalidad>)dataGridFun.DataSource;
-            Abm_Rol.SeleccionFuncionalidades testDialog = new Abm_Rol.SeleccionFuncionalidades(listaFunc);
+            List<Funcionalidad> listaFuncVieja = (List<Funcionalidad>)dataGridFun.DataSource;
+            Abm_Rol.SeleccionFuncionalidades testDialog = new Abm_Rol.SeleccionFuncionalidades(listaFuncVieja);
 
             testDialog.ShowDialog();
 
             if (testDialog.dataGridFunc.SelectedRows.Count == 1)
             {
-                IlanFuncionalidad selected = (IlanFuncionalidad)testDialog.dataGridFunc.SelectedRows[0].DataBoundItem;
-                listaFunc.Add(selected);
-                dataGridFun.DataSource=listaFunc;
+                Funcionalidad selected = (Funcionalidad)testDialog.dataGridFunc.SelectedRows[0].DataBoundItem;
+
+                List<Funcionalidad> listaFuncNueva = new List<Funcionalidad>();
+                listaFuncNueva.Add(selected);
+                dataGridFun.DataSource = listaFuncNueva;
             }
            
-            testDialog.Dispose();
-            
-            
+            testDialog.Dispose(); 
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -45,10 +45,13 @@ namespace ClinicaFrba.Abm_Rol
 
         private void Alta_Load(object sender, EventArgs e)
         {
-            List<IlanFuncionalidad> listaFunc = new List<IlanFuncionalidad>();
-            dataGridFun.DataSource = listaFunc;
-            List<IlanFuncionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesFiltradas("");
+            List<Funcionalidad> funcionalidades = Funcionalidad.obtenerFuncionalidadesFiltradas("");
             dataGridFun.DataSource = funcionalidades;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClinicaFrba.Config
 {
-    class Modificacion
+    public class Modificacion
     {
         private int _codigo;
         private DateTime _fecha;

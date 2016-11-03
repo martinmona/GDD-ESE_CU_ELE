@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClinicaFrba.Config
 {
-    class Rol
+    public class Rol
     {
         private decimal _codigo;
         private string _nombre;

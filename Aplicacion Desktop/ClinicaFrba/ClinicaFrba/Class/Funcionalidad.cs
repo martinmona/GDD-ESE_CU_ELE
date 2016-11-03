@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClinicaFrba.Config
 {
-    class Funcionalidad
+    public class Funcionalidad
     {
         private decimal _codigo;
         private string _descripcion;

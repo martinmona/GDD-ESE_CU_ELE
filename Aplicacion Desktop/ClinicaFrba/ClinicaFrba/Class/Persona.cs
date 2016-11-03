@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClinicaFrba.Config
 {
-    class Persona
+    abstract class Persona
     {
         private int _codigo;
         private string _nombre;

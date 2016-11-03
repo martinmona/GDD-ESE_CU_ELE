@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClinicaFrba.Config
 {
-    class Afiliado : Persona 
+    public class Afiliado : Persona 
     {
         private string _estadoCivil;
         private int _numeroAfiliado;

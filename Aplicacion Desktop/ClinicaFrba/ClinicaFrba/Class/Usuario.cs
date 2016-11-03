@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClinicaFrba.Config
 {
-    class Usuario
+    public class Usuario
     {
         private decimal _codigo;
         private string _username;
