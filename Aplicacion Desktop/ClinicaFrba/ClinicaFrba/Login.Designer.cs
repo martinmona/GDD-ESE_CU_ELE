@@ -85,7 +85,7 @@
             // cmbRoles
             // 
             this.cmbRoles.FormattingEnabled = true;
-            this.cmbRoles.Location = new System.Drawing.Point(97, 202);
+            this.cmbRoles.Location = new System.Drawing.Point(134, 202);
             this.cmbRoles.Name = "cmbRoles";
             this.cmbRoles.Size = new System.Drawing.Size(133, 21);
             this.cmbRoles.TabIndex = 5;
@@ -93,7 +93,7 @@
             // 
             // btnRol
             // 
-            this.btnRol.Location = new System.Drawing.Point(121, 248);
+            this.btnRol.Location = new System.Drawing.Point(158, 248);
             this.btnRol.Name = "btnRol";
             this.btnRol.Size = new System.Drawing.Size(75, 23);
             this.btnRol.TabIndex = 6;
@@ -105,7 +105,7 @@
             // lblRol
             // 
             this.lblRol.AutoSize = true;
-            this.lblRol.Location = new System.Drawing.Point(12, 205);
+            this.lblRol.Location = new System.Drawing.Point(49, 205);
             this.lblRol.Name = "lblRol";
             this.lblRol.Size = new System.Drawing.Size(74, 13);
             this.lblRol.TabIndex = 7;

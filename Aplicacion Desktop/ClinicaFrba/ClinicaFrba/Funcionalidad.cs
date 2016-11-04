@@ -44,6 +44,10 @@ namespace ClinicaFrba
                     AbmRol.Listado formRol = new AbmRol.Listado();
                     formRol.Show();
                     break;
+                case "3":
+                    Abm_Afiliado.Listado formAfi = new Abm_Afiliado.Listado();
+                    formAfi.Show();
+                    break;
             }
         }
     }

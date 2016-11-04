@@ -54,7 +54,7 @@ insert into ESE_CU_ELE.Persona (pers_nombre,pers_apellido,pers_sexo,pers_fecha_n
 insert into ESE_CU_ELE.Persona (pers_nombre,pers_apellido,pers_sexo,pers_fecha_nacimiento,pers_tipo_documento,pers_numero_documento,pers_mail,pers_direccion,pers_telefono,pers_tipo) select Medico_Nombre, Medico_Apellido, 'No Definido',Medico_Fecha_Nac,'DNI',Medico_Dni,Medico_Mail,Medico_Direccion,Medico_Telefono,'Medico' from gd_esquema.Maestra where Medico_Dni is not null group by Medico_Nombre, Medico_Apellido, Medico_Fecha_Nac,Medico_Dni,Medico_Mail,Medico_Direccion,Medico_Telefono order by Medico_Dni
 
 --Se le asigna el numero de afiliado igual al codigo autoincremental
-insert into ESE_CU_ELE.Afiliado (afil_codigo_persona, afil_estado_civil, afil_numero, afil_numero_familiar,afil_codigo_plan) select  pers_codigo,'No definido',pers_codigo,0,Plan_Med_Codigo from gd_esquema.Maestra, ESE_CU_ELE.Persona where Paciente_Dni=pers_numero_documento group by pers_codigo,pers_codigo,Plan_Med_Codigo
+insert into ESE_CU_ELE.Afiliado (afil_codigo_persona, afil_estado_civil, afil_numero, afil_numero_familiar,afil_codigo_plan) select  pers_codigo,'No definido',pers_codigo,01,Plan_Med_Codigo from gd_esquema.Maestra, ESE_CU_ELE.Persona where Paciente_Dni=pers_numero_documento group by pers_codigo,pers_codigo,Plan_Med_Codigo
 --Se le asigna el numero de matricula igual al codigo autoincremental
 insert into ESE_CU_ELE.Profesional (prof_codigo_persona,prof_codigo_matricula) select pers_codigo,pers_codigo from gd_esquema.Maestra, ESE_CU_ELE.Persona where Medico_Dni = pers_numero_documento and Medico_Dni is not null group by pers_codigo,pers_codigo
 --Se toma como fecha de compra de bono a Compra_Bono_Fecha

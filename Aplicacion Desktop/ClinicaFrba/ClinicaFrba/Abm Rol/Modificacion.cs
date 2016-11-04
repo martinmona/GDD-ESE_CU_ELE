@@ -101,11 +101,22 @@ namespace ClinicaFrba.Abm_Rol
                 }
                 else
                 {
-                    int hab = 0;
-                    if (checkHab.Visible == true)
+                    int hab = 1;
+                    if (checkHab.Visible == false)
                     {
                         hab = 1;
                     }
+                    else
+                    {
+                        if (checkHab.Checked == true)
+                        {
+                            hab = 1;
+                        }else
+                        {
+                            hab = 0;
+                        }
+                    }
+                 
                     if (rolDataAccess.ModificarRol(rol.codigo,txtNom.Text, listaFuncionalidades, hab))
                     {
                         AbmRol.Listado listado = new AbmRol.Listado();
