@@ -12,7 +12,8 @@ namespace ClinicaFrba.Class
         private string _username;
         private string _contrasena;
         private int _intentos;
-        private bool _habilitado; 
+        private bool _habilitado;
+        private DateTime _fechaInhabilitado; 
 
         public decimal codigo
         {
@@ -39,6 +40,12 @@ namespace ClinicaFrba.Class
             get { return _habilitado; }
             set { _habilitado = value; }
         }
+        public DateTime fechaInhabilitado
+        {
+            get { return _fechaInhabilitado; }
+            set { _fechaInhabilitado = value; }
+        }
+        
 
 
         public Usuario() { }
