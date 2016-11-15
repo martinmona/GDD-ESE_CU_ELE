@@ -43,6 +43,10 @@ namespace ClinicaFrba.Class
             get { return _plan; }
             set { _plan = value; }
         }
+        public string planDescripcion
+        {
+            get { return _plan.descripcion; }
+        }
         public List<Bono> bonos
         {
             get { return _bonos; }

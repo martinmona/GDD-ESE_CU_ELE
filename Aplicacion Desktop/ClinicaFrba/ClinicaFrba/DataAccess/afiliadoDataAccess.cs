@@ -42,10 +42,13 @@ namespace ClinicaFrba.DataAccess
                 afiliado.sexo = (string)reader["pers_sexo"];
                 afiliado.estadoCivil = (string)reader["afil_estado_civil"];
                 afiliado.cantidadFamiliares = (int)reader["cantidadFamiliares"];
-                afiliado.plan.codigo = (decimal)reader["plan_codigo"];
-                afiliado.plan.descripcion = (string)reader["plan_descripcion"];
-                afiliado.plan.bonoConsulta = (decimal)reader["plan_bono_consulta"];
-                afiliado.plan.bonoFarmacia = (decimal)reader["plan_bono_farmacia"];
+                Plan plancito = new Plan();
+                plancito.codigo = (decimal)reader["plan_codigo"];
+                plancito.descripcion = (string)reader["plan_descripcion"];
+                plancito.bonoConsulta = (decimal)reader["plan_bono_consulta"];
+                plancito.bonoFarmacia = (decimal)reader["plan_bono_farmacia"];
+                afiliado.plan = new Plan();
+                afiliado.plan = plancito;
                 listaAfiliados.Add(afiliado);
             }
             reader.Close();

@@ -47,7 +47,7 @@
             // 
             // btnBuscar
             // 
-            this.btnBuscar.Location = new System.Drawing.Point(828, 148);
+            this.btnBuscar.Location = new System.Drawing.Point(1167, 148);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(75, 23);
             this.btnBuscar.TabIndex = 13;
@@ -73,7 +73,7 @@
             this.groupBox1.Controls.Add(this.txtId);
             this.groupBox1.Location = new System.Drawing.Point(73, 28);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(830, 96);
+            this.groupBox1.Size = new System.Drawing.Size(1169, 96);
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Filtros";
@@ -81,7 +81,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(305, 43);
+            this.label3.Location = new System.Drawing.Point(955, 38);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(54, 13);
             this.label3.TabIndex = 12;
@@ -95,7 +95,7 @@
             "",
             "Si",
             "No"});
-            this.comboBox1.Location = new System.Drawing.Point(376, 40);
+            this.comboBox1.Location = new System.Drawing.Point(1025, 35);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
             this.comboBox1.TabIndex = 11;
@@ -128,7 +128,7 @@
             // 
             // txtId
             // 
-            this.txtId.Location = new System.Drawing.Point(112, 12);
+            this.txtId.Location = new System.Drawing.Point(112, 13);
             this.txtId.MaxLength = 18;
             this.txtId.Name = "txtId";
             this.txtId.Size = new System.Drawing.Size(100, 20);
@@ -136,7 +136,7 @@
             // 
             // btnMod
             // 
-            this.btnMod.Location = new System.Drawing.Point(828, 527);
+            this.btnMod.Location = new System.Drawing.Point(1167, 527);
             this.btnMod.Name = "btnMod";
             this.btnMod.Size = new System.Drawing.Size(75, 23);
             this.btnMod.TabIndex = 10;
@@ -145,7 +145,7 @@
             // 
             // btnBaja
             // 
-            this.btnBaja.Location = new System.Drawing.Point(449, 527);
+            this.btnBaja.Location = new System.Drawing.Point(652, 527);
             this.btnBaja.Name = "btnBaja";
             this.btnBaja.Size = new System.Drawing.Size(75, 23);
             this.btnBaja.TabIndex = 9;
@@ -170,20 +170,20 @@
             this.dataGridAfiliados.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridAfiliados.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
             this.dataGridAfiliados.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.dataGridAfiliados.Location = new System.Drawing.Point(73, 196);
+            this.dataGridAfiliados.Location = new System.Drawing.Point(73, 177);
             this.dataGridAfiliados.MultiSelect = false;
             this.dataGridAfiliados.Name = "dataGridAfiliados";
             this.dataGridAfiliados.ReadOnly = true;
             this.dataGridAfiliados.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dataGridAfiliados.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridAfiliados.Size = new System.Drawing.Size(830, 292);
+            this.dataGridAfiliados.Size = new System.Drawing.Size(1169, 329);
             this.dataGridAfiliados.TabIndex = 7;
             // 
             // Listado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(931, 578);
+            this.ClientSize = new System.Drawing.Size(1254, 578);
             this.Controls.Add(this.btnBuscar);
             this.Controls.Add(this.btnLimpiar);
             this.Controls.Add(this.groupBox1);
