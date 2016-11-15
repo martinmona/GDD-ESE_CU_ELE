@@ -8,7 +8,7 @@ namespace ClinicaFrba.Class
 {
     public abstract class Persona
     {
-        private decimal _codigo;
+        private decimal _codigoPersona;
         private string _nombre;
         private string _apellido;
         private string _sexo;
@@ -20,10 +20,10 @@ namespace ClinicaFrba.Class
         private decimal _telefono;
         private string _tipo;
 
-        public decimal codigo
+        public decimal codigoPersona
         {
-            get { return _codigo; }
-            set { _codigo = value; }
+            get { return _codigoPersona; }
+            set { _codigoPersona = value; }
         }
         public string nombre
         {

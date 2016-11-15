@@ -12,7 +12,6 @@ namespace ClinicaFrba.Class
         private decimal _numeroAfiliado;
         private decimal _codigoFamiliar;
         private Plan _plan;
-        private List<Modificacion> _modificaciones;
         private List<Bono> _bonos;
         private List<Turno> _turnos;
         private List<Compra> _compras;
@@ -36,11 +35,6 @@ namespace ClinicaFrba.Class
         {
             get { return _plan; }
             set { _plan = value; }
-        }
-        public List<Modificacion> modificaciones
-        {
-            get { return _modificaciones; }
-            set { _modificaciones = value; }
         }
         public List<Bono> bonos
         {
