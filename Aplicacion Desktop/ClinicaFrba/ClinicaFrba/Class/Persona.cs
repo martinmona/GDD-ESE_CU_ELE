@@ -10,11 +10,9 @@ namespace ClinicaFrba.Class
     {
         private decimal _codigoPersona;
         private string _nombre;
-        private string _apellido;
         private string _sexo;
         private DateTime _fechaNacimiento;
-        private string _tipoDocumento;
-        private decimal _numeroDocumento;
+        private string _documento;
         private string _mail;
         private string _direccion;
         private decimal _telefono;
@@ -30,11 +28,6 @@ namespace ClinicaFrba.Class
             get { return _nombre; }
             set { _nombre = value; }
         }
-        public string apellido
-        {
-            get { return _apellido; }
-            set { _apellido = value; }
-        }
         public string sexo
         {
             get { return _sexo; }
@@ -45,15 +38,10 @@ namespace ClinicaFrba.Class
             get { return _fechaNacimiento; }
             set { _fechaNacimiento = value; }
         }
-        public string tipoDocumento
+        public string documento
         {
-            get { return _tipoDocumento; }
-            set { _tipoDocumento = value; }
-        }
-        public decimal numeroDocumento
-        {
-            get { return _numeroDocumento; }
-            set { _numeroDocumento = value; }
+            get { return _documento; }
+            set { _documento = value; }
         }
         public string mail
         {

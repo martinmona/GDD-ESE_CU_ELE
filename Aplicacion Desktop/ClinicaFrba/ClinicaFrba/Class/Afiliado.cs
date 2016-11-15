@@ -11,10 +11,12 @@ namespace ClinicaFrba.Class
         private string _estadoCivil;
         private decimal _numeroAfiliado;
         private decimal _codigoFamiliar;
+        private string _numeroCompleto;
         private Plan _plan;
         private List<Bono> _bonos;
         private List<Turno> _turnos;
         private List<Compra> _compras;
+        private int _cantidadFamiliares;
 
         public string estadoCivil
         {
@@ -30,6 +32,11 @@ namespace ClinicaFrba.Class
         {
             get { return _codigoFamiliar; }
             set { _codigoFamiliar = value; }
+        }
+        public string numeroCompleto
+        {
+            get { return _numeroCompleto; }
+            set { _numeroCompleto = value; }
         }
         public Plan plan
         {
@@ -50,6 +57,11 @@ namespace ClinicaFrba.Class
         {
             get { return _turnos; }
             set { _turnos = value; }
+        }
+        public int cantidadFamiliares
+        {
+            get { return _cantidadFamiliares; }
+            set { _cantidadFamiliares = value; }
         }
     }
 }
