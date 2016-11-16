@@ -33,7 +33,14 @@ namespace ClinicaFrba
 
         private void btnFunc_Click(object sender, EventArgs e)
         {
-            irAFuncionalidad((decimal)cmbFuncionalidades.SelectedValue);
+            try
+            {
+                irAFuncionalidad((decimal)cmbFuncionalidades.SelectedValue);
+            }
+            catch
+            {
+
+            }
         }
 
         private void irAFuncionalidad(decimal idFunc)
@@ -47,6 +54,10 @@ namespace ClinicaFrba
                 case "3":
                     Abm_Afiliado.Listado formAfi = new Abm_Afiliado.Listado();
                     formAfi.Show();
+                    break;
+                case "7":
+                    Registrar_Agenta_Medico.RegistrarAgenda formRegAg= new Registrar_Agenta_Medico.RegistrarAgenda();
+                    formRegAg.Show();
                     break;
             }
         }

@@ -121,7 +121,10 @@
     <Compile Include="Class\Rol.cs" />
     <Compile Include="Class\Usuario.cs" />
     <Compile Include="DataAccess\afiliadoDataAccess.cs" />
+    <Compile Include="DataAccess\agendaDataAccess.cs" />
+    <Compile Include="DataAccess\especialidadDataAccess.cs" />
     <Compile Include="DataAccess\funcionalidadDataAccess.cs" />
+    <Compile Include="DataAccess\profesionalDataAccess.cs" />
     <Compile Include="DataAccess\rolDataAccess.cs" />
     <Compile Include="DataAccess\usuarioDataAccess.cs" />
     <Compile Include="Funcionalidad.cs">
@@ -155,11 +158,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Registrar Agenta Medico\Form1.cs">
+    <Compile Include="Registrar Agenta Medico\RegistrarAgenda.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Registrar Agenta Medico\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Registrar Agenta Medico\RegistrarAgenda.Designer.cs">
+      <DependentUpon>RegistrarAgenda.cs</DependentUpon>
     </Compile>
     <Compile Include="Registro Llegada\Form1.cs">
       <SubType>Form</SubType>
@@ -203,6 +206,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Registrar Agenta Medico\RegistrarAgenda.resx">
+      <DependentUpon>RegistrarAgenda.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="GD2C2016DataSet.xsc">
       <DependentUpon>GD2C2016DataSet.xsd</DependentUpon>
     </None>

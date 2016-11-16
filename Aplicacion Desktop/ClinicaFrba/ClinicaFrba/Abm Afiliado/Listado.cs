@@ -115,5 +115,10 @@ namespace ClinicaFrba.Abm_Afiliado
             dataGridAfiliados.Columns.Add(Plan);
             dataGridAfiliados.Columns.Add(NumeroAfi);
         }
+
+        private void btnMod_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

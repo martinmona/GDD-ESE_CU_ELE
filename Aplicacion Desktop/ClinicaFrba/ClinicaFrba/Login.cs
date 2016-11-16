@@ -136,6 +136,11 @@ namespace ClinicaFrba
 
         private void Login_Load(object sender, EventArgs e)
         {
+            txtuser.Focus();
+        }
+
+        private void cmbRoles_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
         }
     }

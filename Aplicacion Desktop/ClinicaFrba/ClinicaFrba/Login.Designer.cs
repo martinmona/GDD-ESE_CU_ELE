@@ -90,6 +90,7 @@
             this.cmbRoles.Size = new System.Drawing.Size(133, 21);
             this.cmbRoles.TabIndex = 5;
             this.cmbRoles.Visible = false;
+            this.cmbRoles.SelectedIndexChanged += new System.EventHandler(this.cmbRoles_SelectedIndexChanged);
             // 
             // btnRol
             // 

@@ -38,7 +38,7 @@
             this.cmbFuncionalidades.FormattingEnabled = true;
             this.cmbFuncionalidades.Location = new System.Drawing.Point(190, 32);
             this.cmbFuncionalidades.Name = "cmbFuncionalidades";
-            this.cmbFuncionalidades.Size = new System.Drawing.Size(121, 21);
+            this.cmbFuncionalidades.Size = new System.Drawing.Size(193, 21);
             this.cmbFuncionalidades.TabIndex = 0;
             // 
             // lblFunc
