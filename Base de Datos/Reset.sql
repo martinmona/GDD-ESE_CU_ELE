@@ -20,6 +20,7 @@ DROP TABLE ESE_CU_ELE.Persona
 DROP TABLE ESE_CU_ELE.RolXFuncionalidad
 DROP TABLE ESE_CU_ELE.Rol
 DROP TABLE ESE_CU_ELE.Funcionalidad
+DROP TABLE ESE_CU_ELE.TipoEspecialidad
 
 
 

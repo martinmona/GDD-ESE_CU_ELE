@@ -4,6 +4,7 @@ GO
 CREATE SCHEMA [ESE_CU_ELE] AUTHORIZATION [gd]
 GO
 
+
 CREATE TABLE ESE_CU_ELE.Funcionalidad (func_codigo numeric(18,0) primary key IDENTITY(1,1), func_descripcion varchar(255))
 
 CREATE TABLE ESE_CU_ELE.Rol (rol_codigo numeric(18,0) primary key IDENTITY(1,1),rol_nombre varchar(255),rol_habilitado bit)
@@ -25,7 +26,9 @@ CREATE TABLE ESE_CU_ELE.RolXUsuario (rolxu_usua_codigo numeric(18,0) FOREIGN KEY
 
 CREATE TABLE ESE_CU_ELE.Modificacion (modi_codigo numeric(18,0) primary key IDENTITY(1,1), modi_afiliado numeric(18,0) foreign key references ESE_CU_ELE.Afiliado(afil_codigo_persona), modi_fecha datetime,modi_motivo varchar(255), modi_plan_viejo numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Planes(plan_codigo))
 
-CREATE TABLE ESE_CU_ELE.Especialidad (espe_codigo numeric(18,0) primary key, espe_descripcion varchar(255))
+CREATE TABLE ESE_CU_ELE.TipoEspecialidad (tipo_codigo numeric(18,0) primary key, tipo_descripcion varchar(255))
+
+CREATE TABLE ESE_CU_ELE.Especialidad (espe_codigo numeric(18,0) primary key, espe_descripcion varchar(255), espe_tipo numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.TipoEspecialidad (tipo_codigo))
 
 CREATE TABLE ESE_CU_ELE.EspecialidadXProfesional (espexp_codigo_profesional numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Profesional(prof_codigo_persona), espexp_codigo_especialidad numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Especialidad(espe_codigo), primary key (espexp_codigo_profesional,espexp_codigo_especialidad))
 
@@ -66,7 +69,9 @@ insert into ESE_CU_ELE.Turno (turn_codigo,turn_hora,turn_codigo_afiliado, turn_p
 --Se toma como hora de llegada a Bono_Consulta_Fecha_Impresion
 insert into ESE_CU_ELE.Consulta_Medica (cons_codigo_turno, cons_bono,cons_hora_llegada,cons_sintomas, cons_enfermedades) select Turno_Numero, Bono_Consulta_Numero, Bono_Consulta_Fecha_Impresion, Consulta_Sintomas, Consulta_Enfermedades from gd_esquema.Maestra  where Consulta_Sintomas is not null group by Turno_Numero, Bono_Consulta_Numero, Bono_Consulta_Fecha_Impresion, Consulta_Sintomas, Consulta_Enfermedades
 
-insert into ESE_CU_ELE.Especialidad (espe_codigo, espe_descripcion) select Especialidad_Codigo,Especialidad_Descripcion from gd_esquema.Maestra where Especialidad_Codigo is not null group by Especialidad_Codigo,Especialidad_Descripcion order by Especialidad_Codigo
+insert into ESE_CU_ELE.TipoEspecialidad (tipo_codigo,tipo_descripcion) select Tipo_Especialidad_Codigo,Tipo_Especialidad_Descripcion from gd_esquema.Maestra where Tipo_Especialidad_Codigo is not null group by Tipo_Especialidad_Codigo,Tipo_Especialidad_Descripcion order by 1
+
+insert into ESE_CU_ELE.Especialidad (espe_codigo, espe_descripcion, espe_tipo) select Especialidad_Codigo,Especialidad_Descripcion, Tipo_Especialidad_Codigo from gd_esquema.Maestra where Especialidad_Codigo is not null group by Especialidad_Codigo,Especialidad_Descripcion, Tipo_Especialidad_Codigo order by Especialidad_Codigo
 
 insert into ESE_CU_ELE.EspecialidadXProfesional (espexp_codigo_especialidad,espexp_codigo_profesional) select Especialidad_Codigo, (select pers_codigo from ESE_CU_ELE.Persona where m1.Medico_Dni=pers_numero_documento) from gd_esquema.Maestra "m1" where Especialidad_Codigo is not null group by Especialidad_Codigo, Medico_Dni
 --El nombre de usuario y la contraseña son el nombre+codigo y apellido de la persona
