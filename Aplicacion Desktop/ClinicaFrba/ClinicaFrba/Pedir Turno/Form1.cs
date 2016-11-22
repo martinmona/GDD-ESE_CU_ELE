@@ -10,11 +10,17 @@ using System.Windows.Forms;
 
 namespace ClinicaFrba.Pedir_Turno
 {
-    public partial class Form1 : Form
+    public partial class Turno : Form
     {
-        public Form1()
+        public Turno()
         {
             InitializeComponent();
+        }
+
+
+        private void Turno_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
