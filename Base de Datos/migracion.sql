@@ -35,7 +35,7 @@ CREATE TABLE ESE_CU_ELE.EspecialidadXProfesional (espexp_codigo_profesional nume
 CREATE TABLE ESE_CU_ELE.Agenda (agen_codigo numeric(18,0) IDENTITY(1,1), agen_profesional numeric(18,0) , agen_especialidad numeric (18,0),agen_dia char(100), agen_hora_inicio time(7), agen_hora_fin time(7), agen_fecha_fin date, primary key (agen_codigo), FOREIGN KEY (agen_profesional, agen_especialidad) REFERENCES ESE_CU_ELE.EspecialidadXProfesional(espexp_codigo_profesional, espexp_codigo_especialidad))
 
 --CREATE TABLE ESE_CU_ELE.Turno (turn_codigo numeric(18,0) primary key, turn_codigo_agenda numeric (18,0) foreign key references ESE_CU_ELE.Agenda(agen_codigo), turn_codigo_afiliado numeric(18,0) foreign key references ESE_CU_ELE.Afiliado(afil_codigo_persona), turn_hora datetime, turn_llegada datetime)
-CREATE TABLE ESE_CU_ELE.Turno (turn_codigo numeric(18,0) primary key, turn_codigo_afiliado numeric(18,0) foreign key references ESE_CU_ELE.Afiliado(afil_codigo_persona), turn_hora datetime, turn_profesional numeric (18,0) foreign key references ESE_CU_ELE.Profesional(prof_codigo_persona))
+CREATE TABLE ESE_CU_ELE.Turno (turn_codigo numeric(18,0) primary key, turn_codigo_afiliado numeric(18,0) foreign key references ESE_CU_ELE.Afiliado(afil_codigo_persona),turn_especialidad numeric(18,0), turn_hora datetime, turn_profesional numeric (18,0),FOREIGN KEY (turn_profesional,turn_especialidad) REFERENCES ESE_CU_ELE.EspecialidadXProfesional(espexp_codigo_profesional, espexp_codigo_especialidad))
 
 CREATE TABLE ESE_CU_ELE.Cancelacion (canc_codigo_turno numeric(18,0) foreign key references ESE_CU_ELE.Turno(turn_codigo), tipo varchar(255), detalle varchar(255),primary key(canc_codigo_turno))
 
@@ -65,15 +65,18 @@ insert into ESE_CU_ELE.Bono (bono_codigo, bono_fecha_compra, bono_plan, bono_afi
 
 update ESE_CU_ELE.Bono set bono_numero_consulta_medica = Turno_Numero from ESE_CU_ELE.Bono INNER JOIN  gd_esquema.Maestra ON bono_codigo=Bono_Consulta_Numero where gd_esquema.Maestra.Turno_Numero is not null
 
-insert into ESE_CU_ELE.Turno (turn_codigo,turn_hora,turn_codigo_afiliado, turn_profesional) select Turno_Numero, Turno_Fecha, (select pers_codigo from ESE_CU_ELE.Persona where pers_numero_documento = m1.Paciente_Dni),(select pers_codigo from ESE_CU_ELE.Persona where pers_numero_documento = m1.Medico_Dni) from gd_esquema.Maestra "m1" where Turno_Numero is not null group by Turno_Numero,Turno_Fecha, Paciente_Dni, Medico_Dni order by Turno_Numero
---Se toma como hora de llegada a Bono_Consulta_Fecha_Impresion
-insert into ESE_CU_ELE.Consulta_Medica (cons_codigo_turno, cons_bono,cons_hora_llegada,cons_sintomas, cons_enfermedades) select Turno_Numero, Bono_Consulta_Numero, Bono_Consulta_Fecha_Impresion, Consulta_Sintomas, Consulta_Enfermedades from gd_esquema.Maestra  where Consulta_Sintomas is not null group by Turno_Numero, Bono_Consulta_Numero, Bono_Consulta_Fecha_Impresion, Consulta_Sintomas, Consulta_Enfermedades
 
 insert into ESE_CU_ELE.TipoEspecialidad (tipo_codigo,tipo_descripcion) select Tipo_Especialidad_Codigo,Tipo_Especialidad_Descripcion from gd_esquema.Maestra where Tipo_Especialidad_Codigo is not null group by Tipo_Especialidad_Codigo,Tipo_Especialidad_Descripcion order by 1
 
 insert into ESE_CU_ELE.Especialidad (espe_codigo, espe_descripcion, espe_tipo) select Especialidad_Codigo,Especialidad_Descripcion, Tipo_Especialidad_Codigo from gd_esquema.Maestra where Especialidad_Codigo is not null group by Especialidad_Codigo,Especialidad_Descripcion, Tipo_Especialidad_Codigo order by Especialidad_Codigo
 
 insert into ESE_CU_ELE.EspecialidadXProfesional (espexp_codigo_especialidad,espexp_codigo_profesional) select Especialidad_Codigo, (select pers_codigo from ESE_CU_ELE.Persona where m1.Medico_Dni=pers_numero_documento) from gd_esquema.Maestra "m1" where Especialidad_Codigo is not null group by Especialidad_Codigo, Medico_Dni
+
+insert into ESE_CU_ELE.Turno (turn_codigo,turn_hora,turn_codigo_afiliado, turn_profesional, turn_especialidad) select Turno_Numero, Turno_Fecha, (select pers_codigo from ESE_CU_ELE.Persona where pers_numero_documento = m1.Paciente_Dni),(select pers_codigo from ESE_CU_ELE.Persona where pers_numero_documento = m1.Medico_Dni), Especialidad_Codigo from gd_esquema.Maestra "m1" where Turno_Numero is not null group by Turno_Numero,Turno_Fecha, Paciente_Dni, Medico_Dni,Especialidad_Codigo order by Turno_Numero
+--Se toma como hora de llegada a Bono_Consulta_Fecha_Impresion
+insert into ESE_CU_ELE.Consulta_Medica (cons_codigo_turno, cons_bono,cons_hora_llegada,cons_sintomas, cons_enfermedades) select Turno_Numero, Bono_Consulta_Numero, Bono_Consulta_Fecha_Impresion, Consulta_Sintomas, Consulta_Enfermedades from gd_esquema.Maestra  where Consulta_Sintomas is not null group by Turno_Numero, Bono_Consulta_Numero, Bono_Consulta_Fecha_Impresion, Consulta_Sintomas, Consulta_Enfermedades
+
+
 --El nombre de usuario y la contraseña son el nombre+codigo y apellido de la persona
 insert into ESE_CU_ELE.Usuario (usua_codigo,usua_username,usua_contrasena,usua_habilitado,usua_intentos) select pers_codigo,CONCAT(pers_nombre,pers_codigo),HASHBYTES('SHA2_256', pers_apellido),1,0 from ESE_CU_ELE.Persona
 insert into ESE_CU_ELE.Persona (pers_nombre,pers_tipo) values ('Admin','Admin')
@@ -121,3 +124,6 @@ insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) val
 
 insert into ESE_CU_ELE.Compra (comp_afiliado,comp_fecha) select bono_afiliado,bono_fecha_compra from ESE_CU_ELE.Bono group by bono_afiliado,bono_fecha_compra order by bono_afiliado
 insert into ESE_CU_ELE.Item (item_bono, item_compra) select bono_codigo,(select comp_codigo from ESE_CU_ELE.Compra where bono_fecha_compra=comp_fecha and bono_afiliado=comp_afiliado) from ESE_CU_ELE.Bono
+
+--Se toma por cada día y especialidad la hora mas temprana y mas tarde que atendio. La fecha fin se toma del ultimo turno asignado por ese profesional para esa especialidad
+insert into ESE_CU_ELE.Agenda (agen_profesional,agen_especialidad, agen_dia, agen_hora_fin, agen_hora_inicio, agen_fecha_fin) select t1.turn_profesional,t1.turn_especialidad, convert(date, t1.turn_hora, 111), (select convert(time, MAX(t2.turn_hora), 108) from ESE_CU_ELE.Turno t2 where convert(date, t2.turn_hora, 111)=convert(date, t1.turn_hora, 111)and t1.turn_especialidad=t2.turn_especialidad and t1.turn_profesional=t2.turn_profesional), (select convert(time, min(t3.turn_hora), 108) from ESE_CU_ELE.Turno t3 where convert(date, t3.turn_hora, 111)=convert(date, t1.turn_hora, 111)and t1.turn_especialidad=t3.turn_especialidad and t1.turn_profesional=t3.turn_profesional), (select convert(date, max(t4.turn_hora), 111) from ESE_CU_ELE.Turno t4 where t1.turn_especialidad=t4.turn_especialidad and t1.turn_profesional=t4.turn_profesional) from ESE_CU_ELE.Turno t1  group by t1.turn_profesional,t1.turn_especialidad, convert(date, t1.turn_hora, 111) order by 1,2,3
