@@ -13,6 +13,7 @@ namespace ClinicaFrba
 {
     public partial class Login : Form
     {
+        decimal idUser;
         public Login()
         {
             InitializeComponent();
@@ -35,7 +36,7 @@ namespace ClinicaFrba
 
             if (txtuser.Text != "" && txtpass.Text != "")
             {
-                decimal idUser = usuarioDataAccess.verificarUsuario(txtuser.Text);
+                idUser = usuarioDataAccess.verificarUsuario(txtuser.Text);
                 if (idUser == -1)
                 {
                     MessageBox.Show("El usuario no existe o esta deshabilitado", "Error");
@@ -123,7 +124,7 @@ namespace ClinicaFrba
 
         private void irAForm(decimal idRol) 
         {
-            FrmFuncionalidad frmFunc = new FrmFuncionalidad(idRol);
+            FrmFuncionalidad frmFunc = new FrmFuncionalidad(idRol, idUser);
             frmFunc.Show();
             this.Hide();
         }

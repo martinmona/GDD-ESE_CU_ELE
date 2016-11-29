@@ -13,9 +13,45 @@ namespace ClinicaFrba
 {
     public partial class FrmFuncionalidad : Form
     {
-        private decimal idRol;
-        public FrmFuncionalidad(decimal idRolLoc)
+        private decimal idRol, _idUsuario;
+        private Persona unaPersona;
+        
+        public FrmFuncionalidad(decimal idRolLoc, decimal idUsuario)
         {
+            _idUsuario = idUsuario;
+            switch(personaDataAccess.ObtenerTipoPersona(idUsuario))
+            {
+                case "Afiliado":
+                    unaPersona = new Afiliado();
+                    unaPersona = afiliadoDataAccess.ObtenerAfiliados("afil_codigo = " + idUsuario)[0];
+                    break;
+                case "Profesional":
+                    unaPersona = new Profesional();
+                    unaPersona = profesionalDataAccess.ObtenerProfesionales("prof_codigo =" + idUsuario)[0];
+                    break;
+                case "Admin":
+                    unaPersona = new Administrador();
+                    unaPersona.codigoPersona = idUsuario;
+                    unaPersona.nombre = "Admin";
+                    break;
+            }
+            if (unaPersona.GetType() == typeof(Afiliado))
+            {
+                MessageBox.Show("es afiliado");
+            }
+            else if (unaPersona.GetType() == typeof(Administrador))
+            {
+                MessageBox.Show("es administrador");
+            }
+            else if (unaPersona.GetType() == typeof(Profesional))
+            {
+                MessageBox.Show("es profesional");
+            }
+            else
+            {
+                MessageBox.Show("no es nada");
+            }
+
             idRol = idRolLoc;
             InitializeComponent();
         }
@@ -24,6 +60,7 @@ namespace ClinicaFrba
 
         private void Funcionalidad_Load(object sender, EventArgs e)
         {
+            System.Console.WriteLine("entro");
             List<Funcionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesPorRol(idRol);
             cmbFuncionalidades.DataSource = funcionalidades;
             cmbFuncionalidades.DisplayMember = "descripcion";
@@ -33,6 +70,7 @@ namespace ClinicaFrba
 
         private void btnFunc_Click(object sender, EventArgs e)
         {
+            
             try
             {
                 irAFuncionalidad((decimal)cmbFuncionalidades.SelectedValue);
@@ -58,6 +96,10 @@ namespace ClinicaFrba
                 case "7":
                     Registrar_Agenta_Medico.RegistrarAgenda formRegAg= new Registrar_Agenta_Medico.RegistrarAgenda();
                     formRegAg.Show();
+                    break;
+                case "8":
+                    Compra_Bono.frmCompraBono formCompraBono = new Compra_Bono.frmCompraBono(unaPersona);
+                    formCompraBono.Show();
                     break;
             }
         }

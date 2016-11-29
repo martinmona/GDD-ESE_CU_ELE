@@ -118,13 +118,6 @@
             // cbDia
             // 
             this.cbDia.FormattingEnabled = true;
-            this.cbDia.Items.AddRange(new object[] {
-            "Lunes",
-            "Martes",
-            "Miercoles",
-            "Jueves",
-            "Viernes",
-            "Sabado"});
             this.cbDia.Location = new System.Drawing.Point(115, 210);
             this.cbDia.Name = "cbDia";
             this.cbDia.Size = new System.Drawing.Size(87, 21);

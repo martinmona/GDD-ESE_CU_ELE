@@ -63,5 +63,6 @@ namespace ClinicaFrba.Class
             get { return _tipo; }
             set { _tipo = value; }
         }
+
     }
 }

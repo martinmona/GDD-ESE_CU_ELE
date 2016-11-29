@@ -9,7 +9,7 @@ namespace ClinicaFrba.Class
     public class Agenda
     {
         private decimal _codigo;
-        private string _dia;
+        private Byte _dia;
         private DateTime _horaInicio;
         private DateTime _horaFin;
         private DateTime _fechaFin;
@@ -20,7 +20,7 @@ namespace ClinicaFrba.Class
             get { return _codigo; }
             set { _codigo = value; }
         }
-        public string dia
+        public Byte dia
         {
             get { return _dia; }
             set { _dia = value; }

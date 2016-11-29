@@ -98,17 +98,19 @@
     <Compile Include="Cancelar Atencion\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Class\Administrador.cs" />
     <Compile Include="Class\Agenda.cs" />
     <Compile Include="Class\Cancelacion.cs" />
     <Compile Include="Class\Compra.cs" />
+    <Compile Include="Class\Dia.cs" />
     <Compile Include="Class\Especialidad.cs" />
     <Compile Include="Class\Profesional.cs" />
     <Compile Include="Class\Turno.cs" />
-    <Compile Include="Compra Bono\Form1.cs">
+    <Compile Include="Compra Bono\frmCompraBono.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Compra Bono\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Compra Bono\frmCompraBono.Designer.cs">
+      <DependentUpon>frmCompraBono.cs</DependentUpon>
     </Compile>
     <Compile Include="Class\Afiliado.cs" />
     <Compile Include="Config\BD.cs" />
@@ -124,6 +126,7 @@
     <Compile Include="DataAccess\agendaDataAccess.cs" />
     <Compile Include="DataAccess\especialidadDataAccess.cs" />
     <Compile Include="DataAccess\funcionalidadDataAccess.cs" />
+    <Compile Include="DataAccess\personaDataAccess.cs" />
     <Compile Include="DataAccess\profesionalDataAccess.cs" />
     <Compile Include="DataAccess\rolDataAccess.cs" />
     <Compile Include="DataAccess\usuarioDataAccess.cs" />
@@ -190,6 +193,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Rol\SeleccionFuncionalidades.resx">
       <DependentUpon>SeleccionFuncionalidades.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Compra Bono\frmCompraBono.resx">
+      <DependentUpon>frmCompraBono.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Funcionalidad.resx">
       <DependentUpon>Funcionalidad.cs</DependentUpon>

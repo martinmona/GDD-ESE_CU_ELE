@@ -12,8 +12,15 @@ using ClinicaFrba.DataAccess;
 
 namespace ClinicaFrba.Registrar_Agenta_Medico
 {
+    
     public partial class RegistrarAgenda : Form
     {
+
+
+        List<Dia> dataSource;
+        
+
+
         public RegistrarAgenda()
         {
             InitializeComponent();
@@ -26,6 +33,20 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            dataSource = new List<Dia>();
+            dataSource.Add(new Dia() { Name = "Lunes", Value = 1 });
+            dataSource.Add(new Dia() { Name = "Martes", Value = 2 });
+            dataSource.Add(new Dia() { Name = "Miercoles", Value = 3 });
+            dataSource.Add(new Dia() { Name = "Jueves", Value = 4 });
+            dataSource.Add(new Dia() { Name = "Viernes", Value = 5 });
+            dataSource.Add(new Dia() { Name = "Sabado", Value = 6 });
+            dataSource.Add(new Dia() { Name = "Domingo", Value = 7 });
+            this.cbDia.DataSource = dataSource;
+            this.cbDia.DisplayMember = "Name";
+            this.cbDia.ValueMember = "Value";
+            this.cbDia.DropDownStyle = ComboBoxStyle.DropDownList;
+
+
             List<Profesional> profesionales = profesionalDataAccess.ObtenerProfesionales("");
             ActualizarComboBoxProf(profesionales);
             //List<Especialidad> especialidades = especialidadDataAccess.ObtenerEspecialidadesXProfesional((decimal)cbProfesional.SelectedValue);
@@ -47,7 +68,7 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
             dtpHoraFin.Value = DateTime.Parse("14:00");
             mPrevDate2 = dtpHoraFin.Value;
             dtpHoraFin.ValueChanged += new EventHandler(dateTimePicker2_ValueChanged);
-            cbDia.SelectedIndex = cbDia.FindStringExact("Lunes");
+            cbDia.SelectedIndex = 1;
         }
         private DateTime mPrevDate1;
         private bool mBusy1;
@@ -132,7 +153,7 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
                 Profesional prof = new Profesional();
                 prof = (Profesional)cbProfesional.SelectedItem;
                 Agenda nuevaAgenda = new Agenda();
-                nuevaAgenda.dia = cbDia.Text;
+                nuevaAgenda.dia = (Byte)cbDia.SelectedValue;
                 nuevaAgenda.especialidad = (Especialidad)cbEspecialidad.SelectedItem;
                 nuevaAgenda.fechaFin = dtpFin.Value.Date;
                 nuevaAgenda.horaFin = dtpHoraFin.Value;
@@ -153,7 +174,7 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
 
         private void cbDia_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cbDia.SelectedIndex == cbDia.FindStringExact("Sabado"))
+            if (cbDia.SelectedIndex == 6)
             {
                 dtpHoraInicio.Value = DateTime.Parse("10:00");
                 dtpHoraFin.Value = DateTime.Parse("14:00");
