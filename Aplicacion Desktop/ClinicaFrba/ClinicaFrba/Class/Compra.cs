@@ -11,6 +11,7 @@ namespace ClinicaFrba.Class
         private decimal _codigo;
         private DateTime _fecha;
         private List<Bono> _bonos;
+        private decimal _total;
 
         public decimal codigo
         {
@@ -27,6 +28,14 @@ namespace ClinicaFrba.Class
             get { return _bonos; }
             set { _bonos = value; }
         }
-
+        public decimal total
+        {
+            get { return _total; }
+            set { _total = value; }
+        }
+        public Compra()
+        {
+            _bonos = new List<Bono>();
+        }
     }
 }

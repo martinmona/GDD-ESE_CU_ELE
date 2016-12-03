@@ -124,6 +124,8 @@
     <Compile Include="Class\Usuario.cs" />
     <Compile Include="DataAccess\afiliadoDataAccess.cs" />
     <Compile Include="DataAccess\agendaDataAccess.cs" />
+    <Compile Include="DataAccess\bonoDataAccess.cs" />
+    <Compile Include="DataAccess\compraDataAccess.cs" />
     <Compile Include="DataAccess\especialidadDataAccess.cs" />
     <Compile Include="DataAccess\funcionalidadDataAccess.cs" />
     <Compile Include="DataAccess\personaDataAccess.cs" />

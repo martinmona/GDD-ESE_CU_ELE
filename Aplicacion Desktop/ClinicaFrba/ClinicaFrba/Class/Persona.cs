@@ -17,6 +17,8 @@ namespace ClinicaFrba.Class
         private string _direccion;
         private decimal _telefono;
         private string _tipo;
+        public virtual Plan plan { get; set; }
+        public virtual decimal numeroAfiliado { get; set; }
 
         public decimal codigoPersona
         {
@@ -63,6 +65,5 @@ namespace ClinicaFrba.Class
             get { return _tipo; }
             set { _tipo = value; }
         }
-
     }
 }

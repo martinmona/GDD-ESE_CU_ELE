@@ -23,7 +23,7 @@ namespace ClinicaFrba.Class
             get { return _estadoCivil; }
             set { _estadoCivil = value; }
         }
-        public decimal numeroAfiliado
+        public override decimal numeroAfiliado
         {
             get { return _numeroAfiliado; }
             set { _numeroAfiliado = value; }
@@ -38,7 +38,7 @@ namespace ClinicaFrba.Class
             get { return _numeroCompleto; }
             set { _numeroCompleto = value; }
         }
-        public Plan plan
+        public override Plan plan
         {
             get { return _plan; }
             set { _plan = value; }

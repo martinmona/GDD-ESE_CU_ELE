@@ -23,11 +23,11 @@ namespace ClinicaFrba
             {
                 case "Afiliado":
                     unaPersona = new Afiliado();
-                    unaPersona = afiliadoDataAccess.ObtenerAfiliados("afil_codigo = " + idUsuario)[0];
+                    unaPersona = afiliadoDataAccess.ObtenerAfiliados("where afil_codigo_persona = " + idUsuario)[0];
                     break;
                 case "Profesional":
                     unaPersona = new Profesional();
-                    unaPersona = profesionalDataAccess.ObtenerProfesionales("prof_codigo =" + idUsuario)[0];
+                    unaPersona = profesionalDataAccess.ObtenerProfesionales("where prof_codigo_persona =" + idUsuario)[0];
                     break;
                 case "Admin":
                     unaPersona = new Administrador();
@@ -35,22 +35,7 @@ namespace ClinicaFrba
                     unaPersona.nombre = "Admin";
                     break;
             }
-            if (unaPersona.GetType() == typeof(Afiliado))
-            {
-                MessageBox.Show("es afiliado");
-            }
-            else if (unaPersona.GetType() == typeof(Administrador))
-            {
-                MessageBox.Show("es administrador");
-            }
-            else if (unaPersona.GetType() == typeof(Profesional))
-            {
-                MessageBox.Show("es profesional");
-            }
-            else
-            {
-                MessageBox.Show("no es nada");
-            }
+            
 
             idRol = idRolLoc;
             InitializeComponent();
@@ -60,6 +45,7 @@ namespace ClinicaFrba
 
         private void Funcionalidad_Load(object sender, EventArgs e)
         {
+           
             System.Console.WriteLine("entro");
             List<Funcionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesPorRol(idRol);
             cmbFuncionalidades.DataSource = funcionalidades;
@@ -70,15 +56,22 @@ namespace ClinicaFrba
 
         private void btnFunc_Click(object sender, EventArgs e)
         {
-            
             try
             {
+
                 irAFuncionalidad((decimal)cmbFuncionalidades.SelectedValue);
             }
             catch
             {
 
             }
+        }
+
+        private void toolStripLabel1_Click(object sender, EventArgs e)
+        {
+            Login lgn = new Login();
+            lgn.Show();
+            this.Close();
         }
 
         private void irAFuncionalidad(decimal idFunc)

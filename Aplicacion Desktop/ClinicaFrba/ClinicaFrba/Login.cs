@@ -144,5 +144,10 @@ namespace ClinicaFrba
         {
 
         }
+
+        private void toolStripLabel1_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

@@ -20,12 +20,17 @@ namespace ClinicaFrba.DataAccess
 
         public static string ObtenerTipoPersona(decimal idPersona )
         {
+            string tipo="";
             SqlConnection conn = conectar();
             SqlCommand MiComando = new SqlCommand();
             MiComando.Connection = conn;
-            MiComando.CommandText = " select pers_tipo from ESE_CU_ELE.Persona pers_codigo=" + idPersona;
+            MiComando.CommandText = "select pers_tipo from ESE_CU_ELE.Persona where pers_codigo = " + idPersona;
             SqlDataReader reader = MiComando.ExecuteReader();
-            string tipo = (string)reader["pers_tipo"];
+            while (reader.Read())
+            {
+                tipo = (string)reader["pers_tipo"];
+            }
+            
             reader.Close();
             conn.Close();
             return tipo;

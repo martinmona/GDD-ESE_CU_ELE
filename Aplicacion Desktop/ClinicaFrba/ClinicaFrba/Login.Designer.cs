@@ -36,6 +36,9 @@
             this.cmbRoles = new System.Windows.Forms.ComboBox();
             this.btnRol = new System.Windows.Forms.Button();
             this.lblRol = new System.Windows.Forms.Label();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnlogin
@@ -113,11 +116,29 @@
             this.lblRol.Text = "Seleccione rol";
             this.lblRol.Visible = false;
             // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripLabel1});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(429, 25);
+            this.toolStrip1.TabIndex = 8;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(39, 22);
+            this.toolStripLabel1.Text = "Cerrar";
+            this.toolStripLabel1.Click += new System.EventHandler(this.toolStripLabel1_Click);
+            // 
             // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(429, 342);
+            this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.lblRol);
             this.Controls.Add(this.btnRol);
             this.Controls.Add(this.cmbRoles);
@@ -129,6 +150,8 @@
             this.Name = "Login";
             this.Text = "Login";
             this.Load += new System.EventHandler(this.Login_Load);
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -144,6 +167,8 @@
         private System.Windows.Forms.ComboBox cmbRoles;
         private System.Windows.Forms.Button btnRol;
         private System.Windows.Forms.Label lblRol;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
     }
 }
 

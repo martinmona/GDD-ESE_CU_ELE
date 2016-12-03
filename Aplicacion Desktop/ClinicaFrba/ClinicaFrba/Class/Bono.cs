@@ -10,6 +10,7 @@ namespace ClinicaFrba.Class
     {
         private decimal _codigo;
         private ConsultaMedica _consultaMedica;
+        private int _numeroconsulta;
         private Plan _plan;
         private decimal _precio;
         private DateTime _fechaCompra;
@@ -28,6 +29,11 @@ namespace ClinicaFrba.Class
         {
             get { return _precio; }
             set { _precio = value; }
+        }
+        public int numeroconsulta
+        {
+            get { return _numeroconsulta; }
+            set { _numeroconsulta = value; }
         }
         public Plan plan
         {

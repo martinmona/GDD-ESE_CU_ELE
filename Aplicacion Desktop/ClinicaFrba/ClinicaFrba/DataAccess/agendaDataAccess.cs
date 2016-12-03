@@ -29,7 +29,7 @@ namespace ClinicaFrba.DataAccess
                 MiComando.Connection = conn;
                 MiComando.CommandText = "INSERT INTO ESE_CU_ELE.Agenda(agen_dia,agen_profesional,agen_especialidad,agen_fecha_fin,agen_hora_fin,agen_hora_inicio) VALUES('" + nuevaAgenda.dia + "', " + profesional.codigoPersona + "," + nuevaAgenda.especialidad.codigo + ", '" + nuevaAgenda.fechaFin.Date + "', '" + nuevaAgenda.horaFin.TimeOfDay + "', '" + nuevaAgenda.horaInicio.TimeOfDay + "')";
                 MiComando.ExecuteNonQuery();
-
+                conn.Close();
                 return true;
             }
             catch
@@ -37,7 +37,8 @@ namespace ClinicaFrba.DataAccess
                 return false;
             }
 
-
+            
+            
         }
     }
 }

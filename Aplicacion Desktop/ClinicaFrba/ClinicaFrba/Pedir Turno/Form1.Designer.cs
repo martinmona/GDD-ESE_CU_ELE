@@ -64,7 +64,7 @@
             this.cmbEspecialidad.Name = "cmbEspecialidad";
             this.cmbEspecialidad.Size = new System.Drawing.Size(121, 21);
             this.cmbEspecialidad.TabIndex = 2;
-            this.cmbEspecialidad.SelectedIndexChanged += new System.EventHandler(this.cmbEspecialidad_SelectedIndexChanged);
+            //this.cmbEspecialidad.SelectedIndexChanged += new System.EventHandler(this.cmbEspecialidad_SelectedIndexChanged);
             // 
             // cmbProfesional
             // 
@@ -75,7 +75,7 @@
             this.cmbProfesional.Name = "cmbProfesional";
             this.cmbProfesional.Size = new System.Drawing.Size(121, 21);
             this.cmbProfesional.TabIndex = 3;
-            this.cmbProfesional.SelectedIndexChanged += new System.EventHandler(this.cmbProfesional_SelectedIndexChanged);
+            //this.cmbProfesional.SelectedIndexChanged += new System.EventHandler(this.cmbProfesional_SelectedIndexChanged);
             // 
             // Calendario
             // 
@@ -83,7 +83,7 @@
             this.Calendario.Name = "Calendario";
             this.Calendario.ShowTodayCircle = false;
             this.Calendario.TabIndex = 4;
-            this.Calendario.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.Calendario_DateChanged);
+            //this.Calendario.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.Calendario_DateChanged);
             // 
             // dataGridTurnos
             // 

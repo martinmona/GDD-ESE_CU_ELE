@@ -9,7 +9,7 @@ namespace ClinicaFrba.Class
     public class ConsultaMedica
     {
         private decimal _codigo;
-        private Bono _bono;
+
         private string _resultado;
         private DateTime _horaLlegada;
         private string _sintomas;
@@ -20,11 +20,7 @@ namespace ClinicaFrba.Class
             get { return _codigo; }
             set { _codigo = value; }
         }
-        public Bono bono
-        {
-            get { return _bono; }
-            set { _bono = value; }
-        }
+
         public string resultado
         {
             get { return _resultado; }

@@ -8,13 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClinicaFrba.Class;
+using ClinicaFrba.Config;
+using System.Data.SqlClient;
+using ClinicaFrba.DataAccess;
 
 namespace ClinicaFrba.Compra_Bono
 {
     public partial class frmCompraBono : Form
     {
-        private decimal _idUsuario;
+        bool habilitaEventoCmb;
         private Persona _unaPersona;
+        private Afiliado _afiliadoComprador;
+        private decimal _totalPagar;
         public frmCompraBono(Persona laPersona)
         {
             _unaPersona = laPersona;
@@ -23,24 +28,117 @@ namespace ClinicaFrba.Compra_Bono
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            habilitaEventoCmb = false;
+            _totalPagar = 0;
+            List<Afiliado> listaAfiliados = afiliadoDataAccess.ObtenerAfiliados("join ESE_CU_ELE.Usuario on usua_codigo = afil_codigo_persona where usua_habilitado=1");
+            ActualizarComboBoxAfiliado(listaAfiliados);
             if(_unaPersona.GetType() == typeof(Afiliado))
             {
-                MessageBox.Show("es afiliado");
+                btnBuscar.Enabled = false;
+                txtNumero.Enabled = false;
+                cmbAfiliado.SelectedValue = _unaPersona.codigoPersona;
+                cmbAfiliado.Enabled = false;
+
+                actualizarCampos();
+                _afiliadoComprador = (Afiliado)_unaPersona;
             }else if (_unaPersona.GetType() == typeof(Administrador))
             {
-                MessageBox.Show("es administrador");
+                _afiliadoComprador = (Afiliado)cmbAfiliado.SelectedItem;
+                actualizarCampos();
+                btnBuscar.Enabled = true;
+                txtNumero.Enabled = true;
+                cmbAfiliado.Enabled = true;
+                
             }
             else if(_unaPersona.GetType() == typeof(Profesional))
             {
-                MessageBox.Show("es profesional");
+                
             }
-
-
+            habilitaEventoCmb = true;
         }
 
         private void label4_Click(object sender, EventArgs e)
         {
 
+        }
+        private void ActualizarComboBoxAfiliado(List<Afiliado> afiliados)
+        {
+            habilitaEventoCmb = false;
+            cmbAfiliado.DataSource = null;
+            cmbAfiliado.Items.Clear();
+
+            cmbAfiliado.DataSource = afiliados;
+            cmbAfiliado.ValueMember = "codigoPersona";
+            cmbAfiliado.DisplayMember = "nombre";
+            habilitaEventoCmb = true;
+        }
+
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                habilitaEventoCmb = false;
+                _afiliadoComprador = afiliadoDataAccess.ObtenerAfiliados("join ESE_CU_ELE.Usuario on usua_codigo = afil_codigo_persona where usua_habilitado=1 and CONCAT(afil_numero,afil_numero_familiar) = " + txtNumero.Text)[0];
+                cmbAfiliado.SelectedValue = _afiliadoComprador.codigoPersona;
+                actualizarCampos();
+                habilitaEventoCmb = true;
+            }
+            catch
+            {
+                MessageBox.Show("Afiliado no encontrado");
+            }
+        }
+
+        private void actualizarCampos()
+        {
+            txtPlan.Text = _afiliadoComprador.plan.descripcion;
+            txtNumero.Text = _afiliadoComprador.numeroCompleto;
+            txtCosto.Text = Convert.ToString(_afiliadoComprador.plan.bonoConsulta);
+            _totalPagar = Convert.ToInt32(dudCantidad.Text) * _afiliadoComprador.plan.bonoConsulta;
+            txtTotal.Text = Convert.ToString(_totalPagar);
+        }
+
+        private void dudCantidad_SelectedItemChanged(object sender, EventArgs e)
+        {
+            _totalPagar = Convert.ToInt32(dudCantidad.Text) * _afiliadoComprador.plan.bonoConsulta;
+            txtTotal.Text= Convert.ToString(_totalPagar);
+        }
+
+        private void btnComprar_Click(object sender, EventArgs e)
+        {
+
+            Compra laCompra = new Compra();
+            laCompra.total = _totalPagar;
+            for (int i = 0; i < Convert.ToInt32(dudCantidad.Text); i++)
+            {
+                Bono unBono = new Bono();
+                unBono.precio = Convert.ToInt32(txtCosto.Text);
+                laCompra.bonos.Add(unBono);
+            }
+            if (compraDataAccess.AgregarCompra(laCompra, _afiliadoComprador))
+            {
+                MessageBox.Show("Compra de bonos concretada");
+            }
+            else
+            {
+                MessageBox.Show("Error al realizar la operación");
+            }
+        }
+
+        private void cmbAfiliado_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (habilitaEventoCmb)
+            {
+                habilitaEventoCmb = false;
+                _afiliadoComprador = (Afiliado)cmbAfiliado.SelectedItem;
+
+                actualizarCampos();
+
+
+
+                habilitaEventoCmb = true;
+            }
+            
         }
     }
 }
