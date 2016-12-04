@@ -20,8 +20,9 @@ namespace ClinicaFrba.DataAccess
 
         public static bool AgregarCompra(Compra laCompra, Afiliado elAfiliado)
         {
-            //try
-            //{
+
+            try
+            {
                 laCompra.fecha = DateTime.Now;
                 SqlConnection conn = conectar();
                 SqlCommand MiComando = new SqlCommand("insert into ESE_CU_ELE.Compra (comp_afiliado,comp_fecha,comp_total) values(@codigoPersona,@fecha,@total)",conn);
@@ -29,20 +30,20 @@ namespace ClinicaFrba.DataAccess
                 MiComando.Parameters.AddWithValue("@fecha", laCompra.fecha);
                 MiComando.Parameters.AddWithValue("@total", laCompra.total); 
                 MiComando.ExecuteNonQuery();
-
+                conn.Close();
                 foreach (Bono elBono in laCompra.bonos)
                 {
                     elBono.fechaCompra = laCompra.fecha;
                     bonoDataAccess.AgregarBono(elBono, elAfiliado);
                 }
-                conn.Close();
+                
 
                 return true;
-            //}
-            //catch
-            //{
-            //    return false;
-            //}
+            }
+            catch
+            {
+                return false;
+            }
 
 
         }

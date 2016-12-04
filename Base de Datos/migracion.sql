@@ -44,9 +44,9 @@ CREATE TABLE ESE_CU_ELE.Cancelacion (canc_codigo_turno numeric(18,0) foreign key
 CREATE TABLE ESE_CU_ELE.Consulta_Medica (cons_turno numeric(18,0) foreign key references ESE_CU_ELE.Turno(turn_codigo), cons_resultado varchar(255), cons_hora_llegada datetime, cons_sintomas varchar(255), cons_enfermedades varchar(255),primary key(cons_turno))
 
 --El bono usado tiene un valor en numero de consulta medica
-CREATE TABLE ESE_CU_ELE.Bono (bono_codigo numeric(18,0) primary key, bono_turno_consulta numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Consulta_Medica(cons_turno), bono_numero_consulta_medica numeric(18,0), bono_plan numeric(18,0),bono_fecha_compra datetime, bono_afiliado numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Afiliado(afil_codigo_persona), bono_precio numeric(18,0))
+CREATE TABLE ESE_CU_ELE.Bono (bono_codigo numeric(18,0) primary key, bono_turno_consulta numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Consulta_Medica(cons_turno), bono_numero_consulta_medica numeric(18,0), bono_plan numeric(18,0),bono_fecha_compra datetime, bono_afiliado numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Afiliado(afil_codigo_persona), bono_precio decimal(8,2))
 
-CREATE TABLE ESE_CU_ELE.Compra (comp_codigo numeric(18,0) primary key IDENTITY(1,1), comp_afiliado numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Afiliado(afil_codigo_persona), comp_fecha datetime, comp_total numeric(18,0))
+CREATE TABLE ESE_CU_ELE.Compra (comp_codigo numeric(18,0) primary key IDENTITY(1,1), comp_afiliado numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Afiliado(afil_codigo_persona), comp_fecha datetime, comp_total decimal(8,2))
 
 CREATE TABLE ESE_CU_ELE.Item (item_codigo numeric(18,0) primary key identity(1,1), item_compra numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Compra(comp_codigo), item_bono numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Bono(bono_codigo))
 
@@ -216,7 +216,14 @@ go
 
 
 
-
+Create procedure ESE_CU_ELE.SPAgregarBono (@afiliado numeric(18,0),@plan numeric (18,0),@precio decimal(8,2),@fecha datetime)
+as
+begin
+	declare @bono_id numeric(18,0)
+	set @bono_id=(select top 1 bono_codigo from ESE_CU_ELE.Bono order by bono_codigo desc)
+	insert into ESE_CU_ELE.Bono (bono_codigo, bono_afiliado,bono_plan,bono_precio,bono_fecha_compra) values(@bono_id,@afiliado,@plan,@precio,@fecha)
+end
+go
 
 
 

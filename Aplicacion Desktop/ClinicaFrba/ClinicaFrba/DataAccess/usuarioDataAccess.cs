@@ -13,7 +13,23 @@ namespace ClinicaFrba.Class{
         public static SqlConnection conectar()
         {
             SqlConnection connection = BD.ObtenerConexion();
-            connection.Open();
+            try
+            {
+                connection.Open();
+            }
+            catch (SqlException e)
+            {
+                if (e.Number == 18487 || e.Number == 18488)
+                {
+                    SqlConnection.ChangePassword(connection.ConnectionString, "gd2016");
+                }
+            }
+            finally
+            {
+                //connection.Close();
+            }
+
+
             return connection;
         }
 

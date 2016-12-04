@@ -1,7 +1,8 @@
 USE [GD2C2016]
 GO
 
---drop procedure ESE_CU_ELE.AsignarNroConsulta
+drop procedure ESE_CU_ELE.AsignarNroConsulta
+drop procedure ESE_CU_ELE.SPAgregarBono
 
 DROP TABLE ESE_CU_ELE.Item
 DROP TABLE ESE_CU_ELE.Compra
