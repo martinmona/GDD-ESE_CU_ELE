@@ -131,6 +131,7 @@
     <Compile Include="DataAccess\personaDataAccess.cs" />
     <Compile Include="DataAccess\profesionalDataAccess.cs" />
     <Compile Include="DataAccess\rolDataAccess.cs" />
+    <Compile Include="DataAccess\turnoDataAccess.cs" />
     <Compile Include="DataAccess\usuarioDataAccess.cs" />
     <Compile Include="Funcionalidad.cs">
       <SubType>Form</SubType>
