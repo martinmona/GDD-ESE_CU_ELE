@@ -14,6 +14,7 @@ namespace ClinicaFrba.Pedir_Turno
 {
     public partial class Turno : Form
     {
+        DateTime fecha;
         public Turno()
         {
             InitializeComponent();
@@ -58,16 +59,30 @@ namespace ClinicaFrba.Pedir_Turno
 
         private void Calendario_DateChanged(object sender, DateRangeEventArgs e)
         {
-
+            fecha = Calendario.SelectionEnd.Date;
+            //0 es domingo
+            int dia = (int)fecha.DayOfWeek;
+            switch (dia)
+            {
+                case 0:
+                    MessageBox.Show("No se atiende los dias domingos");
+                    break;
+                default:
+                    actualizarGrilla(fecha);
+                    break;
+            }
+                      
         }
 
-        /*private void ActualizarGrilla(DateTime fecha)
+        /* 
+          private void actualizarGrilla(DateTime fecha)
         {
-            cmbM.ValueMember = "Id";
-            int idmedico = (int)cmbM.SelectedValue;
-            GrillaTurnos.Enabled = true;
-            GrillaTurnos.Columns.Clear();
-            List<Turno> listaturnos = TurnosDataAcces.ObtenerTurnos(fecha, idmedico);
+            cmbProfesional.ValueMember = "prof_codigo_persona";
+            decimal idProfesional = (decimal)cmbProfesional.SelectedValue;
+            dataGridTurnos.Enabled = true;
+            dataGridTurnos.Columns.Clear();
+         
+            List<Turno> listaturnos = TurnosDataAcces.ObtenerTurnos(fecha, idProfesional);
             GrillaTurnos.AutoGenerateColumns = false;
             List<Turno> lista = new List<Turno>();
             for (double i = 12; i <= 19; i = i + 0.5)
@@ -167,7 +182,7 @@ namespace ClinicaFrba.Pedir_Turno
             }
             GrillaTurnos.Columns[0].Visible = false;
         }
-        private void Calendario_DateChanged(object sender, DateRangeEventArgs e)
+       private void Calendario_DateChanged(object sender, DateRangeEventArgs e) 
         {
             fecha = Calendario.SelectionEnd.Date;
             if (Calendario.BoldedDates.Contains(fecha))
