@@ -35,28 +35,39 @@ namespace ClinicaFrba.DataAccess
                     
                     cmd.ExecuteNonQuery();
                     con.Close();
+                    return true;
                 }
-                return true;
             }
-
-            /*try
+        }
+        public static List<Bono> obtenerBonos(Afiliado elAfiliado)
+        {
+            using (SqlConnection con = conectar())
             {
-            SqlConnection conn = conectar();
-                SqlCommand MiComando = new SqlCommand("insert into ESE_CU_ELE.Bono (bono_afiliado,bono_plan,bono_precio,bono_fecha_compra) values(@afiliado,@plan,@precio,@fecha)",conn);
-                MiComando.Parameters.AddWithValue("@afiliado", elAfiliado.codigoPersona);
-                MiComando.Parameters.AddWithValue("@plan", elAfiliado.plan.codigo);
-                MiComando.Parameters.AddWithValue("@precio", nuevoBono.precio);
-                MiComando.Parameters.AddWithValue("@fecha", nuevoBono.fechaCompra);
-                MiComando.ExecuteNonQuery();
-                conn.Close();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-            */
+                
+                using (SqlCommand cmd = new SqlCommand("ESE_CU_ELE.SPObtenerBonos", con))
+                {
+                    List<Bono> bonos = new List<Bono>();
+                    cmd.CommandType = CommandType.StoredProcedure;
 
+                    cmd.Parameters.Add("@afiliado", SqlDbType.Decimal).Value = elAfiliado.codigoPersona;
+                    cmd.Parameters.Add("@plan", SqlDbType.Decimal).Value = elAfiliado.plan.codigo;
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Bono unBono = new Bono();
+                        unBono.codigo = (decimal)reader["bono_codigo"];
+                        unBono.fechaCompra = (DateTime)reader["bono_fecha_compra"];
+                        //unBono.plan =;
+                        unBono.precio= (decimal)reader["bono_precio"];
+                        bonos.Add(unBono);
+                    }
+                    reader.Close();
+
+                    
+                    con.Close();
+                    return bonos;
+                }
+            }
         }
     }
 }

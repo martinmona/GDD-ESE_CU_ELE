@@ -10,6 +10,7 @@ namespace ClinicaFrba.Class
     {
         private decimal _codigo;
         private DateTime _fecha;
+        private Afiliado _afiliado;
         private Profesional _profesional;
         private Cancelacion _cancelacion;
 
@@ -18,10 +19,30 @@ namespace ClinicaFrba.Class
             get { return _codigo; }
             set { _codigo = value; }
         }
+        public string afiliadoNumeroCompleto
+        {
+            get { return _afiliado.numeroCompleto; }
+            set { _afiliado.numeroCompleto = value; }
+        }
+        public string afiliadoNombre
+        {
+            get { return _afiliado.nombre; }
+            set { _afiliado.nombre = value; }
+        }
+        public Afiliado afiliado
+        {
+            get { return _afiliado; }
+            set { _afiliado = value; }
+        }
         public DateTime fecha
         {
             get { return _fecha; }
             set { _fecha = value; }
+        }
+        public string mostrarFecha
+        {
+            get { return (_fecha.Hour.ToString()+":"+_fecha.Minute.ToString()); }
+            
         }
         public Profesional profesional
         {

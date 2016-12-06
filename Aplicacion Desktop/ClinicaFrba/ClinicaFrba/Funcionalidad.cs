@@ -63,7 +63,7 @@ namespace ClinicaFrba
             }
             catch
             {
-
+                MessageBox.Show("Funcionalidad no implementada");
             }
         }
 
@@ -93,6 +93,10 @@ namespace ClinicaFrba
                 case "8":
                     Compra_Bono.frmCompraBono formCompraBono = new Compra_Bono.frmCompraBono(unaPersona);
                     formCompraBono.Show();
+                    break;
+                case "10":
+                    Registro_Llegada.frmRegistroLlegada formRegistroLlegada = new Registro_Llegada.frmRegistroLlegada();
+                    formRegistroLlegada.Show();
                     break;
             }
         }

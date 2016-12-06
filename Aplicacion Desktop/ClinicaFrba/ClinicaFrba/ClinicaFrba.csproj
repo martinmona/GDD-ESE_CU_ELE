@@ -131,6 +131,7 @@
     <Compile Include="DataAccess\personaDataAccess.cs" />
     <Compile Include="DataAccess\profesionalDataAccess.cs" />
     <Compile Include="DataAccess\rolDataAccess.cs" />
+    <Compile Include="DataAccess\turnoDataAccess.cs" />
     <Compile Include="DataAccess\usuarioDataAccess.cs" />
     <Compile Include="Funcionalidad.cs">
       <SubType>Form</SubType>
@@ -169,11 +170,11 @@
     <Compile Include="Registrar Agenta Medico\RegistrarAgenda.Designer.cs">
       <DependentUpon>RegistrarAgenda.cs</DependentUpon>
     </Compile>
-    <Compile Include="Registro Llegada\Form1.cs">
+    <Compile Include="Registro Llegada\frmRegistroLlegada.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Registro Llegada\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Registro Llegada\frmRegistroLlegada.Designer.cs">
+      <DependentUpon>frmRegistroLlegada.cs</DependentUpon>
     </Compile>
     <Compile Include="Registro Resultado\Form1.cs">
       <SubType>Form</SubType>
@@ -219,6 +220,9 @@
     </Compile>
     <EmbeddedResource Include="Registrar Agenta Medico\RegistrarAgenda.resx">
       <DependentUpon>RegistrarAgenda.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Registro Llegada\frmRegistroLlegada.resx">
+      <DependentUpon>frmRegistroLlegada.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="GD2C2016DataSet.xsc">
       <DependentUpon>GD2C2016DataSet.xsd</DependentUpon>

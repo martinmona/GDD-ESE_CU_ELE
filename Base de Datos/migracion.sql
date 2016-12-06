@@ -5,7 +5,7 @@ CREATE SCHEMA [ESE_CU_ELE] AUTHORIZATION [gd]
 GO
 
 
-
+--CREA LAS TABLAS
 
 CREATE TABLE ESE_CU_ELE.Funcionalidad (func_codigo numeric(18,0) primary key IDENTITY(1,1), func_descripcion varchar(255))
 
@@ -35,15 +35,14 @@ CREATE TABLE ESE_CU_ELE.EspecialidadXProfesional (espexp_codigo_profesional nume
 
 CREATE TABLE ESE_CU_ELE.Agenda (agen_codigo numeric(18,0) IDENTITY(1,1), agen_profesional numeric(18,0) , agen_especialidad numeric (18,0),agen_dia tinyint, agen_hora_inicio time(0), agen_hora_fin time(0), agen_fecha_fin date, primary key (agen_codigo), FOREIGN KEY (agen_profesional, agen_especialidad) REFERENCES ESE_CU_ELE.EspecialidadXProfesional(espexp_codigo_profesional, espexp_codigo_especialidad))
 
---CREATE TABLE ESE_CU_ELE.Turno (turn_codigo numeric(18,0) primary key, turn_codigo_agenda numeric (18,0) foreign key references ESE_CU_ELE.Agenda(agen_codigo), turn_codigo_afiliado numeric(18,0) foreign key references ESE_CU_ELE.Afiliado(afil_codigo_persona), turn_hora datetime, turn_llegada datetime)
+
 CREATE TABLE ESE_CU_ELE.Turno (turn_codigo numeric(18,0) primary key, turn_codigo_afiliado numeric(18,0) foreign key references ESE_CU_ELE.Afiliado(afil_codigo_persona),turn_especialidad numeric(18,0), turn_hora datetime, turn_profesional numeric (18,0),FOREIGN KEY (turn_profesional,turn_especialidad) REFERENCES ESE_CU_ELE.EspecialidadXProfesional(espexp_codigo_profesional, espexp_codigo_especialidad))
 
 CREATE TABLE ESE_CU_ELE.Cancelacion (canc_codigo_turno numeric(18,0) foreign key references ESE_CU_ELE.Turno(turn_codigo), tipo varchar(255), detalle varchar(255),primary key(canc_codigo_turno))
 
---Ver como manejar consulta medica y cancelacion
 CREATE TABLE ESE_CU_ELE.Consulta_Medica (cons_turno numeric(18,0) foreign key references ESE_CU_ELE.Turno(turn_codigo), cons_resultado varchar(255), cons_hora_llegada datetime, cons_sintomas varchar(255), cons_enfermedades varchar(255),primary key(cons_turno))
 
---El bono usado tiene un valor en numero de consulta medica
+--El bono usado tiene un valor en numero de consulta medica y en turno
 CREATE TABLE ESE_CU_ELE.Bono (bono_codigo numeric(18,0) primary key, bono_turno_consulta numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Consulta_Medica(cons_turno), bono_numero_consulta_medica numeric(18,0), bono_plan numeric(18,0),bono_fecha_compra datetime, bono_afiliado numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Afiliado(afil_codigo_persona), bono_precio decimal(8,2))
 
 CREATE TABLE ESE_CU_ELE.Compra (comp_codigo numeric(18,0) primary key IDENTITY(1,1), comp_afiliado numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Afiliado(afil_codigo_persona), comp_fecha datetime, comp_total decimal(8,2))
@@ -54,6 +53,7 @@ go
 
 
 
+--COMIENZA A MIGRAR LOS DATOS
 
 insert into ESE_CU_ELE.Planes (plan_codigo,plan_descripcion,plan_bono_Consulta,plan_bono_Farmacia) select distinct(Plan_Med_Codigo),Plan_Med_Descripcion,Plan_Med_Precio_Bono_Consulta,Plan_Med_Precio_Bono_Farmacia from gd_esquema.Maestra
 
@@ -81,12 +81,8 @@ insert into ESE_CU_ELE.Turno (turn_codigo,turn_hora,turn_codigo_afiliado, turn_p
 
 --Se toma como hora de llegada a Bono_Consulta_Fecha_Impresion
 insert into ESE_CU_ELE.Consulta_Medica (cons_turno,cons_hora_llegada,cons_sintomas, cons_enfermedades) select Turno_Numero, Bono_Consulta_Fecha_Impresion, Consulta_Sintomas, Consulta_Enfermedades from gd_esquema.Maestra  where Consulta_Sintomas is not null group by Paciente_Dni,Turno_Numero, Bono_Consulta_Numero, Bono_Consulta_Fecha_Impresion, Consulta_Sintomas, Consulta_Enfermedades
-
+--ACTUALIZA EL CAMPO TURNO PARA EL CUAL SE USO EL BONO
 update ESE_CU_ELE.Bono set bono_turno_consulta = Turno_Numero from ESE_CU_ELE.Bono INNER JOIN  gd_esquema.Maestra ON bono_codigo=Bono_Consulta_Numero where gd_esquema.Maestra.Turno_Numero is not null
-
-
-
-
 
 
 
@@ -146,6 +142,8 @@ insert into ESE_CU_ELE.Agenda (agen_profesional,agen_especialidad, agen_dia, age
 
 go
 
+--TRIGGER QUE VERIFICA QUE EL PROFESIONAL NO SOBREPASE LAS 48hs SEMANALES
+
 create trigger triggerCargarAgendas on ESE_CU_ELE.Agenda instead of insert
 as
 begin
@@ -164,6 +162,8 @@ begin
 end
 go
 
+--TRIGGER PARA AGREGAR EN LA TABLA ITEM AL REALIZAR LA COMPRA
+
 create trigger triggerCargarBono on ESE_CU_ELE.Bono instead of insert
 as
 begin
@@ -178,6 +178,7 @@ end
 go
 
 
+--STORED PROCEDURE QUE ASIGNA UN VALOR AL CAMPO NUMERO CONSULTA MEDICA PARA LOS BONOS CARGADOS EN LA MIGRACIÓN
 
 create procedure ESE_CU_ELE.AsignarNroConsulta
 as
@@ -220,8 +221,7 @@ Create procedure ESE_CU_ELE.SPAgregarBono (@afiliado numeric(18,0),@plan numeric
 as
 begin
 	declare @bono_id numeric(18,0)
-	set @bono_id=(select top 1 bono_codigo from ESE_CU_ELE.Bono order by bono_codigo desc)
-	insert into ESE_CU_ELE.Bono (bono_codigo, bono_afiliado,bono_plan,bono_precio,bono_fecha_compra) values(@bono_id,@afiliado,@plan,@precio,@fecha)
+	insert into ESE_CU_ELE.Bono (bono_afiliado,bono_plan,bono_precio,bono_fecha_compra) values(@afiliado,@plan,@precio,@fecha)
 end
 go
 
