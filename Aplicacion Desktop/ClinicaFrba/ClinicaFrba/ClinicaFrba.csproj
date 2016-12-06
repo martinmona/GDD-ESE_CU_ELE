@@ -170,6 +170,12 @@
     <Compile Include="Registrar Agenta Medico\RegistrarAgenda.Designer.cs">
       <DependentUpon>RegistrarAgenda.cs</DependentUpon>
     </Compile>
+    <Compile Include="Registro Llegada\frmElegirBono.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Registro Llegada\frmElegirBono.Designer.cs">
+      <DependentUpon>frmElegirBono.cs</DependentUpon>
+    </Compile>
     <Compile Include="Registro Llegada\frmRegistroLlegada.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -220,6 +226,9 @@
     </Compile>
     <EmbeddedResource Include="Registrar Agenta Medico\RegistrarAgenda.resx">
       <DependentUpon>RegistrarAgenda.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Registro Llegada\frmElegirBono.resx">
+      <DependentUpon>frmElegirBono.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Registro Llegada\frmRegistroLlegada.resx">
       <DependentUpon>frmRegistroLlegada.cs</DependentUpon>

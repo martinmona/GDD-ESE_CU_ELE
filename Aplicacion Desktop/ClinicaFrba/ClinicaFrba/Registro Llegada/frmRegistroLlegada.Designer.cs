@@ -36,6 +36,7 @@
             this.dgvTurnos = new System.Windows.Forms.DataGridView();
             this.dtpFecha = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTurnos)).BeginInit();
             this.SuspendLayout();
@@ -95,7 +96,7 @@
             this.dgvTurnos.AllowUserToDeleteRows = false;
             this.dgvTurnos.AllowUserToOrderColumns = true;
             this.dgvTurnos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvTurnos.Location = new System.Drawing.Point(59, 188);
+            this.dgvTurnos.Location = new System.Drawing.Point(59, 215);
             this.dgvTurnos.MultiSelect = false;
             this.dgvTurnos.Name = "dgvTurnos";
             this.dgvTurnos.ReadOnly = true;
@@ -121,11 +122,21 @@
             this.label3.TabIndex = 5;
             this.label3.Text = "Fecha";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(66, 199);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(193, 13);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "Haga doble click en el turno del afiliado";
+            // 
             // frmRegistroLlegada
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(862, 588);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.dtpFecha);
             this.Controls.Add(this.dgvTurnos);
@@ -151,5 +162,6 @@
         private System.Windows.Forms.DataGridView dgvTurnos;
         private System.Windows.Forms.DateTimePicker dtpFecha;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
     }
 }

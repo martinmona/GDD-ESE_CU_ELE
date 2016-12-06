@@ -80,23 +80,23 @@ namespace ClinicaFrba
             {
                 case "1":
                     AbmRol.Listado formRol = new AbmRol.Listado();
-                    formRol.Show();
+                    formRol.ShowDialog();
                     break;
                 case "3":
                     Abm_Afiliado.Listado formAfi = new Abm_Afiliado.Listado();
-                    formAfi.Show();
+                    formAfi.ShowDialog();
                     break;
                 case "7":
                     Registrar_Agenta_Medico.RegistrarAgenda formRegAg= new Registrar_Agenta_Medico.RegistrarAgenda();
-                    formRegAg.Show();
+                    formRegAg.ShowDialog();
                     break;
                 case "8":
                     Compra_Bono.frmCompraBono formCompraBono = new Compra_Bono.frmCompraBono(unaPersona);
-                    formCompraBono.Show();
+                    formCompraBono.ShowDialog();
                     break;
                 case "10":
                     Registro_Llegada.frmRegistroLlegada formRegistroLlegada = new Registro_Llegada.frmRegistroLlegada();
-                    formRegistroLlegada.Show();
+                    formRegistroLlegada.ShowDialog();
                     break;
             }
         }

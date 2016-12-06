@@ -3,7 +3,9 @@ GO
 
 drop procedure ESE_CU_ELE.AsignarNroConsulta
 drop procedure ESE_CU_ELE.SPAgregarBono
-drop trigger triggerCargarBono
+drop procedure ESE_CU_ELE.SPObtenerBonosSinUsar
+drop procedure ESE_CU_ELE.SPRegistrarLlegada
+--drop trigger triggerCargarBono
 
 DROP TABLE ESE_CU_ELE.Item
 DROP TABLE ESE_CU_ELE.Compra

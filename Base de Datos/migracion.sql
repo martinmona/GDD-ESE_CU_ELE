@@ -35,8 +35,8 @@ CREATE TABLE ESE_CU_ELE.EspecialidadXProfesional (espexp_codigo_profesional nume
 
 CREATE TABLE ESE_CU_ELE.Agenda (agen_codigo numeric(18,0) IDENTITY(1,1), agen_profesional numeric(18,0) , agen_especialidad numeric (18,0),agen_dia tinyint, agen_hora_inicio time(0), agen_hora_fin time(0), agen_fecha_fin date, primary key (agen_codigo), FOREIGN KEY (agen_profesional, agen_especialidad) REFERENCES ESE_CU_ELE.EspecialidadXProfesional(espexp_codigo_profesional, espexp_codigo_especialidad))
 
-
-CREATE TABLE ESE_CU_ELE.Turno (turn_codigo numeric(18,0) primary key, turn_codigo_afiliado numeric(18,0) foreign key references ESE_CU_ELE.Afiliado(afil_codigo_persona),turn_especialidad numeric(18,0), turn_hora datetime, turn_profesional numeric (18,0),FOREIGN KEY (turn_profesional,turn_especialidad) REFERENCES ESE_CU_ELE.EspecialidadXProfesional(espexp_codigo_profesional, espexp_codigo_especialidad))
+--El estado del turno es Pedido, Cancelado y Usado
+CREATE TABLE ESE_CU_ELE.Turno (turn_codigo numeric(18,0) primary key, turn_codigo_afiliado numeric(18,0) foreign key references ESE_CU_ELE.Afiliado(afil_codigo_persona),turn_especialidad numeric(18,0), turn_hora datetime, turn_profesional numeric (18,0),turn_estado varchar(20),FOREIGN KEY (turn_profesional,turn_especialidad) REFERENCES ESE_CU_ELE.EspecialidadXProfesional(espexp_codigo_profesional, espexp_codigo_especialidad))
 
 CREATE TABLE ESE_CU_ELE.Cancelacion (canc_codigo_turno numeric(18,0) foreign key references ESE_CU_ELE.Turno(turn_codigo), tipo varchar(255), detalle varchar(255),primary key(canc_codigo_turno))
 
@@ -77,13 +77,15 @@ insert into ESE_CU_ELE.EspecialidadXProfesional (espexp_codigo_especialidad,espe
 --Se toma como fecha de compra de bono a Compra_Bono_Fecha
 insert into ESE_CU_ELE.Bono (bono_codigo,bono_turno_consulta, bono_fecha_compra, bono_plan, bono_afiliado, bono_precio) select Bono_Consulta_Numero,Turno_Numero, Compra_Bono_Fecha, Plan_Med_Codigo, (select pers_codigo from ESE_CU_ELE.Persona where pers_numero_documento=m1.Paciente_Dni),(select plan_bono_Consulta from ESE_CU_ELE.Planes where plan_codigo=m1.Plan_Med_Codigo) from gd_esquema.Maestra "m1" where Bono_Consulta_Numero is not null and Compra_Bono_Fecha is not null group by Plan_Med_Codigo,Paciente_Dni, Bono_Consulta_Numero, Compra_Bono_Fecha,Turno_Numero
 
-insert into ESE_CU_ELE.Turno (turn_codigo,turn_hora,turn_codigo_afiliado, turn_profesional, turn_especialidad) select Turno_Numero, Turno_Fecha, (select pers_codigo from ESE_CU_ELE.Persona where pers_numero_documento = m1.Paciente_Dni),(select pers_codigo from ESE_CU_ELE.Persona where pers_numero_documento = m1.Medico_Dni), Especialidad_Codigo from gd_esquema.Maestra "m1" where Turno_Numero is not null group by Turno_Numero,Turno_Fecha, Paciente_Dni, Medico_Dni,Especialidad_Codigo order by Turno_Numero
+insert into ESE_CU_ELE.Turno (turn_codigo,turn_hora,turn_codigo_afiliado, turn_profesional, turn_especialidad, turn_estado) select Turno_Numero, Turno_Fecha, (select pers_codigo from ESE_CU_ELE.Persona where pers_numero_documento = m1.Paciente_Dni),(select pers_codigo from ESE_CU_ELE.Persona where pers_numero_documento = m1.Medico_Dni), Especialidad_Codigo, 'Pedido' from gd_esquema.Maestra "m1" where Turno_Numero is not null group by Turno_Numero,Turno_Fecha, Paciente_Dni, Medico_Dni,Especialidad_Codigo order by Turno_Numero
 
 --Se toma como hora de llegada a Bono_Consulta_Fecha_Impresion
 insert into ESE_CU_ELE.Consulta_Medica (cons_turno,cons_hora_llegada,cons_sintomas, cons_enfermedades) select Turno_Numero, Bono_Consulta_Fecha_Impresion, Consulta_Sintomas, Consulta_Enfermedades from gd_esquema.Maestra  where Consulta_Sintomas is not null group by Paciente_Dni,Turno_Numero, Bono_Consulta_Numero, Bono_Consulta_Fecha_Impresion, Consulta_Sintomas, Consulta_Enfermedades
 --ACTUALIZA EL CAMPO TURNO PARA EL CUAL SE USO EL BONO
 update ESE_CU_ELE.Bono set bono_turno_consulta = Turno_Numero from ESE_CU_ELE.Bono INNER JOIN  gd_esquema.Maestra ON bono_codigo=Bono_Consulta_Numero where gd_esquema.Maestra.Turno_Numero is not null
 
+--ACTUALIZA EL ESTADO DE LOS TURNOS USADOS
+update ESE_CU_ELE.Turno set turn_estado='Usado' from ESE_CU_ELE.Consulta_Medica where cons_turno=turn_codigo
 
 
 
@@ -215,7 +217,7 @@ go
 
 
 
-
+--STORED PROCEDURE AGREGAR BONO
 
 Create procedure ESE_CU_ELE.SPAgregarBono (@afiliado numeric(18,0),@plan numeric (18,0),@precio decimal(8,2),@fecha datetime)
 as
@@ -225,7 +227,39 @@ begin
 end
 go
 
+Create procedure ESE_CU_ELE.SPObtenerBonosSinUsar (@afiliado numeric(18,0),@plan numeric (18,0))
+as
+begin
+	select bono_codigo,bono_fecha_compra,bono_precio from ESE_CU_ELE.Bono,ESE_CU_ELE.Afiliado where bono_numero_consulta_medica is null and afil_numero=@afiliado and bono_afiliado=afil_codigo_persona and bono_plan=@plan 
+end
+go
 
+create procedure ESE_CU_ELE.SPRegistrarLlegada(@afiliado numeric(18,0),@bono numeric(18,0),@turno numeric(18,0))
+as
+begin
+	set nocount on;
+	BEGIN TRANSACTION;
+	BEGIN TRY
+		update ESE_CU_ELE.Turno set turn_estado ='Usado' where turn_codigo=@turno
+		insert into ESE_CU_ELE.Consulta_Medica (cons_turno,cons_hora_llegada) values (@turno,getdate())
+		update ESE_CU_ELE.Bono set bono_afiliado = @afiliado, bono_turno_consulta=@turno,bono_numero_consulta_medica=(select count(*) from ESE_CU_ELE.Bono where bono_afiliado=@afiliado and bono_numero_consulta_medica is not null)+1 where bono_codigo=@bono
+    COMMIT TRANSACTION;
+	END TRY
+	BEGIN CATCH
+	
+    DECLARE @error int,
+            @message varchar(4000);
+
+    SELECT
+      @error = ERROR_NUMBER(),
+      @message = ERROR_MESSAGE();
+
+
+      ROLLBACK TRANSACTION;
+
+    RAISERROR ('Error al registrar llegada: %d: %s', 16, 1, @error, @message);
+END CATCH;
+end
 
 /*
 create trigger triggerInsertarConsulta on ESE_CU_ELE.Consulta_Medica instead of insert

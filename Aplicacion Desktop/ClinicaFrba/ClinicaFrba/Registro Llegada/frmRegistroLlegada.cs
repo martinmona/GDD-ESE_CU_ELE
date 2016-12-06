@@ -16,7 +16,8 @@ namespace ClinicaFrba.Registro_Llegada
 {
     public partial class frmRegistroLlegada : Form
     {
-        
+
+        public Bono bonoElegido;
         bool habilitaEventocb;
         public frmRegistroLlegada()
         {
@@ -41,7 +42,7 @@ namespace ClinicaFrba.Registro_Llegada
             {
                 habilitaEventocb = false;
 
-                ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxFecha(dtpFecha.Value, (decimal)cbEspecialidadProfesional.SelectedValue,(decimal)cbNombreProfesional.SelectedValue));
+                ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxFecha(dtpFecha.Value, (decimal)cbEspecialidadProfesional.SelectedValue,(decimal)cbNombreProfesional.SelectedValue,"and turn_estado not like 'Cancelado'"));
 
                 habilitaEventocb = true;
             }
@@ -76,19 +77,65 @@ namespace ClinicaFrba.Registro_Llegada
                 habilitaEventocb = false;
                 List<Profesional> profesionales = profesionalDataAccess.ObtenerProfesionalesXEspecialidad(((Especialidad)cbEspecialidadProfesional.SelectedItem).codigo);
                 ActualizarComboBoxProf(profesionales);
-                ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxFecha(dtpFecha.Value, (decimal)cbEspecialidadProfesional.SelectedValue, (decimal)cbNombreProfesional.SelectedValue));
+                ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxFecha(dtpFecha.Value, (decimal)cbEspecialidadProfesional.SelectedValue, (decimal)cbNombreProfesional.SelectedValue, "and turn_estado not like 'Cancelado'"));
                 habilitaEventocb = true;
             }
         }
 
         private void dgvTurnos_DoubleClick(object sender, EventArgs e)
         {
+            List<Bono> lstBonosAfiliado;
             Turno turnoElegido = (Turno)dgvTurnos.SelectedRows[0].DataBoundItem;
-            DialogResult dialogResult = MessageBox.Show("¿Desea marcar la llegada del afiliado "+ turnoElegido.afiliadoNombre, "Registrar Llegada", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.Yes)
+            if (turnoElegido.estado.Equals("Usado"))
+
             {
-                
+                MessageBox.Show("Ya se registró la llegada del usuario a la clínica");
             }
+            else if(turnoElegido.fecha.Date < DateTime.Now)
+            {
+                MessageBox.Show("No se puede modificar un turno luego de pasada la hora del mismo");
+            }
+            else
+            {
+           
+                DialogResult dialogResult = MessageBox.Show("¿Desea marcar la llegada del afiliado " + turnoElegido.afiliadoNombre, "Registrar Llegada", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    lstBonosAfiliado = bonoDataAccess.obtenerBonosSinUsar(turnoElegido.afiliado);
+                    //Verifico que tenga bonos disponibles
+                    if (lstBonosAfiliado.Count() > 0)
+                    {
+                        //Selecciona el bono a usar
+                        frmElegirBono formElegirBono = new frmElegirBono(lstBonosAfiliado);
+                        formElegirBono.Text = "Seleccionar bono del Afiliado";
+                        formElegirBono.Owner = this;
+                        formElegirBono.ShowDialog(this);
+                        if(turnoDataAccess.registrarLlegada(turnoElegido.afiliado.codigoPersona, bonoElegido.codigo, turnoElegido.codigo))
+                        {
+                            MessageBox.Show("Se registró la llegada del afiliado");
+                            ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxFecha(dtpFecha.Value, (decimal)cbEspecialidadProfesional.SelectedValue, (decimal)cbNombreProfesional.SelectedValue, "and turn_estado not like 'Cancelado'"));
+                        }
+                        else
+                        {
+                            MessageBox.Show("Error al registrar la llegada");
+                        }
+                        
+                    }
+                    else
+                    {
+                        //No tiene bonos. Pregunta si desea comprar ahora
+                        DialogResult drCompraBono = MessageBox.Show("El afiliado no dispone de bonos para utilizar. ¿Desea adquirir bonos ahora?", "Comprar Bonos", MessageBoxButtons.YesNo);
+                        if (drCompraBono == DialogResult.Yes)
+                        {
+                            MessageBox.Show("Luego finalizar la compra, cierre la ventana y vuelva a seleccionar el turno");
+                            Compra_Bono.frmCompraBono formCompraBono = new Compra_Bono.frmCompraBono(turnoElegido.afiliado);
+                            formCompraBono.ShowDialog();
+                        }
+                    }
+        
+                   }
+            }
+            
         }
 
         private void ActualizarGrillaTurnos(List<Turno> turnos)
@@ -122,12 +169,19 @@ namespace ClinicaFrba.Registro_Llegada
             afiliadoNumero.DataPropertyName = "afiliadoNumeroCompleto";
             afiliadoNumero.HeaderText = "Numero Afiliado";
             afiliadoNumero.Width = 100;
-            afiliadoNumero.ReadOnly = true; 
-            
+            afiliadoNumero.ReadOnly = true;
+
+            DataGridViewTextBoxColumn estado = new DataGridViewTextBoxColumn();
+            estado.DataPropertyName = "estado";
+            estado.HeaderText = "Estado";
+            estado.Width = 100;
+            estado.ReadOnly = true;
+
             dgvTurnos.Columns.Add(codigoTurno);
             dgvTurnos.Columns.Add(fecha);
             dgvTurnos.Columns.Add(afiliadoNombre);
             dgvTurnos.Columns.Add(afiliadoNumero);
+            dgvTurnos.Columns.Add(estado);
             dgvTurnos.AutoResizeColumns();
         }
 
@@ -137,7 +191,7 @@ namespace ClinicaFrba.Registro_Llegada
             {
                 habilitaEventocb = false;
 
-                ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxFecha(dtpFecha.Value, (decimal)cbEspecialidadProfesional.SelectedValue, (decimal)cbNombreProfesional.SelectedValue));
+                ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxFecha(dtpFecha.Value, (decimal)cbEspecialidadProfesional.SelectedValue, (decimal)cbNombreProfesional.SelectedValue, "and turn_estado not like 'Cancelado'"));
 
                 habilitaEventocb = true;
             }

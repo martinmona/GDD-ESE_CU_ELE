@@ -39,17 +39,17 @@ namespace ClinicaFrba.DataAccess
                 }
             }
         }
-        public static List<Bono> obtenerBonos(Afiliado elAfiliado)
+        public static List<Bono> obtenerBonosSinUsar(Afiliado elAfiliado)
         {
             using (SqlConnection con = conectar())
             {
                 
-                using (SqlCommand cmd = new SqlCommand("ESE_CU_ELE.SPObtenerBonos", con))
+                using (SqlCommand cmd = new SqlCommand("ESE_CU_ELE.SPObtenerBonosSinUsar", con))
                 {
                     List<Bono> bonos = new List<Bono>();
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add("@afiliado", SqlDbType.Decimal).Value = elAfiliado.codigoPersona;
+                    cmd.Parameters.Add("@afiliado", SqlDbType.Decimal).Value = elAfiliado.numeroAfiliado;
                     cmd.Parameters.Add("@plan", SqlDbType.Decimal).Value = elAfiliado.plan.codigo;
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
@@ -57,7 +57,7 @@ namespace ClinicaFrba.DataAccess
                         Bono unBono = new Bono();
                         unBono.codigo = (decimal)reader["bono_codigo"];
                         unBono.fechaCompra = (DateTime)reader["bono_fecha_compra"];
-                        //unBono.plan =;
+                        unBono.plan = elAfiliado.plan;
                         unBono.precio= (decimal)reader["bono_precio"];
                         bonos.Add(unBono);
                     }

@@ -68,7 +68,7 @@ namespace ClinicaFrba.Pedir_Turno
                     MessageBox.Show("No se atiende los dias domingos");
                     break;
                 default:
-                    actualizarGrilla(fecha);
+                    //actualizarGrilla(fecha);
                     break;
             }
                       

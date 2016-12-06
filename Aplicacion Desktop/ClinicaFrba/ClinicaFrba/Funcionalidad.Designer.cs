@@ -41,7 +41,7 @@
             this.cmbFuncionalidades.FormattingEnabled = true;
             this.cmbFuncionalidades.Location = new System.Drawing.Point(190, 60);
             this.cmbFuncionalidades.Name = "cmbFuncionalidades";
-            this.cmbFuncionalidades.Size = new System.Drawing.Size(193, 21);
+            this.cmbFuncionalidades.Size = new System.Drawing.Size(311, 21);
             this.cmbFuncionalidades.TabIndex = 0;
             // 
             // lblFunc
@@ -69,7 +69,7 @@
             this.toolStripLabel1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(395, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(581, 25);
             this.toolStrip1.TabIndex = 3;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -84,7 +84,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(395, 296);
+            this.ClientSize = new System.Drawing.Size(581, 296);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.btnFunc);
             this.Controls.Add(this.lblFunc);

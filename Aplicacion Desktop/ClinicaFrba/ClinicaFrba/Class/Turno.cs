@@ -14,10 +14,17 @@ namespace ClinicaFrba.Class
         private Afiliado _afiliado;
         private Profesional _profesional;
         private Cancelacion _cancelacion;
-        private Afiliado _afiliado;
         private string _horaI;
         private string _horaT;
+        private string _estado;
 
+
+        
+        public string estado
+        {
+            get { return _estado; }
+            set { _estado = value; }
+        }
         public decimal codigo
         {
             get { return _codigo; }
@@ -57,11 +64,6 @@ namespace ClinicaFrba.Class
         {
             get { return _cancelacion; }
             set { _cancelacion = value; }
-        }
-        public Afiliado afiliado
-        {
-            get { return _afiliado; }
-            set { _afiliado = value; }
         }
         public string horaI
         {
