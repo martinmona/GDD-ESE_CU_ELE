@@ -85,7 +85,7 @@ namespace ClinicaFrba.Compra_Bono
             }
             catch
             {
-                MessageBox.Show("Afiliado no encontrado");
+                MessageBox.Show("Afiliado no encontrado","ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -117,11 +117,11 @@ namespace ClinicaFrba.Compra_Bono
             }
             if (compraDataAccess.AgregarCompra(laCompra, _afiliadoComprador))
             {
-                MessageBox.Show("Compra de bonos concretada");
+                MessageBox.Show("Compra de bonos concretada","COMPRA BONOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show("Error al realizar la operación");
+                MessageBox.Show("Error al realizar la operación","ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

@@ -90,6 +90,7 @@
             this.Controls.Add(this.lblFunc);
             this.Controls.Add(this.cmbFuncionalidades);
             this.Name = "FrmFuncionalidad";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Funcionalidad";
             this.Load += new System.EventHandler(this.Funcionalidad_Load);
             this.toolStrip1.ResumeLayout(false);

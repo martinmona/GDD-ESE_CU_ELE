@@ -10,7 +10,6 @@ namespace ClinicaFrba.Class
     {
         private decimal _codigo;
 
-        private string _resultado;
         private DateTime _horaLlegada;
         private string _sintomas;
         private string _enfermedades;
@@ -21,11 +20,6 @@ namespace ClinicaFrba.Class
             set { _codigo = value; }
         }
 
-        public string resultado
-        {
-            get { return _resultado; }
-            set { _resultado = value; }
-        }
         public string sintomas
         {
             get { return _sintomas; }

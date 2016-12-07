@@ -5,6 +5,9 @@ drop procedure ESE_CU_ELE.AsignarNroConsulta
 drop procedure ESE_CU_ELE.SPAgregarBono
 drop procedure ESE_CU_ELE.SPObtenerBonosSinUsar
 drop procedure ESE_CU_ELE.SPRegistrarLlegada
+drop procedure ESE_CU_ELE.SPRegistrarResultado
+drop procedure ESE_CU_ELE.SPCancelarTurnoAfiliado
+drop procedure ESE_CU_ELE.SPCancelarTurnoProfesional
 --drop trigger triggerCargarBono
 
 DROP TABLE ESE_CU_ELE.Item
@@ -12,6 +15,7 @@ DROP TABLE ESE_CU_ELE.Compra
 DROP TABLE ESE_CU_ELE.Bono
 DROP TABLE ESE_CU_ELE.Consulta_Medica
 
+DROP TABLE ESE_CU_ELE.TipoCancelacion
 DROP TABLE ESE_CU_ELE.Cancelacion
 DROP TABLE ESE_CU_ELE.Turno
 DROP TABLE ESE_CU_ELE.Agenda

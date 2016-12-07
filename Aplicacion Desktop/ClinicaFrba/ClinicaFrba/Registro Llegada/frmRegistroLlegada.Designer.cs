@@ -95,6 +95,7 @@
             this.dgvTurnos.AllowUserToAddRows = false;
             this.dgvTurnos.AllowUserToDeleteRows = false;
             this.dgvTurnos.AllowUserToOrderColumns = true;
+            this.dgvTurnos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvTurnos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvTurnos.Location = new System.Drawing.Point(59, 215);
             this.dgvTurnos.MultiSelect = false;

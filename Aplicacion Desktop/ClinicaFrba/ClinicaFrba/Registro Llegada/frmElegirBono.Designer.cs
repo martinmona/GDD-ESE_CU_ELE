@@ -37,6 +37,7 @@
             // 
             this.dgvBonos.AllowUserToAddRows = false;
             this.dgvBonos.AllowUserToDeleteRows = false;
+            this.dgvBonos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvBonos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvBonos.Location = new System.Drawing.Point(33, 42);
             this.dgvBonos.MultiSelect = false;

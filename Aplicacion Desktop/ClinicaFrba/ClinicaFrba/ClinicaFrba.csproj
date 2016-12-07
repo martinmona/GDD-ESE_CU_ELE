@@ -92,11 +92,23 @@
     <Compile Include="Abm Rol\SeleccionFuncionalidades.Designer.cs">
       <DependentUpon>SeleccionFuncionalidades.cs</DependentUpon>
     </Compile>
-    <Compile Include="Cancelar Atencion\Form1.cs">
+    <Compile Include="Cancelar Atencion\frmCancelar.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Cancelar Atencion\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Cancelar Atencion\frmCancelar.Designer.cs">
+      <DependentUpon>frmCancelar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cancelar Atencion\frmCancelarAfiliado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cancelar Atencion\frmCancelarAfiliado.Designer.cs">
+      <DependentUpon>frmCancelarAfiliado.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cancelar Atencion\frmCancelarProfesional.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cancelar Atencion\frmCancelarProfesional.Designer.cs">
+      <DependentUpon>frmCancelarProfesional.cs</DependentUpon>
     </Compile>
     <Compile Include="Class\Administrador.cs" />
     <Compile Include="Class\Agenda.cs" />
@@ -105,6 +117,7 @@
     <Compile Include="Class\Dia.cs" />
     <Compile Include="Class\Especialidad.cs" />
     <Compile Include="Class\Profesional.cs" />
+    <Compile Include="Class\TipoCancelacion.cs" />
     <Compile Include="Class\Turno.cs" />
     <Compile Include="Compra Bono\frmCompraBono.cs">
       <SubType>Form</SubType>
@@ -125,7 +138,9 @@
     <Compile Include="DataAccess\afiliadoDataAccess.cs" />
     <Compile Include="DataAccess\agendaDataAccess.cs" />
     <Compile Include="DataAccess\bonoDataAccess.cs" />
+    <Compile Include="DataAccess\cancelacionDataAccess.cs" />
     <Compile Include="DataAccess\compraDataAccess.cs" />
+    <Compile Include="DataAccess\consultaMedicaDataAccess.cs" />
     <Compile Include="DataAccess\especialidadDataAccess.cs" />
     <Compile Include="DataAccess\funcionalidadDataAccess.cs" />
     <Compile Include="DataAccess\personaDataAccess.cs" />
@@ -182,11 +197,17 @@
     <Compile Include="Registro Llegada\frmRegistroLlegada.Designer.cs">
       <DependentUpon>frmRegistroLlegada.cs</DependentUpon>
     </Compile>
-    <Compile Include="Registro Resultado\Form1.cs">
+    <Compile Include="Registro Resultado\frmElegirTurno.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Registro Resultado\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Registro Resultado\frmElegirTurno.Designer.cs">
+      <DependentUpon>frmElegirTurno.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registro Resultado\frmResultados.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Registro Resultado\frmResultados.Designer.cs">
+      <DependentUpon>frmResultados.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Abm Afiliado\Listado.resx">
       <DependentUpon>Listado.cs</DependentUpon>
@@ -202,6 +223,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Rol\SeleccionFuncionalidades.resx">
       <DependentUpon>SeleccionFuncionalidades.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cancelar Atencion\frmCancelar.resx">
+      <DependentUpon>frmCancelar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cancelar Atencion\frmCancelarAfiliado.resx">
+      <DependentUpon>frmCancelarAfiliado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cancelar Atencion\frmCancelarProfesional.resx">
+      <DependentUpon>frmCancelarProfesional.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Compra Bono\frmCompraBono.resx">
       <DependentUpon>frmCompraBono.cs</DependentUpon>
@@ -232,6 +262,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Registro Llegada\frmRegistroLlegada.resx">
       <DependentUpon>frmRegistroLlegada.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Registro Resultado\frmElegirTurno.resx">
+      <DependentUpon>frmElegirTurno.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Registro Resultado\frmResultados.resx">
+      <DependentUpon>frmResultados.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="GD2C2016DataSet.xsc">
       <DependentUpon>GD2C2016DataSet.xsd</DependentUpon>

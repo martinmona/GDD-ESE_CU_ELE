@@ -148,6 +148,7 @@
             this.Controls.Add(this.txtuser);
             this.Controls.Add(this.btnlogin);
             this.Name = "Login";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
             this.Load += new System.EventHandler(this.Login_Load);
             this.toolStrip1.ResumeLayout(false);

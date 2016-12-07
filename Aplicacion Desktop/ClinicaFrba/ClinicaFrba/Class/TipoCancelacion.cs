@@ -6,26 +6,20 @@ using System.Threading.Tasks;
 
 namespace ClinicaFrba.Class
 {
-    public class Cancelacion
+    class TipoCancelacion
     {
         private decimal _codigo;
-        private decimal _tipo;
-        private string _detalle;
-
+        private string _descripcion;
         public decimal codigo
         {
             get { return _codigo; }
             set { _codigo = value; }
         }
-        public decimal tipo
+        public string descripcion
         {
-            get { return _tipo; }
-            set { _tipo = value; }
+            get { return _descripcion; }
+            set { _descripcion = value; }
         }
-        public string detalle
-        {
-            get { return _detalle; }
-            set { _detalle = value; }
-        }
+
     }
 }

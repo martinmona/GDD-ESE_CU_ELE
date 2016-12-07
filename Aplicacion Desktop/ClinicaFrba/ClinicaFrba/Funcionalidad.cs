@@ -63,7 +63,7 @@ namespace ClinicaFrba
             }
             catch
             {
-                MessageBox.Show("Funcionalidad no implementada");
+                MessageBox.Show("Se produjo un error","ERROR",MessageBoxButtons.OK,MessageBoxIcon.Error);
             }
         }
 
@@ -97,6 +97,9 @@ namespace ClinicaFrba
                 case "10":
                     Registro_Llegada.frmRegistroLlegada formRegistroLlegada = new Registro_Llegada.frmRegistroLlegada();
                     formRegistroLlegada.ShowDialog();
+                    break;
+                default:
+                    MessageBox.Show("Funcionalidad no implementada","INFO",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
                     break;
             }
         }

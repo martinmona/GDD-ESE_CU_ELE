@@ -12,6 +12,7 @@ namespace ClinicaFrba.Class
         private Byte _dia;
         private DateTime _horaInicio;
         private DateTime _horaFin;
+        private DateTime _fechaInicio;
         private DateTime _fechaFin;
         private Especialidad _especialidad;
 
@@ -39,6 +40,11 @@ namespace ClinicaFrba.Class
         {
             get { return _fechaFin; }
             set { _fechaFin = value; }
+        }
+        public DateTime fechaInicio
+        {
+            get { return _fechaInicio; }
+            set { _fechaInicio = value; }
         }
         public Especialidad especialidad
         {

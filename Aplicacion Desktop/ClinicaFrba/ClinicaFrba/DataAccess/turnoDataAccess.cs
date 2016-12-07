@@ -19,23 +19,51 @@ namespace ClinicaFrba.DataAccess
             connection.Open();
             return connection;
         }
-
-
-        public static List<Turno> obtenerTurnosxFecha(DateTime laFecha, decimal codigoEspecialidad, decimal codigoProfesional,string where)
+        public static List<Turno> obtenerTurnosxAfiliado(decimal codigoAfiliado, string where)
         {
-                
             List<Turno> listaTurnos = new List<Turno>();
             SqlConnection conn = conectar();
             SqlCommand MiComando = new SqlCommand();
             MiComando.Connection = conn;
-            MiComando.CommandText = "select turn_codigo,turn_hora,turn_codigo_afiliado, turn_estado from ESE_CU_ELE.Turno where CONVERT(date, turn_hora) = CONVERT(date, '"+laFecha+"') and turn_especialidad ="+codigoEspecialidad+" and turn_profesional ="+ codigoProfesional+" "+where;
+            MiComando.CommandText = "select turn_codigo,turn_fecha,turn_codigo_afiliado, turn_estado from ESE_CU_ELE.Turno where turn_codigo_afiliado "+where;
             SqlDataReader reader = MiComando.ExecuteReader();
             while (reader.Read())
             {
                 Turno unTurno = new Turno();
                 Afiliado unAfil = new Afiliado();
                 unTurno.codigo = (decimal)reader["turn_codigo"];
-                unTurno.fecha = (DateTime)reader["turn_hora"];
+                unTurno.fecha = (DateTime)reader["turn_fecha"];
+                decimal codigoAfil = (decimal)reader["turn_codigo_afiliado"];
+                unAfil = afiliadoDataAccess.ObtenerAfiliados("where afil_codigo_persona =" + codigoAfil.ToString())[0];
+                unTurno.afiliado = unAfil;
+                unTurno.estado = (string)reader["turn_estado"];
+                listaTurnos.Add(unTurno);
+            }
+            reader.Close();
+            conn.Close();
+            return listaTurnos;
+        }
+
+        public static List<Turno> obtenerTurnosxFecha(DateTime laFecha, decimal codigoEspecialidad, decimal codigoProfesional, string where)
+        {
+            return obtenerTurnosxFecha(laFecha, laFecha, codigoEspecialidad, codigoProfesional, where);
+        }
+
+        public static List<Turno> obtenerTurnosxFecha(DateTime fechaDesde,DateTime fechaHasta, decimal codigoEspecialidad, decimal codigoProfesional,string where)
+        {
+                
+            List<Turno> listaTurnos = new List<Turno>();
+            SqlConnection conn = conectar();
+            SqlCommand MiComando = new SqlCommand();
+            MiComando.Connection = conn;
+            MiComando.CommandText = "select turn_codigo,turn_fecha,turn_codigo_afiliado, turn_estado from ESE_CU_ELE.Turno where CONVERT(date, turn_hora) >= CONVERT(date, '" + fechaDesde+ "') and CONVERT(date, turn_hora) <= CONVERT(date, '" + fechaHasta + "') and turn_especialidad =" + codigoEspecialidad+" and turn_profesional ="+ codigoProfesional+" "+where;
+            SqlDataReader reader = MiComando.ExecuteReader();
+            while (reader.Read())
+            {
+                Turno unTurno = new Turno();
+                Afiliado unAfil = new Afiliado();
+                unTurno.codigo = (decimal)reader["turn_codigo"];
+                unTurno.fecha = (DateTime)reader["turn_fecha"];
                 decimal codigoAfil = (decimal)reader["turn_codigo_afiliado"];
                 unAfil = afiliadoDataAccess.ObtenerAfiliados("where afil_codigo_persona =" + codigoAfil.ToString())[0];
                 unTurno.afiliado = unAfil;
