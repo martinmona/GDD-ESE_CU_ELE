@@ -22,6 +22,7 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             List<Afiliado> afiliados = afiliadoDataAccess.ObtenerAfiliados("");
             ActualizarGrilla(afiliados);
+            dateTimePicker1.Visible = false;
         }
 
         private void ActualizarGrilla(List<Afiliado> afiliados)
@@ -124,6 +125,22 @@ namespace ClinicaFrba.Abm_Afiliado
         private void btnAlta_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnSeleccion_Click(object sender, EventArgs e)
+        {
+            dateTimePicker1.Visible = true;
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void dateTimePicker1_CloseUp(object sender, EventArgs e)
+        {
+            txtFecha.Text = dateTimePicker1.Value.ToShortDateString();
+            dateTimePicker1.Visible = false;
         }
     }
 }
