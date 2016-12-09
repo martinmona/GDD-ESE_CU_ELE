@@ -15,8 +15,9 @@ namespace ClinicaFrba.Pedir_Turno
     public partial class Turno : Form
     {
         DateTime fecha;
-        public Turno()
+        public Turno(Afiliado afi)
         {
+            
             InitializeComponent();
         }
 
@@ -68,133 +69,133 @@ namespace ClinicaFrba.Pedir_Turno
                     MessageBox.Show("No se atiende los dias domingos");
                     break;
                 default:
-                    //actualizarGrilla(fecha);
+                    actualizarGrilla(fecha);
                     break;
             }
                       
         }
 
-        /* 
+        
           private void actualizarGrilla(DateTime fecha)
         {
             cmbProfesional.ValueMember = "prof_codigo_persona";
+            cmbEspecialidad.ValueMember = "espe_codigo";
             decimal idProfesional = (decimal)cmbProfesional.SelectedValue;
+            decimal codigoEspecialidad = (decimal)cmbEspecialidad.SelectedValue;
             dataGridTurnos.Enabled = true;
             dataGridTurnos.Columns.Clear();
-         
-            List<Turno> listaturnos = TurnosDataAcces.ObtenerTurnos(fecha, idProfesional);
-            GrillaTurnos.AutoGenerateColumns = false;
+            string where = "";
+            List<Turno> listaturnos = turnoDataAccess.obtenerTurnosxFecha(fecha, codigoEspecialidad, idProfesional, where);
+
+            dataGridTurnos.AutoGenerateColumns = false;
             List<Turno> lista = new List<Turno>();
-            for (double i = 12; i <= 19; i = i + 0.5)
+            for (double i = 07; i <= 20; i = i + 0.5)
             {
                 Turno turno = new Turno();
+                 
                 if (i.ToString().Length <= 2)
                 {
                     string hoi = i.ToString() + ":00";
-                    turno.HoraI = hoi;
+                    turno.horaI = hoi;
                     string hof = i.ToString() + ":30";
-                    turno.HoraT = hof;
+                    turno.horaT = hof;
                 }
                 else
                 {
                     string ho = i.ToString().Substring(0, 2);
                     string hoi = ho + ":30";
-                    turno.HoraI = hoi;
+                    turno.horaI = hoi;
                     string hok = (int.Parse(ho) + 1).ToString();
                     string hof = hok + ":00";
-                    turno.HoraT = hof;
+                    turno.horaT = hof;
                 }
-                turno.NombreM = "";
-                turno.NombreP = "";
-                turno.ApellidoM = "";
-                turno.ApellidoP = "";
+
+                turno.nombreAfiliado = "";
+                turno.nombreProfesional = "";
 
                 lista.Add(turno);
             }
-            GrillaTurnos.DataSource = lista;
+            dataGridTurnos.DataSource = lista;
 
-            DataGridViewTextBoxColumn Id = new DataGridViewTextBoxColumn();
-            Id.DataPropertyName = "Id";
-            Id.HeaderText = "Codigo turno";
-            Id.Width = 100;
-            Id.ReadOnly = true;
+            DataGridViewTextBoxColumn Codigo = new DataGridViewTextBoxColumn();
+            Codigo.DataPropertyName = "codigo";
+            Codigo.HeaderText = "Codigo turno";
+            Codigo.Width = 100;
+            Codigo.ReadOnly = true;
 
             DataGridViewTextBoxColumn HoraI = new DataGridViewTextBoxColumn();
-            HoraI.DataPropertyName = "HoraI";
+            HoraI.DataPropertyName = "horaI";
             HoraI.HeaderText = "Hora Inicio";
             HoraI.Width = 100;
             HoraI.ReadOnly = true;
 
             DataGridViewTextBoxColumn HoraT = new DataGridViewTextBoxColumn();
-            HoraT.DataPropertyName = "HoraT";
+            HoraT.DataPropertyName = "horaT";
             HoraT.HeaderText = "Hora Término";
             HoraT.Width = 100;
             HoraT.ReadOnly = true;
 
-            DataGridViewTextBoxColumn NombreP = new DataGridViewTextBoxColumn();
-            NombreP.DataPropertyName = "NombreP";
-            NombreP.HeaderText = "Nombre Paciente";
-            NombreP.Width = 100;
-            NombreP.ReadOnly = true;
+            DataGridViewTextBoxColumn NombreAfiliado = new DataGridViewTextBoxColumn();
+            NombreAfiliado.DataPropertyName = "nombreAfiliado";
+            NombreAfiliado.HeaderText = "Afiliado";
+            NombreAfiliado.Width = 100;
+            NombreAfiliado.ReadOnly = true;
 
-            DataGridViewTextBoxColumn ApellidoP = new DataGridViewTextBoxColumn();
-            ApellidoP.DataPropertyName = "ApellidoP";
-            ApellidoP.HeaderText = "Apellido Paciente";
-            ApellidoP.Width = 100;
-            ApellidoP.ReadOnly = true;
-
-            DataGridViewTextBoxColumn ApellidoM = new DataGridViewTextBoxColumn();
-            ApellidoM.DataPropertyName = "ApellidoM";
-            ApellidoM.HeaderText = "Apellido Medico";
-            ApellidoM.Width = 100;
-            ApellidoM.ReadOnly = true;
-
-            DataGridViewTextBoxColumn NombreM = new DataGridViewTextBoxColumn();
-            NombreM.DataPropertyName = "NombreM";
-            NombreM.HeaderText = "Nombre Medico";
-            NombreM.Width = 100;
-            NombreM.ReadOnly = true;
+            DataGridViewTextBoxColumn NombreProfesional = new DataGridViewTextBoxColumn();
+            NombreProfesional.DataPropertyName = "nombreProfesional";
+            NombreProfesional.HeaderText = "Profesional";
+            NombreProfesional.Width = 100;
+            NombreProfesional.ReadOnly = true;
 
 
 
-            GrillaTurnos.Columns.Add(Id);
-            GrillaTurnos.Columns.Add(HoraI);
-            GrillaTurnos.Columns.Add(HoraT);
-            GrillaTurnos.Columns.Add(NombreP);
-            GrillaTurnos.Columns.Add(ApellidoP);
-            GrillaTurnos.Columns.Add(NombreM);
-            GrillaTurnos.Columns.Add(ApellidoM);
+            dataGridTurnos.Columns.Add(Codigo);
+            dataGridTurnos.Columns.Add(HoraI);
+            dataGridTurnos.Columns.Add(HoraT);
+            dataGridTurnos.Columns.Add(NombreAfiliado);
+            dataGridTurnos.Columns.Add(NombreProfesional);
 
             foreach (Turno t in listaturnos)
             {
-                for (int i = 0; i <= GrillaTurnos.Rows.Count - 1; i++)
+                for (int i = 0; i <= dataGridTurnos.Rows.Count - 1; i++)
                 {
-                    if (t.HoraI == (string)GrillaTurnos.Rows[i].Cells[1].Value)
+                    if (t.horaI == (string)dataGridTurnos.Rows[i].Cells[1].Value)
                     {
-                        GrillaTurnos.Rows[i].Cells[0].Value = t.Id;
-                        GrillaTurnos.Rows[i].Cells[3].Value = t.NombreP;
-                        GrillaTurnos.Rows[i].Cells[4].Value = t.ApellidoP;
-                        GrillaTurnos.Rows[i].Cells[5].Value = t.NombreM;
-                        GrillaTurnos.Rows[i].Cells[6].Value = t.ApellidoM;
-
+                        dataGridTurnos.Rows[i].Cells[0].Value = t.codigo;
+                        dataGridTurnos.Rows[i].Cells[3].Value = t.nombreAfiliado;
+                        dataGridTurnos.Rows[i].Cells[4].Value = t.nombreProfesional;
                     }
                 }
             }
-            GrillaTurnos.Columns[0].Visible = false;
+            dataGridTurnos.Columns[0].Visible = false;
         }
-       private void Calendario_DateChanged(object sender, DateRangeEventArgs e) 
-        {
-            fecha = Calendario.SelectionEnd.Date;
-            if (Calendario.BoldedDates.Contains(fecha))
-            {
-                ActualizarGrilla(fecha);
-                BtnTurno.Enabled = true;
-                this.Size = new Size(930, 518);
-            }
-            else
-            {
-                BtnTurno.Enabled = false; this.Size = new Size(260, 518);
-            }
-        }*/
+
+          private void dataGridTurnos_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+          {
+              if ((string)dataGridTurnos.CurrentRow.Cells[3].Value == "") //al hacer doble click en una celda, si la celda 3 (nombreAfi) esta vacia
+              {
+                  DialogResult respuesta = MessageBox.Show("¿Confirma Turno? ", "Información", MessageBoxButtons.YesNo);
+                  if (respuesta == DialogResult.Yes)
+                  {
+                      string horain = (string)dataGridTurnos.CurrentRow.Cells[1].Value;
+                      string horafin = (string)dataGridTurnos.CurrentRow.Cells[2].Value;
+                      cmbProfesional.ValueMember = "prof_codigo_persona";
+                      decimal idProfesional = cmbProfesional.SelectedValue;
+                      turnoDataAccess.reservarTurno(afi, horain, horafin, idProfesional, fecha);
+                      MessageBox.Show("Turno reservado");
+                      actualizarGrilla(fecha);
+
+                  }
+                  else 
+                  {
+                  }
+              }
+              else 
+              {
+                  MessageBox.Show("Este horario ya se encuentra reservado");
+              }
+          }
+
+
     }
 }

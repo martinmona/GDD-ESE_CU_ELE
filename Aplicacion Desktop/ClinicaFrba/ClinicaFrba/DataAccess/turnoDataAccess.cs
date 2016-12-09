@@ -119,6 +119,22 @@ namespace ClinicaFrba.DataAccess
 
         }
 
+        public static void reservarTurno(Afiliado afiliado, string horaI, string horaF, decimal idProfesional, DateTime fecha)
+        {
+
+            SqlConnection conn = conectar();
+            SqlCommand MiComando = new SqlCommand();
+            MiComando.Connection = conn;
+            MiComando.Parameters.AddWithValue("@afiliado", afiliado);
+            MiComando.Parameters.AddWithValue("@horaI", horaI);
+            MiComando.Parameters.AddWithValue("@horaF", horaF);
+            MiComando.Parameters.AddWithValue("@idProfesional", idProfesional);
+            MiComando.Parameters.AddWithValue("@fecha", fecha);
+            MiComando.CommandText = "INSERT INTO Turnos(turn_fecha, turn_afiliado, turn_horaI, turn_horaF, turn_idProfesional) VALUES(@fecha, @afiliado, @horaI, @horaF, @idProfesional)";
+            MiComando.ExecuteNonQuery();
+            conn.Close();
+        }
+
         /*public static List<Turno> ObtenerTurnos(DateTime fecha, int idmedico)
         {
 
