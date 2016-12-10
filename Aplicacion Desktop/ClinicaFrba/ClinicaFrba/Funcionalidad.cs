@@ -27,7 +27,7 @@ namespace ClinicaFrba
                     break;
                 case "Profesional":
                     unaPersona = new Profesional();
-                    unaPersona = profesionalDataAccess.ObtenerProfesionales("where prof_codigo_persona =" + idUsuario)[0];
+                    unaPersona = profesionalDataAccess.ObtenerProfesionales("and prof_codigo_persona =" + idUsuario)[0];
                     break;
                 case "Admin":
                     unaPersona = new Administrador();
@@ -97,6 +97,10 @@ namespace ClinicaFrba
                 case "10":
                     Registro_Llegada.frmRegistroLlegada formRegistroLlegada = new Registro_Llegada.frmRegistroLlegada();
                     formRegistroLlegada.ShowDialog();
+                    break;
+                case "11":
+                    Cancelar_Atencion.frmCancelar formCancelar = new Cancelar_Atencion.frmCancelar(unaPersona);
+                    formCancelar.ShowDialog();
                     break;
                 default:
                     MessageBox.Show("Funcionalidad no implementada","INFO",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);

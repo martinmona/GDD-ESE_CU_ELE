@@ -44,10 +44,7 @@ namespace ClinicaFrba.Registro_Resultado
                     MessageBox.Show("Se registró la atención del paciente correctamente","Registro de Atencion",MessageBoxButtons.OK,MessageBoxIcon.Information);
                     this.Close();
                 }
-                else
-                {
-                    MessageBox.Show("No se pudo registrar la atención correctamente", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+
             }
         }
     }

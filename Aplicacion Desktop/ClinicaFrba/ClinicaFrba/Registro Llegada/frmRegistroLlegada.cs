@@ -115,10 +115,6 @@ namespace ClinicaFrba.Registro_Llegada
                             MessageBox.Show("Se registró la llegada del afiliado", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxFecha(dtpFecha.Value, (decimal)cbEspecialidadProfesional.SelectedValue, (decimal)cbNombreProfesional.SelectedValue, "and turn_estado not like 'Cancelado'"));
                         }
-                        else
-                        {
-                            MessageBox.Show("Error al registrar la llegada", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
                         
                     }
                     else

@@ -7,6 +7,7 @@ using ClinicaFrba.Class;
 using System.Data.SqlClient;
 using ClinicaFrba.Config;
 using System.Data;
+using System.Windows.Forms;
 
 namespace ClinicaFrba.DataAccess
 {
@@ -56,8 +57,9 @@ namespace ClinicaFrba.DataAccess
                 conn.Close();
                 return true;
             }
-            catch
+            catch(Exception e)
             {
+                MessageBox.Show(e.Message,"MENSAJE DE LA BASE DE DATOS",MessageBoxButtons.OK,MessageBoxIcon.Error);
                 return false;
             }
 

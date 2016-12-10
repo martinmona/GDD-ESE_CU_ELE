@@ -18,12 +18,18 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
 
 
         List<Dia> dataSource;
-        
-
 
         public RegistrarAgenda()
         {
             InitializeComponent();
+        }
+
+        public RegistrarAgenda(Profesional unProf)
+        {
+            InitializeComponent();
+            cbProfesional.SelectedItem = unProf;
+            cbProfesional.Enabled = false;
+            
         }
 
         private void label3_Click(object sender, EventArgs e)
@@ -148,7 +154,7 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            if (dtpHoraFin.Value > dtpHoraInicio.Value && dtpFin.Value>dtpInicio.Value && cbDia.SelectedIndex>=0 && cbDia.SelectedIndex<6)
+            if (dtpHoraFin.Value > dtpHoraInicio.Value && dtpFin.Value>=dtpInicio.Value && cbDia.SelectedIndex>=0 && cbDia.SelectedIndex<6 &&dtpInicio.Value.Date>=DateTime.Now.Date)
             {
                 Profesional prof = new Profesional();
                 prof = (Profesional)cbProfesional.SelectedItem;
@@ -158,15 +164,12 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
                 nuevaAgenda.fechaFin = dtpFin.Value.Date;
                 nuevaAgenda.horaFin = dtpHoraFin.Value;
                 nuevaAgenda.horaInicio = dtpHoraInicio.Value;
-                nuevaAgenda.fechaInicio = dtpInicio.Value;
+                nuevaAgenda.fechaInicio = dtpInicio.Value.Date;
                 if (agendaDataAccess.AgregarAgenda(nuevaAgenda, prof))
                 {
                     MessageBox.Show("Agenda agregada correctamente","Registro de Agenda", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                else
-                {
-                    MessageBox.Show("Error al insertar nueva agenda","ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                
             }
             else MessageBox.Show("Error en los datos ingresados. Verifique que el día ingresado sea correcto, la hora de fin sea mayor que la de inicio, y el día de finalizacion posterior al día de inicio","ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
             

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ClinicaFrba.Config;
 using ClinicaFrba.Class;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
 
 namespace ClinicaFrba.DataAccess
@@ -30,15 +31,14 @@ namespace ClinicaFrba.DataAccess
                 MiComando.CommandText = "INSERT INTO ESE_CU_ELE.Agenda(agen_dia,agen_profesional,agen_especialidad,agen_fecha_inicio,agen_fecha_fin,agen_hora_fin,agen_hora_inicio) VALUES('" + nuevaAgenda.dia + "', " + profesional.codigoPersona + "," + nuevaAgenda.especialidad.codigo + ", '" + nuevaAgenda.fechaInicio.Date + "','" + nuevaAgenda.fechaFin.Date + "', '" + nuevaAgenda.horaFin.TimeOfDay + "', '" + nuevaAgenda.horaInicio.TimeOfDay + "')";
                 MiComando.ExecuteNonQuery();
                 conn.Close();
+            
                 return true;
             }
-            catch
+            catch(Exception e)
             {
+                MessageBox.Show(e.Message,"MENSAJE DE LA BASE DE DATOS",MessageBoxButtons.OK,MessageBoxIcon.Error);
                 return false;
             }
-
-            
-            
         }
     }
 }

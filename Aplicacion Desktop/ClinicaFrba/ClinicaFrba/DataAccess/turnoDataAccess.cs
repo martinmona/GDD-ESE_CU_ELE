@@ -8,6 +8,7 @@ using ClinicaFrba.Class;
 using System.Data.SqlClient;
 using ClinicaFrba.DataAccess;
 using System.Data;
+using System.Windows.Forms;
 
 namespace ClinicaFrba.DataAccess
 {
@@ -90,8 +91,9 @@ namespace ClinicaFrba.DataAccess
                 conn.Close();
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                MessageBox.Show(e.Message, "MENSAJE DE LA BASE DE DATOS", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -118,6 +120,54 @@ namespace ClinicaFrba.DataAccess
 
 
         }
+        public static bool CancelarTurnoAfiliado(decimal turno, decimal tipo, string motivo)
+        {
+            try
+            {
+                SqlConnection conn = conectar();
+                SqlCommand MiComando = new SqlCommand("ESE_CU_ELE.SPCancelarTurnoAfiliado", conn);
+                MiComando.Connection = conn;
+                MiComando.CommandType = CommandType.StoredProcedure;
+                MiComando.Parameters.Add("@turno", SqlDbType.Decimal).Value = turno;
+                MiComando.Parameters.Add("@tipo", SqlDbType.Decimal).Value = tipo;
+                MiComando.Parameters.Add("@motivo", SqlDbType.VarChar).Value = motivo;
+                MiComando.ExecuteNonQuery();
+                conn.Close();
+                return true;
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message, "MENSAJE DE LA BASE DE DATOS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }            
+        }
+        public static bool CancelarTurnoProfesional(decimal codigoProfesional,DateTime fechaDesde, DateTime fechaHasta, decimal tipo, string motivo)
+        {
+            try
+            {
+                SqlConnection conn = conectar();
+                SqlCommand MiComando = new SqlCommand("ESE_CU_ELE.SPCancelarTurnoProfesional", conn);
+                MiComando.Connection = conn;
+                MiComando.CommandType = CommandType.StoredProcedure;
+                MiComando.Parameters.Add("@profesional", SqlDbType.Decimal).Value = codigoProfesional;
+                MiComando.Parameters.Add("@fechaDesde", SqlDbType.DateTime).Value = fechaDesde.Date;
+                MiComando.Parameters.Add("@fechaHasta", SqlDbType.DateTime).Value = fechaHasta.Date;
+                MiComando.Parameters.Add("@tipo", SqlDbType.Decimal).Value = tipo;
+                MiComando.Parameters.Add("@motivo", SqlDbType.VarChar).Value = motivo;
+                MiComando.ExecuteNonQuery();
+                conn.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "MENSAJE DE LA BASE DE DATOS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+
+
+        }
+
 
         public static void reservarTurno(Afiliado afiliado, string horaI, string horaF, decimal idProfesional, DateTime fecha)
         {

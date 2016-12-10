@@ -90,7 +90,11 @@ namespace ClinicaFrba.Cancelar_Atencion
         {
             if (dgvTurnos.SelectedRows.Count > 0 && txtMotivo.Text.Length>0)
             {
-
+                Turno turnoElegido = (Turno)dgvTurnos.SelectedRows[0].DataBoundItem;
+                if (turnoDataAccess.CancelarTurnoAfiliado(turnoElegido.codigo, (decimal)cbTipo.SelectedValue, txtMotivo.Text)){
+                    MessageBox.Show("Turno cancelado con exito", "CANCELACION", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    
+                }
             }
             else
             {

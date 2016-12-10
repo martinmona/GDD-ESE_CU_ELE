@@ -157,12 +157,13 @@ go
 create trigger triggerCargarAgendas on ESE_CU_ELE.Agenda instead of insert
 as
 begin
-	declare @profesional numeric(18,0), @especialidad numeric(18,0), @dia tinyint, @horaInicio time(0), @horaFin time(0), @fechaFin date
-	select @profesional=agen_profesional, @especialidad=agen_especialidad,@dia=agen_dia,@horaInicio=agen_hora_inicio, @horaFin=agen_hora_fin,@fechaFin=agen_fecha_fin from inserted
+	declare @profesional numeric(18,0), @especialidad numeric(18,0), @dia tinyint, @horaInicio time(0), @horaFin time(0),@fechaInicio date, @fechaFin date
+	select @profesional=agen_profesional, @especialidad=agen_especialidad,@dia=agen_dia,@horaInicio=agen_hora_inicio, @horaFin=agen_hora_fin,@fechaInicio=agen_fecha_inicio,@fechaFin=agen_fecha_fin from inserted
 
-	if(((select sum(datediff(minute,agen_hora_inicio,agen_hora_fin)) from ESE_CU_ELE.Agenda where agen_profesional=@profesional and GETDATE()<agen_fecha_fin)+DATEDIFF(minute, @horaInicio,@horaFin))<2880)
+	
+	if((isnull((select sum(datediff(minute,agen_hora_inicio,agen_hora_fin)) from ESE_CU_ELE.Agenda where agen_profesional=@profesional and ((convert(date,agen_fecha_inicio,111) <= @fechaInicio and convert(date,agen_fecha_fin,111) >=@fechaFin)or (convert(date,agen_fecha_fin,111)>=@fechaInicio and convert(date,agen_fecha_fin,111)<=@fechaFin)or(convert(date,agen_fecha_inicio,111)>=@fechaInicio and convert(date, agen_fecha_inicio, 111)<=@fechaFin))group by agen_dia,agen_especialidad,agen_hora_fin,agen_hora_inicio),0)+DATEDIFF(minute, @horaInicio,@horaFin))<=2880)
 	begin
-		insert into ESE_CU_ELE.Agenda (agen_dia,agen_profesional,agen_especialidad,agen_hora_inicio,agen_hora_fin,agen_fecha_fin) values(@dia,@profesional,@especialidad,@horaInicio,@horaFin,@fechaFin)
+		insert into ESE_CU_ELE.Agenda (agen_dia,agen_profesional,agen_especialidad,agen_hora_inicio,agen_hora_fin,agen_fecha_fin,agen_fecha_inicio) values(@dia,@profesional,@especialidad,@horaInicio,@horaFin,@fechaFin,@fechaInicio)
 	end
 	else
 	begin
@@ -339,7 +340,7 @@ go
 	SI FINALIZA DENTRO DEL RANGO SE MODIFICA LA FECHA DE FINALIZACION
 	SI INICIA DENTRO DEL RANGO SE MODIFICA LA FECHA DE INICIO
 	SI LA FRANJA DE CANCELACION ESTA DENTRO DEL INICIO Y FIN DE AGENDA, SE MODIFICARÁ EL FIN DE LA AGENDA Y SE INSERTARÁ UNA NUEVA CON INICIO IGUAL AL FIN DE LA FRANJA
-
+*/
 create procedure ESE_CU_ELE.SPCancelarTurnoProfesional(@profesional numeric(18,0), @fechaDesde datetime,@fechaHasta datetime,@tipo numeric(18,0),@motivo varchar(255))
 as
 begin
@@ -347,27 +348,58 @@ begin
 	BEGIN TRANSACTION;
 	BEGIN TRY
 		declare @turno numeric(18,0)
-		declare unCursor cursor for select turn_codigo from ESE_CU_ELE.Turno where turn_profesional=@profesional and datepart(date,turn_fecha) >= @fechaDesde and datepart(date,turn_fecha) <=@fechaHasta
+		declare unCursor cursor for select turn_codigo from ESE_CU_ELE.Turno where turn_profesional=@profesional and convert(date,turn_fecha,111) >= @fechaDesde and convert(date,turn_fecha,111) <=@fechaHasta
 		open unCursor
 		fetch next from unCursor into @turno
 		while @@FETCH_STATUS = 0
 		Begin
+			--ACTUALIZA EL ESTADO DE LOS TURNOS A CANCELADO Y GENERA EL TIPO Y DETALLE DE CANCELACION
 			update ESE_CU_ELE.Turno set turn_estado ='Cancelado' where turn_codigo=@turno
 			insert into ESE_CU_ELE.Cancelacion (canc_codigo_turno,canc_tipo,canc_detalle) values (@turno,@tipo,@motivo) 	
+			fetch next from unCursor into @turno
 		End
 		close unCursor
 		deallocate unCursor
-		declare @agenda numeric(18,0)
-		declare unCursor cursor for select agen_codigo from ESE_CU_ELE.Agenda where turn_profesional=@profesional and datepart(date,turn_fecha) >= @fechaDesde and datepart(date,turn_fecha) <=@fechaHasta
-		open unCursor
-		fetch next from unCursor into @turno
+		declare @agenda numeric(18,0),@agendaDesde datetime,@agendaHasta datetime
+		declare otroCursor cursor for select agen_codigo,agen_fecha_inicio,agen_fecha_fin from ESE_CU_ELE.Agenda where agen_profesional=@profesional and ((convert(date,agen_fecha_inicio,111) <= @fechaDesde and convert(date,agen_fecha_fin,111) >=@fechaHasta)or (convert(date,agen_fecha_inicio,111)>=@fechaDesde and convert(date,agen_fecha_inicio,111)<=@fechaHasta)or(convert(date,agen_fecha_fin,111)<=@fechaHasta and convert(date, agen_fecha_fin, 111)>=@fechaDesde))
+		open otroCursor
+		fetch next from otroCursor into @agenda,@agendaDesde,@agendaHasta
 		while @@FETCH_STATUS = 0
 		Begin
-			update ESE_CU_ELE.Turno set turn_estado ='Cancelado' where turn_codigo=@turno
-			insert into ESE_CU_ELE.Cancelacion (canc_codigo_turno,canc_tipo,canc_detalle) values (@turno,@tipo,@motivo) 	
+		
+			if(cast(@agendaDesde as date)<cast(@fechaDesde as date)and cast(@agendaHasta as date)>cast( @fechaHasta as date))
+			begin
+				--MODIFICO EL FIN DE LA AGENDA Y GENERO UNA NUEVA CON FECHA INICIO IGUAL A FECHAHASTA+1
+				insert into ESE_CU_ELE.Agenda (agen_profesional,agen_especialidad,agen_dia,agen_fecha_inicio, agen_fecha_fin,agen_hora_inicio,agen_hora_fin) 
+					select @profesional,a1.agen_especialidad,a1.agen_dia,dateadd(day,1,@fechaHasta),a1.agen_fecha_fin,a1.agen_hora_inicio,a1.agen_hora_fin from ESE_CU_ELE.Agenda a1 where a1.agen_codigo=@agenda
+				update ESE_CU_ELE.Agenda set agen_fecha_fin=DATEADD(DAY, -1, @fechaDesde) where agen_codigo=@agenda
+				
+
+			end
+			else
+			if(cast(@agendaDesde as date)>=cast(@fechaDesde as date) and cast(@agendaDesde as date)<=cast(@fechaHasta as date))
+			begin
+				if(cast(@agendaHasta as date)>=cast(@fechaDesde as date) and cast(@agendaHasta as date)<=cast(@fechaHasta as date))
+				begin
+					--LA AGENDA ESTA DENTRO DEL RANGO. LA ELIMINO
+					delete from ESE_CU_ELE.Agenda where agen_codigo=@agenda
+				end
+				else
+				begin
+					--FECHA INICIO ENTRE RANGO
+					update ESE_CU_ELE.Agenda set agen_fecha_inicio=DATEADD(DAY, 1, @fechaHasta) where agen_codigo=@agenda
+				end
+			end
+			else
+			if(cast(@agendaHasta as date)>=cast(@fechaDesde as date) and cast(@agendaHasta as date)<=cast(@fechaHasta as date))
+			begin
+				--FECHA FIN ENTRE EL RANGO
+				update ESE_CU_ELE.Agenda set agen_fecha_fin=DATEADD(DAY, -1, @fechaDesde) where agen_codigo=@agenda
+			end
+			fetch next from otroCursor into @agenda,@agendaDesde,@agendaHasta
 		End
-		close unCursor
-		deallocate unCursor
+		close otroCursor
+		deallocate otroCursor
 		
     COMMIT TRANSACTION;
 	END TRY
@@ -383,9 +415,8 @@ begin
 
       ROLLBACK TRANSACTION;
 
-    RAISERROR ('Error al registrar llegada: %d: %s', 16, 1, @error, @message);
+    RAISERROR ('Error al cancelar turno: %d: %s', 16, 1, @error, @message);
 END CATCH;
 end
 
 go
-*/

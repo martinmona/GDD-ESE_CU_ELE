@@ -57,7 +57,51 @@ namespace ClinicaFrba.Cancelar_Atencion
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
+            //Verifico que elija una fecha despues de hoy y haya ingresado motivo
+            if(dtpDesde.Value>DateTime.Now && txtMotivo.TextLength > 0)
+            {
 
+                if (checkRango.Checked)
+                {
+                    //ES UN RANGO DE FECHAS
+                    if (dtpDesde.Value < dtpHasta.Value)
+                    {
+                        if(turnoDataAccess.CancelarTurnoProfesional(_profesional.codigoPersona, dtpDesde.Value, dtpHasta.Value, (decimal)cbTipo.SelectedValue, txtMotivo.Text))
+                        {
+                            //SE CANCELARON LOS TURNOS
+                            MessageBox.Show("Turnos cancelados con exito", "CANCELACION", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            
+                        }
+                        else
+                        {
+                            //ERROR AL INTENTAR CANCELAR
+                            MessageBox.Show("No se pudo cancelar el turno", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Elija un rango de fechas valido", "ATENCION", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
+                }
+                else
+                {
+                    if (turnoDataAccess.CancelarTurnoProfesional(_profesional.codigoPersona, dtpDesde.Value, dtpDesde.Value, (decimal)cbTipo.SelectedValue, txtMotivo.Text))
+                    {
+                        //SE CANCELARON LOS TURNOS
+                        MessageBox.Show("Turnos cancelados con exito", "CANCELACION", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        
+                    }
+                    else
+                    {
+                        //ERROR AL INTENTAR CANCELAR
+                        MessageBox.Show("No se pudo cancelar el turno", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Elija una fecha posterior a hoy y/o complete el campo motivo", "ATENCION", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
         }
     }
 }
