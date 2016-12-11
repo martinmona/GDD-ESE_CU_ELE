@@ -24,7 +24,7 @@ namespace ClinicaFrba.DataAccess
             SqlConnection conn = conectar();
             SqlCommand MiComando = new SqlCommand();
             MiComando.Connection = conn;
-            MiComando.CommandText = " Select espe_codigo,espe_descripcion from ESE_CU_ELE.Especialidad" + where;
+            MiComando.CommandText = " Select espe_codigo,espe_descripcion from ESE_CU_ELE.Especialidad " + where+" order by 2";
             SqlDataReader reader = MiComando.ExecuteReader();
             while (reader.Read())
             {

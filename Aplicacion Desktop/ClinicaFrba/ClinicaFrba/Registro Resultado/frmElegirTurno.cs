@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClinicaFrba.Class;
 using ClinicaFrba.DataAccess;
+using ClinicaFrba.Config;
 
 namespace ClinicaFrba.Registro_Resultado
 {
@@ -19,7 +20,7 @@ namespace ClinicaFrba.Registro_Resultado
         {
             _profesional = elProf;
             InitializeComponent();
-            dtpFecha.Value = DateTime.Now;
+            dtpFecha.Value = BD.obtenerFecha();
             List<Especialidad> especialidades = especialidadDataAccess.ObtenerEspecialidadesXProfesional(_profesional.codigoPersona);
 
             ActualizarComboBoxEsp(especialidades);
@@ -95,15 +96,18 @@ namespace ClinicaFrba.Registro_Resultado
 
         private void dgvTurnos_DoubleClick(object sender, EventArgs e)
         {
-            Turno turnoElegido = (Turno)dgvTurnos.SelectedRows[0].DataBoundItem;
-
-            DialogResult dialogResult = MessageBox.Show("¿Desea atender al afiliado " + turnoElegido.afiliadoNombre, "Resultados de Atencion", MessageBoxButtons.YesNo);
-            if (dialogResult == DialogResult.Yes)
+            if (dgvTurnos.SelectedRows.Count > 0)
             {
-                frmResultados formResultado = new frmResultados(turnoElegido);
-                formResultado.ShowDialog(this);
-                ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxFecha(dtpFecha.Value, (decimal)cbEspecialidad.SelectedValue, _profesional.codigoPersona, "and turn_estado = 'Esperando'"));
+                Turno turnoElegido = (Turno)dgvTurnos.SelectedRows[0].DataBoundItem;
 
+                DialogResult dialogResult = MessageBox.Show("¿Desea atender al afiliado " + turnoElegido.afiliadoNombre, "Resultados de Atencion", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    frmResultados formResultado = new frmResultados(turnoElegido);
+                    formResultado.ShowDialog(this);
+                    ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxFecha(dtpFecha.Value, (decimal)cbEspecialidad.SelectedValue, _profesional.codigoPersona, "and turn_estado = 'Esperando'"));
+
+                }
             }
         }
     }

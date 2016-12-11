@@ -20,13 +20,13 @@ namespace ClinicaFrba.Cancelar_Atencion
             {
                 Afiliado unAfiliado = (Afiliado)unaPersona;
                 frmCancelarAfiliado formCancelarAfiliado = new frmCancelarAfiliado(unAfiliado);
-                formCancelarAfiliado.ShowDialog();
+                formCancelarAfiliado.ShowDialog(this);
             }
             else if(unaPersona.GetType() == typeof(Profesional))
             {
                 Profesional unProfesional = (Profesional)unaPersona;
                 frmCancelarProfesional formCancelarProfesional = new frmCancelarProfesional(unProfesional);
-                formCancelarProfesional.ShowDialog();
+                formCancelarProfesional.ShowDialog(this);
             }
             this.Close();
         }

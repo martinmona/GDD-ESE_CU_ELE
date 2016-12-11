@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClinicaFrba.Class;
 using ClinicaFrba.DataAccess;
+using ClinicaFrba.Config;
 
 namespace ClinicaFrba.Cancelar_Atencion
 {
@@ -26,8 +27,8 @@ namespace ClinicaFrba.Cancelar_Atencion
         {
             checkRango.Checked = false;
             dtpHasta.Enabled = false;
-            dtpDesde.MinDate = DateTime.Now.AddDays(1);
-            dtpDesde.Value= DateTime.Now.AddDays(1);
+            dtpDesde.MinDate = BD.obtenerFecha().AddDays(1);
+            dtpDesde.Value= BD.obtenerFecha().AddDays(1);
             ActualizarComboBoxTipos(cancelacionDataAccess.ObtenerTipoCancelacion());
 
         }
@@ -58,7 +59,7 @@ namespace ClinicaFrba.Cancelar_Atencion
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             //Verifico que elija una fecha despues de hoy y haya ingresado motivo
-            if(dtpDesde.Value>DateTime.Now && txtMotivo.TextLength > 0)
+            if(dtpDesde.Value>BD.obtenerFecha() && txtMotivo.TextLength > 0)
             {
 
                 if (checkRango.Checked)

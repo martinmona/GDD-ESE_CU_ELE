@@ -43,6 +43,7 @@
             // 
             // cbEspecialidadProfesional
             // 
+            this.cbEspecialidadProfesional.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbEspecialidadProfesional.FormattingEnabled = true;
             this.cbEspecialidadProfesional.Location = new System.Drawing.Point(6, 57);
             this.cbEspecialidadProfesional.Name = "cbEspecialidadProfesional";
@@ -52,6 +53,7 @@
             // 
             // cbNombreProfesional
             // 
+            this.cbNombreProfesional.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbNombreProfesional.FormattingEnabled = true;
             this.cbNombreProfesional.Location = new System.Drawing.Point(289, 57);
             this.cbNombreProfesional.Name = "cbNombreProfesional";

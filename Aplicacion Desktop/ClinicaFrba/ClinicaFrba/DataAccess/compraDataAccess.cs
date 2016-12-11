@@ -23,7 +23,7 @@ namespace ClinicaFrba.DataAccess
 
             try
             {
-                laCompra.fecha = DateTime.Now;
+                laCompra.fecha = BD.obtenerFecha();
                 SqlConnection conn = conectar();
                 SqlCommand MiComando = new SqlCommand("insert into ESE_CU_ELE.Compra (comp_afiliado,comp_fecha,comp_total) values(@codigoPersona,@fecha,@total)",conn);
                 MiComando.Parameters.AddWithValue("@codigoPersona", elAfiliado.codigoPersona);

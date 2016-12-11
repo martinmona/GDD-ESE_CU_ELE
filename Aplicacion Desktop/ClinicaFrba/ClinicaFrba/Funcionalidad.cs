@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClinicaFrba.Class;
 using ClinicaFrba.DataAccess;
+using ClinicaFrba.Config;
+
 namespace ClinicaFrba
 {
     public partial class FrmFuncionalidad : Form
@@ -45,8 +47,7 @@ namespace ClinicaFrba
 
         private void Funcionalidad_Load(object sender, EventArgs e)
         {
-           
-            System.Console.WriteLine("entro");
+            lblFecha.Text = "Fecha actual: " + BD.obtenerFecha().Date.ToLongDateString();
             List<Funcionalidad> funcionalidades = funcionalidadDataAccess.obtenerFuncionalidadesPorRol(idRol);
             cmbFuncionalidades.DataSource = funcionalidades;
             cmbFuncionalidades.DisplayMember = "descripcion";
@@ -58,13 +59,14 @@ namespace ClinicaFrba
         {
             try
             {
-
                 irAFuncionalidad((decimal)cmbFuncionalidades.SelectedValue);
             }
             catch
             {
-                MessageBox.Show("Se produjo un error","ERROR",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show("Se produjo un error", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            
+            
         }
 
         private void toolStripLabel1_Click(object sender, EventArgs e)
@@ -87,12 +89,16 @@ namespace ClinicaFrba
                     formAfi.ShowDialog();
                     break;
                 case "7":
-                    Registrar_Agenta_Medico.RegistrarAgenda formRegAg= new Registrar_Agenta_Medico.RegistrarAgenda();
+                    Registrar_Agenta_Medico.RegistrarAgenda formRegAg= new Registrar_Agenta_Medico.RegistrarAgenda(unaPersona);
                     formRegAg.ShowDialog();
                     break;
                 case "8":
                     Compra_Bono.frmCompraBono formCompraBono = new Compra_Bono.frmCompraBono(unaPersona);
                     formCompraBono.ShowDialog();
+                    break;
+                case "9":
+                    Pedir_Turno.frmPedirTurno formPedirTurno = new Pedir_Turno.frmPedirTurno(unaPersona);
+                    formPedirTurno.ShowDialog();
                     break;
                 case "10":
                     Registro_Llegada.frmRegistroLlegada formRegistroLlegada = new Registro_Llegada.frmRegistroLlegada();

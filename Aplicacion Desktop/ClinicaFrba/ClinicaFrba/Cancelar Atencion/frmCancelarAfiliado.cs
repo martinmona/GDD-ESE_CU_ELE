@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClinicaFrba.Class;
 using ClinicaFrba.DataAccess;
+using ClinicaFrba.Config;
 
 namespace ClinicaFrba.Cancelar_Atencion
 {
@@ -24,7 +25,7 @@ namespace ClinicaFrba.Cancelar_Atencion
 
         private void frmCancelarAfiliado_Load(object sender, EventArgs e)
         {
-            ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxAfiliado(_afiliado.codigoPersona, "and turn_estado='Pedido' and CONVERT(date, turn_hora)> CONVERT(date," + DateTime.Now +" )"));
+            ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxAfiliado(_afiliado.codigoPersona, " and turn_estado='Pedido' and CONVERT(date, turn_fecha)> '" + BD.obtenerFecha().Date +"'"));
             ActualizarComboBoxTipos(cancelacionDataAccess.ObtenerTipoCancelacion());
 
         }
@@ -93,7 +94,7 @@ namespace ClinicaFrba.Cancelar_Atencion
                 Turno turnoElegido = (Turno)dgvTurnos.SelectedRows[0].DataBoundItem;
                 if (turnoDataAccess.CancelarTurnoAfiliado(turnoElegido.codigo, (decimal)cbTipo.SelectedValue, txtMotivo.Text)){
                     MessageBox.Show("Turno cancelado con exito", "CANCELACION", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    
+                    ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxAfiliado(_afiliado.codigoPersona, " and turn_estado='Pedido' and CONVERT(date, turn_fecha)> '" + BD.obtenerFecha().Date + "'"));
                 }
             }
             else

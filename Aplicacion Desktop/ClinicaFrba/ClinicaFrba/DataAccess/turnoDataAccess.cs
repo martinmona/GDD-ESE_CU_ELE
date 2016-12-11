@@ -26,7 +26,7 @@ namespace ClinicaFrba.DataAccess
             SqlConnection conn = conectar();
             SqlCommand MiComando = new SqlCommand();
             MiComando.Connection = conn;
-            MiComando.CommandText = "select turn_codigo,turn_fecha,turn_codigo_afiliado, turn_estado from ESE_CU_ELE.Turno where turn_codigo_afiliado "+where;
+            MiComando.CommandText = "select turn_codigo,turn_fecha,turn_codigo_afiliado, turn_especialidad,turn_estado from ESE_CU_ELE.Turno where turn_codigo_afiliado =" + codigoAfiliado+" "+where;
             SqlDataReader reader = MiComando.ExecuteReader();
             while (reader.Read())
             {
@@ -37,6 +37,8 @@ namespace ClinicaFrba.DataAccess
                 decimal codigoAfil = (decimal)reader["turn_codigo_afiliado"];
                 unAfil = afiliadoDataAccess.ObtenerAfiliados("where afil_codigo_persona =" + codigoAfil.ToString())[0];
                 unTurno.afiliado = unAfil;
+                decimal codigoEspe = (decimal)reader["turn_especialidad"];
+                unTurno.especialidad = especialidadDataAccess.ObtenerEspecialidades("where espe_codigo ="+ codigoEspe.ToString())[0];
                 unTurno.estado = (string)reader["turn_estado"];
                 listaTurnos.Add(unTurno);
             }
@@ -57,7 +59,7 @@ namespace ClinicaFrba.DataAccess
             SqlConnection conn = conectar();
             SqlCommand MiComando = new SqlCommand();
             MiComando.Connection = conn;
-            MiComando.CommandText = "select turn_codigo,turn_fecha,turn_codigo_afiliado, turn_estado from ESE_CU_ELE.Turno where CONVERT(date, turn_hora) >= CONVERT(date, '" + fechaDesde+ "') and CONVERT(date, turn_hora) <= CONVERT(date, '" + fechaHasta + "') and turn_especialidad =" + codigoEspecialidad+" and turn_profesional ="+ codigoProfesional+" "+where;
+            MiComando.CommandText = "select turn_codigo,turn_fecha,turn_codigo_afiliado,turn_especialidad, turn_estado from ESE_CU_ELE.Turno where CONVERT(date, turn_fecha) >= CONVERT(date, '" + fechaDesde+ "') and CONVERT(date, turn_fecha) <= CONVERT(date, '" + fechaHasta + "') and turn_especialidad =" + codigoEspecialidad+" and turn_profesional ="+ codigoProfesional+" "+where;
             SqlDataReader reader = MiComando.ExecuteReader();
             while (reader.Read())
             {
@@ -67,6 +69,8 @@ namespace ClinicaFrba.DataAccess
                 unTurno.fecha = (DateTime)reader["turn_fecha"];
                 decimal codigoAfil = (decimal)reader["turn_codigo_afiliado"];
                 unAfil = afiliadoDataAccess.ObtenerAfiliados("where afil_codigo_persona =" + codigoAfil.ToString())[0];
+                decimal codigoEspe = (decimal)reader["turn_especialidad"];
+                unTurno.especialidad = especialidadDataAccess.ObtenerEspecialidades("where espe_codigo =" + codigoEspe.ToString())[0];
                 unTurno.afiliado = unAfil;
                 unTurno.estado= (string)reader["turn_estado"];
                 listaTurnos.Add(unTurno);
@@ -169,52 +173,29 @@ namespace ClinicaFrba.DataAccess
         }
 
 
-        public static void reservarTurno(Afiliado afiliado, string horaI, string horaF, decimal idProfesional, DateTime fecha)
+        public static bool reservarTurno(Turno nuevoTurno)
         {
-
-            SqlConnection conn = conectar();
-            SqlCommand MiComando = new SqlCommand();
-            MiComando.Connection = conn;
-            MiComando.Parameters.AddWithValue("@afiliado", afiliado);
-            MiComando.Parameters.AddWithValue("@horaI", horaI);
-            MiComando.Parameters.AddWithValue("@horaF", horaF);
-            MiComando.Parameters.AddWithValue("@idProfesional", idProfesional);
-            MiComando.Parameters.AddWithValue("@fecha", fecha);
-            MiComando.CommandText = "INSERT INTO Turnos(turn_fecha, turn_afiliado, turn_horaI, turn_horaF, turn_idProfesional) VALUES(@fecha, @afiliado, @horaI, @horaF, @idProfesional)";
-            MiComando.ExecuteNonQuery();
-            conn.Close();
-        }
-
-        /*public static List<Turno> ObtenerTurnos(DateTime fecha, int idmedico)
-        {
-
-            SqlConnection conn = conectar();
-            SqlCommand MiComando = new SqlCommand();
-            MiComando.Connection = conn;
-            List<Turno> listaturnos = new List<Turno>();
-            MiComando.Parameters.AddWithValue("@Fecha", fecha);
-            MiComando.Parameters.AddWithValue("@IdMedico", idmedico);
-            MiComando.CommandText = "SELECT t.id, t.HoraI, t.HoraT, p.Nombre AS NombreP, p.Apellido AS ApellidoP, m.Nombre AS NombreM, m.Apellido AS ApellidoM FROM Turnos t INNER JOIN Pacientes p ON p.Id = t.IdPaciente INNER JOIN Medicos m ON m.Id = t.IdMedico WHERE t.Fecha = @Fecha And t.IdMedico = @IdMedico";
-            SqlDataReader reader = MiComando.ExecuteReader();
-
-            while (reader.Read())
+            try
             {
-                Turno miturno = new Turno();
-                miturno.Id = (int)reader["Id"];
-                miturno.HoraI = (string)reader["HoraI"];
-                miturno.HoraT = (string)reader["HoraT"];
-                miturno.NombreP = (string)reader["NombreP"];
-                miturno.ApellidoP = (string)reader["ApellidoP"];
-                miturno.NombreM = (string)reader["NombreM"];
-                miturno.ApellidoM = (string)reader["ApellidoM"];
-
-
-                listaturnos.Add(miturno);
+                SqlConnection conn = conectar();
+                SqlCommand MiComando = new SqlCommand();
+                MiComando.Connection = conn;
+                MiComando.Parameters.AddWithValue("@afiliado", nuevoTurno.afiliado.codigoPersona);
+                MiComando.Parameters.AddWithValue("@especialidad", nuevoTurno.especialidad.codigo);
+                MiComando.Parameters.AddWithValue("@idProfesional", nuevoTurno.profesional.codigoPersona);
+                MiComando.Parameters.AddWithValue("@fecha", nuevoTurno.fecha);
+                MiComando.Parameters.AddWithValue("@estado", nuevoTurno.estado);
+                MiComando.CommandText = "INSERT INTO ESE_CU_ELE.Turno(turn_fecha,turn_codigo_afiliado, turn_especialidad,turn_estado,turn_profesional) VALUES(@fecha, @afiliado,@especialidad,@estado, @idProfesional)";
+                MiComando.ExecuteNonQuery();
+                conn.Close();
+                return true;
             }
-            reader.Close();
-            conn.Close();
-            return listaturnos;
-        }*/
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "MENSAJE DE LA BASE DE DATOS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
 
     }
 }

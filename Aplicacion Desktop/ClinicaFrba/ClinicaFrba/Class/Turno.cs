@@ -8,37 +8,21 @@ namespace ClinicaFrba.Class
 {
     public class Turno
     {
-        //agrego horaI horaT y afiliado
+
         private decimal _codigo;
         private DateTime _fecha;
         private Afiliado _afiliado;
-        private string _nombreAfiliado;
-        private string _nombreProfesional;
         private Profesional _profesional;
         private Cancelacion _cancelacion;
-        private string _horaI;
-        private string _horaT;
+        private Especialidad _especialidad;
         private string _estado;
-        public Turno()
-        {
 
-        }
 
         
         public string estado
         {
             get { return _estado; }
             set { _estado = value; }
-        }
-        public string nombreProfesional
-        {
-            get { return _nombreProfesional; }
-            set { _nombreProfesional = value; }
-        }
-        public string nombreAfiliado
-        {
-            get { return _nombreAfiliado; }
-            set { _nombreAfiliado = value; }
         }
         public decimal codigo
         {
@@ -75,20 +59,15 @@ namespace ClinicaFrba.Class
             get { return _profesional; }
             set { _profesional = value; }
         }
+        public Especialidad especialidad
+        {
+            get { return _especialidad; }
+            set { _especialidad = value; }
+        }
         public Cancelacion cancelacion
         {
             get { return _cancelacion; }
             set { _cancelacion = value; }
-        }
-        public string horaI
-        {
-            get { return _horaI; }
-            set { _horaI = value; }
-        }
-        public string horaT
-        {
-            get { return _horaT; }
-            set { _horaT = value; }
         }
         
     }

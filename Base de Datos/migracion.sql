@@ -51,6 +51,8 @@ CREATE TABLE ESE_CU_ELE.Compra (comp_codigo numeric(18,0) primary key IDENTITY(1
 
 CREATE TABLE ESE_CU_ELE.Item (item_codigo numeric(18,0) primary key identity(1,1), item_compra numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Compra(comp_codigo), item_bono numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Bono(bono_codigo))
 
+CREATE TABLE ESE_CU_ELE.Fecha (fechaActual datetime)
+
 go
 
 
@@ -152,16 +154,58 @@ insert into ESE_CU_ELE.Agenda (agen_profesional,agen_especialidad, agen_dia, age
 
 go
 
+ CREATE PROCEDURE ESE_CU_ELE.AsignarFecha (@fecha datetime)
+ AS BEGIN
+ 
+	--Borro el valor anterior
+	DELETE FROM ESE_CU_ELE.Fecha
+	
+	INSERT INTO ESE_CU_ELE.Fecha(fechaActual) VALUES(@fecha)
+	
+ END
+
+ go
+
+--FUNCION PARA OBTENER LA FECHA
+ CREATE FUNCTION ESE_CU_ELE.ObtenerFecha()
+ RETURNS datetime
+ AS BEGIN
+	return (select fechaActual from ESE_CU_ELE.Fecha)
+END
+GO
+
+--PROCEDURE PARA OBTENER LAS AGENDAS DE UN PROFESIONAL Y ESPECIALIDAD
+create procedure ESE_CU_ELE.SPObtenerAgendas(@profesional decimal(18,0),@especialidad decimal(18,0),@fecha datetime)
+as
+begin
+	SELECT agen_dia,agen_hora_inicio,agen_hora_fin 
+	FROM ESE_CU_ELE.Agenda 
+	where agen_profesional=@profesional 
+		and agen_especialidad=@especialidad 
+		and agen_fecha_inicio<=convert(date,@fecha ,111)
+		and agen_fecha_fin>=convert(date,@fecha ,111) 
+		and datepart(weekday,@fecha)=agen_dia 
+	group by agen_dia,agen_hora_inicio,agen_hora_fin
+end
+go
 --TRIGGER QUE VERIFICA QUE EL PROFESIONAL NO SOBREPASE LAS 48hs SEMANALES
 
 create trigger triggerCargarAgendas on ESE_CU_ELE.Agenda instead of insert
 as
 begin
-	declare @profesional numeric(18,0), @especialidad numeric(18,0), @dia tinyint, @horaInicio time(0), @horaFin time(0),@fechaInicio date, @fechaFin date
+	declare @profesional numeric(18,0), @especialidad numeric(18,0), @dia tinyint, @horaInicio time(0), @horaFin time(0),@fechaInicio date, @fechaFin date,@cantidadHoras numeric(18,0)
 	select @profesional=agen_profesional, @especialidad=agen_especialidad,@dia=agen_dia,@horaInicio=agen_hora_inicio, @horaFin=agen_hora_fin,@fechaInicio=agen_fecha_inicio,@fechaFin=agen_fecha_fin from inserted
+	--OBTENGO LA CANTIDAD DE HORAS AGRUPANDO LAS AGENDAS POR DIA Y HORA PARA NO CONTAR MÁS DE UNA VEZ LA MISMA
+	set @cantidadHoras = (isnull((select sum(t.suma) as columna from 
+																	(select sum(datediff(minute,agen_hora_inicio,agen_hora_fin))/count(*) as suma 
+																		from ESE_CU_ELE.Agenda a1
+																		where (agen_profesional=5578 
+																			and ((convert(date,agen_fecha_inicio,111) <= @fechaInicio and convert(date,agen_fecha_fin,111) >=@fechaFin)
+																			or (convert(date,agen_fecha_fin,111)>=@fechaInicio and convert(date,agen_fecha_fin,111)<=@fechaFin)
+																			or(convert(date,agen_fecha_inicio,111)>=@fechaInicio and convert(date, agen_fecha_inicio, 111)<=@fechaFin)) )
+																		group by agen_dia,agen_especialidad,agen_hora_fin,agen_hora_inicio) t ),0)+DATEDIFF(minute, @horaInicio,@horaFin))
 
-	
-	if((isnull((select sum(datediff(minute,agen_hora_inicio,agen_hora_fin)) from ESE_CU_ELE.Agenda where agen_profesional=@profesional and ((convert(date,agen_fecha_inicio,111) <= @fechaInicio and convert(date,agen_fecha_fin,111) >=@fechaFin)or (convert(date,agen_fecha_fin,111)>=@fechaInicio and convert(date,agen_fecha_fin,111)<=@fechaFin)or(convert(date,agen_fecha_inicio,111)>=@fechaInicio and convert(date, agen_fecha_inicio, 111)<=@fechaFin))group by agen_dia,agen_especialidad,agen_hora_fin,agen_hora_inicio),0)+DATEDIFF(minute, @horaInicio,@horaFin))<=2880)
+	if(@cantidadHoras<=2880)
 	begin
 		insert into ESE_CU_ELE.Agenda (agen_dia,agen_profesional,agen_especialidad,agen_hora_inicio,agen_hora_fin,agen_fecha_fin,agen_fecha_inicio) values(@dia,@profesional,@especialidad,@horaInicio,@horaFin,@fechaFin,@fechaInicio)
 	end
@@ -185,6 +229,21 @@ begin
 	set @codigo=@codigo+1
 	insert into ESE_CU_ELE.Bono (bono_codigo,bono_afiliado,bono_fecha_compra,bono_numero_consulta_medica,bono_plan,bono_precio) values (@codigo,@afiliado,@fechaCompra,@numeroConsultaMedica,@plan,@precio)
 	insert into ESE_CU_ELE.Item (item_bono,item_compra) values (@codigo,(select comp_codigo from ESE_CU_ELE.Compra where comp_fecha=@fechaCompra))
+end
+go
+
+--TRIGGER PARA AGREGAR UN NUEVO TURNO ASIGNANDO CODIGO
+
+create trigger triggerCargarTurno on ESE_CU_ELE.Turno instead of insert
+as
+begin
+	declare @codigo numeric(18,0), @afiliado numeric(18,0), @especialidad numeric(18,0), @fecha datetime, @profesional numeric(18,0), @estado varchar(20)
+	select @afiliado=turn_codigo_afiliado,@especialidad=turn_especialidad,@fecha=turn_fecha,@profesional=turn_profesional,@estado=turn_estado from inserted
+
+	select  top 1 @codigo=turn_codigo from ESE_CU_ELE.Turno order by turn_codigo desc
+	set @codigo=@codigo+1
+	insert into ESE_CU_ELE.Turno (turn_codigo,turn_codigo_afiliado,turn_especialidad,turn_fecha,turn_profesional,turn_estado) values (@codigo, @afiliado,@especialidad,@fecha,@profesional,@estado)
+	
 end
 go
 
@@ -252,7 +311,7 @@ begin
 	BEGIN TRANSACTION;
 	BEGIN TRY
 		update ESE_CU_ELE.Turno set turn_estado ='Esperando' where turn_codigo=@turno
-		insert into ESE_CU_ELE.Consulta_Medica (cons_turno,cons_hora_llegada) values (@turno,getdate())
+		insert into ESE_CU_ELE.Consulta_Medica (cons_turno,cons_hora_llegada) values (@turno,ESE_CU_ELE.ObtenerFecha())
 		update ESE_CU_ELE.Bono set bono_afiliado = @afiliado, bono_turno_consulta=@turno,bono_numero_consulta_medica=(select count(*) from ESE_CU_ELE.Bono where bono_afiliado=@afiliado and bono_numero_consulta_medica is not null)+1 where bono_codigo=@bono
     COMMIT TRANSACTION;
 	END TRY
@@ -348,7 +407,7 @@ begin
 	BEGIN TRANSACTION;
 	BEGIN TRY
 		declare @turno numeric(18,0)
-		declare unCursor cursor for select turn_codigo from ESE_CU_ELE.Turno where turn_profesional=@profesional and convert(date,turn_fecha,111) >= @fechaDesde and convert(date,turn_fecha,111) <=@fechaHasta
+		declare unCursor cursor for select turn_codigo from ESE_CU_ELE.Turno where turn_profesional=@profesional and turn_estado='Pedido' and convert(date,turn_fecha,111) >= @fechaDesde and convert(date,turn_fecha,111) <=@fechaHasta
 		open unCursor
 		fetch next from unCursor into @turno
 		while @@FETCH_STATUS = 0

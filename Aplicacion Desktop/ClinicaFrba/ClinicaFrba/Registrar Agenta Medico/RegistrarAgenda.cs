@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClinicaFrba.Class;
 using ClinicaFrba.DataAccess;
+using ClinicaFrba.Config;
 
 namespace ClinicaFrba.Registrar_Agenta_Medico
 {
@@ -19,16 +20,16 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
 
         List<Dia> dataSource;
 
-        public RegistrarAgenda()
+        public RegistrarAgenda(Persona unaPersona)
         {
             InitializeComponent();
-        }
-
-        public RegistrarAgenda(Profesional unProf)
-        {
-            InitializeComponent();
-            cbProfesional.SelectedItem = unProf;
-            cbProfesional.Enabled = false;
+            cargarTodo();
+            if (unaPersona.GetType() == typeof(Profesional))
+            {
+                cbProfesional.SelectedValue = unaPersona.codigoPersona;
+                cbProfesional.Enabled = false;
+            }
+                
             
         }
 
@@ -36,8 +37,12 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
         {
 
         }
-
         private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cargarTodo()
         {
             dataSource = new List<Dia>();
             dataSource.Add(new Dia() { Name = "Lunes", Value = 1 });
@@ -46,7 +51,6 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
             dataSource.Add(new Dia() { Name = "Jueves", Value = 4 });
             dataSource.Add(new Dia() { Name = "Viernes", Value = 5 });
             dataSource.Add(new Dia() { Name = "Sabado", Value = 6 });
-            dataSource.Add(new Dia() { Name = "Domingo", Value = 7 });
             this.cbDia.DataSource = dataSource;
             this.cbDia.DisplayMember = "Name";
             this.cbDia.ValueMember = "Value";
@@ -67,7 +71,7 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
             dtpHoraInicio.MaxDate = DateTime.Parse("19:30");
             dtpHoraFin.MinDate = DateTime.Parse("7:30");
             dtpHoraFin.MaxDate = DateTime.Parse("20:00");
-            
+
             dtpHoraInicio.Value = DateTime.Parse("10:00");
             mPrevDate1 = dtpHoraInicio.Value;
             dtpHoraInicio.ValueChanged += new EventHandler(dateTimePicker1_ValueChanged);
@@ -75,6 +79,7 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
             mPrevDate2 = dtpHoraFin.Value;
             dtpHoraFin.ValueChanged += new EventHandler(dateTimePicker2_ValueChanged);
             cbDia.SelectedIndex = 1;
+
         }
         private DateTime mPrevDate1;
         private bool mBusy1;
@@ -154,7 +159,7 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            if (dtpHoraFin.Value > dtpHoraInicio.Value && dtpFin.Value>=dtpInicio.Value && cbDia.SelectedIndex>=0 && cbDia.SelectedIndex<6 &&dtpInicio.Value.Date>=DateTime.Now.Date)
+            if (dtpHoraFin.Value > dtpHoraInicio.Value && dtpFin.Value>=dtpInicio.Value && cbDia.SelectedIndex>=0 && cbDia.SelectedIndex<6 &&dtpInicio.Value.Date>=BD.obtenerFecha().Date)
             {
                 Profesional prof = new Profesional();
                 prof = (Profesional)cbProfesional.SelectedItem;
@@ -162,8 +167,8 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
                 nuevaAgenda.dia = (Byte)cbDia.SelectedValue;
                 nuevaAgenda.especialidad = (Especialidad)cbEspecialidad.SelectedItem;
                 nuevaAgenda.fechaFin = dtpFin.Value.Date;
-                nuevaAgenda.horaFin = dtpHoraFin.Value;
-                nuevaAgenda.horaInicio = dtpHoraInicio.Value;
+                nuevaAgenda.horaFin = dtpHoraFin.Value.TimeOfDay;
+                nuevaAgenda.horaInicio = dtpHoraInicio.Value.TimeOfDay;
                 nuevaAgenda.fechaInicio = dtpInicio.Value.Date;
                 if (agendaDataAccess.AgregarAgenda(nuevaAgenda, prof))
                 {

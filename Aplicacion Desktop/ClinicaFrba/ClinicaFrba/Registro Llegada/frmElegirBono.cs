@@ -67,8 +67,11 @@ namespace ClinicaFrba.Registro_Llegada
 
         private void dgvBonos_DoubleClick(object sender, EventArgs e)
         {
-            ((frmRegistroLlegada)this.Owner).bonoElegido = (Bono)dgvBonos.SelectedRows[0].DataBoundItem;
-            this.Close();
+            if (dgvBonos.SelectedRows.Count > 0)
+            {
+                ((frmRegistroLlegada)this.Owner).bonoElegido = (Bono)dgvBonos.SelectedRows[0].DataBoundItem;
+                this.Close();
+            }
         }
     }
 }

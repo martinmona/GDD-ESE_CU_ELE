@@ -26,7 +26,7 @@ namespace ClinicaFrba.Registro_Llegada
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            dtpFecha.Value = DateTime.Now;
+            dtpFecha.Value = BD.obtenerFecha();
             List<Especialidad> especialidades = especialidadDataAccess.ObtenerEspecialidades("");
 
             ActualizarComboBoxEsp(especialidades);
@@ -84,53 +84,56 @@ namespace ClinicaFrba.Registro_Llegada
 
         private void dgvTurnos_DoubleClick(object sender, EventArgs e)
         {
+            if (dgvTurnos.SelectedRows.Count > 0)
+            { 
             List<Bono> lstBonosAfiliado;
             Turno turnoElegido = (Turno)dgvTurnos.SelectedRows[0].DataBoundItem;
-            if (turnoElegido.estado.Equals("Esperando")|| turnoElegido.estado.Equals("Atendido"))
+                if (turnoElegido.estado.Equals("Esperando") || turnoElegido.estado.Equals("Atendido"))
 
-            {
-                MessageBox.Show("Ya se registró la llegada del usuario a la clínica","AVISO",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
-            }
-            else if(turnoElegido.fecha.Date < DateTime.Now)
-            {
-                MessageBox.Show("No se puede modificar un turno luego de pasada la hora del mismo", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-            else
-            {
-           
-                DialogResult dialogResult = MessageBox.Show("¿Desea marcar la llegada del afiliado " + turnoElegido.afiliadoNombre, "Registrar Llegada", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
                 {
-                    lstBonosAfiliado = bonoDataAccess.obtenerBonosSinUsar(turnoElegido.afiliado);
-                    //Verifico que tenga bonos disponibles
-                    if (lstBonosAfiliado.Count() > 0)
+                    MessageBox.Show("Ya se registró la llegada del usuario a la clínica", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+                else if (turnoElegido.fecha.Date < BD.obtenerFecha())
+                {
+                    MessageBox.Show("No se puede modificar un turno luego de pasada la hora del mismo", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+                else
+                {
+
+                    DialogResult dialogResult = MessageBox.Show("¿Desea marcar la llegada del afiliado " + turnoElegido.afiliadoNombre, "Registrar Llegada", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes)
                     {
-                        //Selecciona el bono a usar
-                        frmElegirBono formElegirBono = new frmElegirBono(lstBonosAfiliado);
-                        formElegirBono.Text = "Seleccionar bono del Afiliado";
-                        formElegirBono.Owner = this;
-                        formElegirBono.ShowDialog(this);
-                        if(turnoDataAccess.registrarLlegada(turnoElegido.afiliado.codigoPersona, bonoElegido.codigo, turnoElegido.codigo))
+                        lstBonosAfiliado = bonoDataAccess.obtenerBonosSinUsar(turnoElegido.afiliado);
+                        //Verifico que tenga bonos disponibles
+                        if (lstBonosAfiliado.Count() > 0)
                         {
-                            MessageBox.Show("Se registró la llegada del afiliado", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxFecha(dtpFecha.Value, (decimal)cbEspecialidadProfesional.SelectedValue, (decimal)cbNombreProfesional.SelectedValue, "and turn_estado not like 'Cancelado'"));
+                            //Selecciona el bono a usar
+                            frmElegirBono formElegirBono = new frmElegirBono(lstBonosAfiliado);
+                            formElegirBono.Text = "Seleccionar bono del Afiliado";
+                            formElegirBono.Owner = this;
+                            formElegirBono.ShowDialog(this);
+                            if (turnoDataAccess.registrarLlegada(turnoElegido.afiliado.codigoPersona, bonoElegido.codigo, turnoElegido.codigo))
+                            {
+                                MessageBox.Show("Se registró la llegada del afiliado", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxFecha(dtpFecha.Value, (decimal)cbEspecialidadProfesional.SelectedValue, (decimal)cbNombreProfesional.SelectedValue, "and turn_estado not like 'Cancelado'"));
+                            }
+
                         }
-                        
-                    }
-                    else
-                    {
-                        //No tiene bonos. Pregunta si desea comprar ahora
-                        DialogResult drCompraBono = MessageBox.Show("El afiliado no dispone de bonos para utilizar. ¿Desea adquirir bonos ahora?", "Comprar Bonos", MessageBoxButtons.YesNo,MessageBoxIcon.Information);
-                        if (drCompraBono == DialogResult.Yes)
+                        else
                         {
-                            MessageBox.Show("Luego finalizar la compra, cierre la ventana y vuelva a seleccionar el turno", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            Compra_Bono.frmCompraBono formCompraBono = new Compra_Bono.frmCompraBono(turnoElegido.afiliado);
-                            formCompraBono.ShowDialog();
+                            //No tiene bonos. Pregunta si desea comprar ahora
+                            DialogResult drCompraBono = MessageBox.Show("El afiliado no dispone de bonos para utilizar. ¿Desea adquirir bonos ahora?", "Comprar Bonos", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                            if (drCompraBono == DialogResult.Yes)
+                            {
+                                MessageBox.Show("Luego finalizar la compra, cierre la ventana y vuelva a seleccionar el turno", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                Compra_Bono.frmCompraBono formCompraBono = new Compra_Bono.frmCompraBono(turnoElegido.afiliado);
+                                formCompraBono.ShowDialog();
+                            }
                         }
+
                     }
-        
-                   }
-            }
+                }
+           }
             
         }
 

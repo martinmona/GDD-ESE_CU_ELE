@@ -1,6 +1,6 @@
 ﻿namespace ClinicaFrba.Pedir_Turno
 {
-    partial class Turno
+    partial class frmPedirTurno
     {
         /// <summary>
         /// Required designer variable.
@@ -32,11 +32,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cmbEspecialidad = new System.Windows.Forms.ComboBox();
             this.cmbProfesional = new System.Windows.Forms.ComboBox();
-            this.Calendario = new System.Windows.Forms.MonthCalendar();
-            this.dataGridTurnos = new System.Windows.Forms.DataGridView();
+            this.dgHorarios = new System.Windows.Forms.DataGridView();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridTurnos)).BeginInit();
+            this.dtpDia = new System.Windows.Forms.DateTimePicker();
+            ((System.ComponentModel.ISupportInitialize)(this.dgHorarios)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -64,8 +64,9 @@
             this.cmbEspecialidad.FormattingEnabled = true;
             this.cmbEspecialidad.Location = new System.Drawing.Point(117, 33);
             this.cmbEspecialidad.Name = "cmbEspecialidad";
-            this.cmbEspecialidad.Size = new System.Drawing.Size(121, 21);
+            this.cmbEspecialidad.Size = new System.Drawing.Size(147, 21);
             this.cmbEspecialidad.TabIndex = 2;
+            this.cmbEspecialidad.SelectedIndexChanged += new System.EventHandler(this.cmbEspecialidad_SelectedIndexChanged_1);
             // 
             // cmbProfesional
             // 
@@ -74,24 +75,22 @@
             this.cmbProfesional.FormattingEnabled = true;
             this.cmbProfesional.Location = new System.Drawing.Point(117, 88);
             this.cmbProfesional.Name = "cmbProfesional";
-            this.cmbProfesional.Size = new System.Drawing.Size(121, 21);
+            this.cmbProfesional.Size = new System.Drawing.Size(147, 21);
             this.cmbProfesional.TabIndex = 3;
+            this.cmbProfesional.SelectedIndexChanged += new System.EventHandler(this.cmbProfesional_SelectedIndexChanged_1);
             // 
-            // Calendario
+            // dgHorarios
             // 
-            this.Calendario.Location = new System.Drawing.Point(34, 160);
-            this.Calendario.Name = "Calendario";
-            this.Calendario.ShowTodayCircle = false;
-            this.Calendario.TabIndex = 4;
-            // 
-            // dataGridTurnos
-            // 
-            this.dataGridTurnos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridTurnos.Location = new System.Drawing.Point(273, 56);
-            this.dataGridTurnos.Name = "dataGridTurnos";
-            this.dataGridTurnos.Size = new System.Drawing.Size(555, 266);
-            this.dataGridTurnos.TabIndex = 5;
-            this.dataGridTurnos.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridTurnos_CellDoubleClick);
+            this.dgHorarios.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgHorarios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgHorarios.Location = new System.Drawing.Point(273, 56);
+            this.dgHorarios.MultiSelect = false;
+            this.dgHorarios.Name = "dgHorarios";
+            this.dgHorarios.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgHorarios.Size = new System.Drawing.Size(176, 266);
+            this.dgHorarios.TabIndex = 5;
+            this.dgHorarios.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridTurnos_CellDoubleClick);
+            this.dgHorarios.DoubleClick += new System.EventHandler(this.dgHorarios_DoubleClick);
             // 
             // label3
             // 
@@ -111,23 +110,32 @@
             this.label4.TabIndex = 7;
             this.label4.Text = "Haga doble click para reservar turno";
             // 
-            // Turno
+            // dtpDia
+            // 
+            this.dtpDia.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpDia.Location = new System.Drawing.Point(64, 172);
+            this.dtpDia.Name = "dtpDia";
+            this.dtpDia.Size = new System.Drawing.Size(107, 20);
+            this.dtpDia.TabIndex = 8;
+            this.dtpDia.ValueChanged += new System.EventHandler(this.dtpDia_ValueChanged);
+            // 
+            // frmPedirTurno
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(840, 506);
+            this.Controls.Add(this.dtpDia);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.dataGridTurnos);
-            this.Controls.Add(this.Calendario);
+            this.Controls.Add(this.dgHorarios);
             this.Controls.Add(this.cmbProfesional);
             this.Controls.Add(this.cmbEspecialidad);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Name = "Turno";
+            this.Name = "frmPedirTurno";
             this.Text = "Pedido de Turno";
             this.Load += new System.EventHandler(this.Turno_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridTurnos)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgHorarios)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -139,9 +147,9 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cmbEspecialidad;
         private System.Windows.Forms.ComboBox cmbProfesional;
-        private System.Windows.Forms.MonthCalendar Calendario;
-        private System.Windows.Forms.DataGridView dataGridTurnos;
+        private System.Windows.Forms.DataGridView dgHorarios;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.DateTimePicker dtpDia;
     }
 }

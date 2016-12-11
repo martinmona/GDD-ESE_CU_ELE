@@ -10,8 +10,8 @@ namespace ClinicaFrba.Class
     {
         private decimal _codigo;
         private Byte _dia;
-        private DateTime _horaInicio;
-        private DateTime _horaFin;
+        private TimeSpan _horaInicio;
+        private TimeSpan _horaFin;
         private DateTime _fechaInicio;
         private DateTime _fechaFin;
         private Especialidad _especialidad;
@@ -26,12 +26,12 @@ namespace ClinicaFrba.Class
             get { return _dia; }
             set { _dia = value; }
         }
-        public DateTime horaInicio
+        public TimeSpan horaInicio
         {
             get { return _horaInicio; }
             set { _horaInicio = value; }
         }
-        public DateTime horaFin
+        public TimeSpan horaFin
         {
             get { return _horaFin; }
             set { _horaFin = value; }
