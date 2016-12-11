@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClinicaFrba.Class;
+using ClinicaFrba.Config;
 using ClinicaFrba.DataAccess;
 
 namespace ClinicaFrba.Registro_Resultado
@@ -18,6 +19,7 @@ namespace ClinicaFrba.Registro_Resultado
         public frmResultados(Turno unTurno)
         {
             _turno = unTurno;
+            //dtpHora.Value = BD.obtenerFecha();
             InitializeComponent();
             lblPaciente.Text = "Se esta atendiendo al paciente: "+_turno.afiliadoNombre;
         }
@@ -29,11 +31,9 @@ namespace ClinicaFrba.Registro_Resultado
 
         private void btnRegistrar_Click(object sender, EventArgs e)
         {
-            DateTime horaAtencion = new DateTime();
+            DateTime horaAtencion = new DateTime(dtpFecha.Value.Date.Year, dtpFecha.Value.Date.Month, dtpFecha.Value.Date.Day, dtpHora.Value.Hour, dtpHora.Value.Minute,0);
             ConsultaMedica laConsulta = consultaMedicaDataAccess.ObtenerConsulta(_turno.codigo);
-            horaAtencion = dtpFecha.Value;
-            horaAtencion.Add(dtpHora.Value.TimeOfDay);
-            if (horaAtencion<laConsulta.horaLlegada)
+            if (horaAtencion.CompareTo(laConsulta.horaLlegada)<0)
             {
                 MessageBox.Show("La hora de atencion es anterior a la de llegada","ERROR",MessageBoxButtons.OK,MessageBoxIcon.Error);
             }

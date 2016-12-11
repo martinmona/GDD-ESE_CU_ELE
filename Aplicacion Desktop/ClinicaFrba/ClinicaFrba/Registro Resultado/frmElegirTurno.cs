@@ -15,10 +15,12 @@ namespace ClinicaFrba.Registro_Resultado
 {
     public partial class frmElegirTurno : Form
     {
+        private bool cargando;
         private Profesional _profesional;
-        public frmElegirTurno(Profesional elProf)
+        public frmElegirTurno(Persona elProf)
         {
-            _profesional = elProf;
+            cargando = true;
+            _profesional = (Profesional)elProf;
             InitializeComponent();
             dtpFecha.Value = BD.obtenerFecha();
             List<Especialidad> especialidades = especialidadDataAccess.ObtenerEspecialidadesXProfesional(_profesional.codigoPersona);
@@ -26,6 +28,7 @@ namespace ClinicaFrba.Registro_Resultado
             ActualizarComboBoxEsp(especialidades);
             lblProf.Text = "Turnos del profesional: "+_profesional.nombre;
             ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxFecha(dtpFecha.Value, (decimal)cbEspecialidad.SelectedValue, _profesional.codigoPersona, "and turn_estado = 'Esperando'"));
+            cargando = false;
         }
 
         private void frmElegirTurno_Load(object sender, EventArgs e)
@@ -91,7 +94,8 @@ namespace ClinicaFrba.Registro_Resultado
 
         private void cbEspecialidad_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxFecha(dtpFecha.Value, (decimal)cbEspecialidad.SelectedValue, _profesional.codigoPersona, "and turn_estado = 'Esperando'"));
+            if(!cargando)
+                ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxFecha(dtpFecha.Value, (decimal)cbEspecialidad.SelectedValue, _profesional.codigoPersona, "and turn_estado = 'Esperando'"));
         }
 
         private void dgvTurnos_DoubleClick(object sender, EventArgs e)
@@ -109,6 +113,12 @@ namespace ClinicaFrba.Registro_Resultado
 
                 }
             }
+        }
+
+        private void dtpFecha_ValueChanged(object sender, EventArgs e)
+        {
+            if (!cargando)
+                ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxFecha(dtpFecha.Value, (decimal)cbEspecialidad.SelectedValue, _profesional.codigoPersona, "and turn_estado = 'Esperando'"));
         }
     }
 }

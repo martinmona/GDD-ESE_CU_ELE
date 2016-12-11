@@ -32,10 +32,14 @@ namespace ClinicaFrba.DataAccess
             {
                 
                 consulta.codigo = (decimal)reader["cons_turno"];
-                consulta.sintomas = (string)reader["cons_sintomas"];
                 consulta.horaLlegada = (DateTime)reader["cons_hora_llegada"];
-                consulta.enfermedades = (string)reader["cons_enfermedades"];
-                
+                try
+                {
+                    consulta.enfermedades = (string)reader["cons_enfermedades"];
+                    consulta.sintomas = (string)reader["cons_sintomas"];
+                }
+                catch { }
+
             }
             reader.Close();
             conn.Close();

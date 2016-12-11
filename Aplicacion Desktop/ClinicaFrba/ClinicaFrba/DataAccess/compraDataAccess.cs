@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ClinicaFrba.Config;
 using ClinicaFrba.Class;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace ClinicaFrba.DataAccess
 {
@@ -25,10 +26,10 @@ namespace ClinicaFrba.DataAccess
             {
                 laCompra.fecha = BD.obtenerFecha();
                 SqlConnection conn = conectar();
-                SqlCommand MiComando = new SqlCommand("insert into ESE_CU_ELE.Compra (comp_afiliado,comp_fecha,comp_total) values(@codigoPersona,@fecha,@total)",conn);
+                SqlCommand MiComando = new SqlCommand("insert into ESE_CU_ELE.Compra (comp_afiliado,comp_fecha,comp_total) values(@codigoPersona,@fecha,@total)", conn);
                 MiComando.Parameters.AddWithValue("@codigoPersona", elAfiliado.codigoPersona);
                 MiComando.Parameters.AddWithValue("@fecha", laCompra.fecha);
-                MiComando.Parameters.AddWithValue("@total", laCompra.total); 
+                MiComando.Parameters.AddWithValue("@total", laCompra.total);
                 MiComando.ExecuteNonQuery();
                 conn.Close();
                 foreach (Bono elBono in laCompra.bonos)
@@ -36,12 +37,13 @@ namespace ClinicaFrba.DataAccess
                     elBono.fechaCompra = laCompra.fecha;
                     bonoDataAccess.AgregarBono(elBono, elAfiliado);
                 }
-                
 
-               return true;
+
+                return true;
             }
-            catch
-            {
+            catch (Exception e)
+            { 
+                MessageBox.Show(e.Message, "MENSAJE DE LA BASE DE DATOS", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 

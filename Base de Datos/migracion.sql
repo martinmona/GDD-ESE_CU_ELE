@@ -120,6 +120,7 @@ insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('Compra de Bonos'
 insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('Pedir Turno')--Afiliado
 insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('Regsitro de Llegada para Atencion Medica')--Admin
 insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('Cancelar Atencion Medica')--Afiliado y Profesional
+insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('Regsitro de Resultado')--Profesional
 insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('Listado Estadistico')--Admin
 
 --Asigno funcionalidades a los usuarios
@@ -132,9 +133,10 @@ insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) val
 insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (7,2)
 insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (8,2)
 insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (10,2)
-insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (12,2)
+insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (13,2)
 insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (7,3)
 insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (11,3)
+insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (12,3)
 insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (8,1)
 insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (9,1)
 insert into ESE_CU_ELE.RolXFuncionalidad(rolxf_func_codigo,rolxf_rol_codigo) values (11,1)
@@ -222,13 +224,14 @@ go
 create trigger triggerCargarBono on ESE_CU_ELE.Bono instead of insert
 as
 begin
+	set nocount on
 	declare @codigo numeric(18,0), @numeroConsultaMedica numeric(18,0), @plan numeric(18,0), @fechaCompra datetime, @afiliado numeric(18,0), @precio numeric(18,0)
 	select @afiliado=bono_afiliado,@precio=bono_precio,@plan=bono_plan,@fechaCompra=bono_fecha_compra,@numeroConsultaMedica=bono_numero_consulta_medica from inserted
 
 	select  top 1 @codigo=bono_codigo from ESE_CU_ELE.Bono order by bono_codigo desc
 	set @codigo=@codigo+1
 	insert into ESE_CU_ELE.Bono (bono_codigo,bono_afiliado,bono_fecha_compra,bono_numero_consulta_medica,bono_plan,bono_precio) values (@codigo,@afiliado,@fechaCompra,@numeroConsultaMedica,@plan,@precio)
-	insert into ESE_CU_ELE.Item (item_bono,item_compra) values (@codigo,(select comp_codigo from ESE_CU_ELE.Compra where comp_fecha=@fechaCompra))
+	insert into ESE_CU_ELE.Item (item_bono,item_compra) values (@codigo,(select top 1 comp_codigo from ESE_CU_ELE.Compra where comp_fecha=@fechaCompra and comp_afiliado=@afiliado order by comp_codigo desc))
 end
 go
 

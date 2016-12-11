@@ -45,7 +45,7 @@ namespace ClinicaFrba.Config
                     _fechaActual = fecha;
                 }
             }
-            catch (FormatException e)
+            catch 
             {
                 MessageBox.Show("Error al intentar leer fecha desde archivo de configuracion");
             }

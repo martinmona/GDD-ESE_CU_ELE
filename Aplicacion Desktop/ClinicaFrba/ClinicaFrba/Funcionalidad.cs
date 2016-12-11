@@ -57,15 +57,15 @@ namespace ClinicaFrba
 
         private void btnFunc_Click(object sender, EventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 irAFuncionalidad((decimal)cmbFuncionalidades.SelectedValue);
-            }
+            /*}
             catch
             {
                 MessageBox.Show("Se produjo un error", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            
+            */
             
         }
 
@@ -105,8 +105,22 @@ namespace ClinicaFrba
                     formRegistroLlegada.ShowDialog();
                     break;
                 case "11":
-                    Cancelar_Atencion.frmCancelar formCancelar = new Cancelar_Atencion.frmCancelar(unaPersona);
-                    formCancelar.ShowDialog();
+                    if (unaPersona.GetType() == typeof(Afiliado))
+                    {
+                        Afiliado unAfiliado = (Afiliado)unaPersona;
+                        Cancelar_Atencion.frmCancelarAfiliado formCancelarAfiliado = new Cancelar_Atencion.frmCancelarAfiliado(unAfiliado);
+                        formCancelarAfiliado.ShowDialog();
+                    }
+                    else if (unaPersona.GetType() == typeof(Profesional))
+                    {
+                        Profesional unProfesional = (Profesional)unaPersona;
+                        Cancelar_Atencion.frmCancelarProfesional formCancelarProfesional = new Cancelar_Atencion.frmCancelarProfesional(unProfesional);
+                        formCancelarProfesional.ShowDialog();
+                    }
+                    break;
+                case "12":
+                    Registro_Resultado.frmElegirTurno formElegirTurno = new Registro_Resultado.frmElegirTurno(unaPersona);
+                    formElegirTurno.ShowDialog();
                     break;
                 default:
                     MessageBox.Show("Funcionalidad no implementada","INFO",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);

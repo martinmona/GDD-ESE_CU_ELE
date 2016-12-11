@@ -119,10 +119,6 @@ namespace ClinicaFrba.Compra_Bono
             {
                 MessageBox.Show("Compra de bonos concretada","COMPRA BONOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            else
-            {
-                MessageBox.Show("Error al realizar la operación","ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         private void cmbAfiliado_SelectedIndexChanged(object sender, EventArgs e)

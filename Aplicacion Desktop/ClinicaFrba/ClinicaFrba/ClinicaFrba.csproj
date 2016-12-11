@@ -93,12 +93,6 @@
     <Compile Include="Abm Rol\SeleccionFuncionalidades.Designer.cs">
       <DependentUpon>SeleccionFuncionalidades.cs</DependentUpon>
     </Compile>
-    <Compile Include="Cancelar Atencion\frmCancelar.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Cancelar Atencion\frmCancelar.Designer.cs">
-      <DependentUpon>frmCancelar.cs</DependentUpon>
-    </Compile>
     <Compile Include="Cancelar Atencion\frmCancelarAfiliado.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -224,9 +218,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Rol\SeleccionFuncionalidades.resx">
       <DependentUpon>SeleccionFuncionalidades.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Cancelar Atencion\frmCancelar.resx">
-      <DependentUpon>frmCancelar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Cancelar Atencion\frmCancelarAfiliado.resx">
       <DependentUpon>frmCancelarAfiliado.cs</DependentUpon>
