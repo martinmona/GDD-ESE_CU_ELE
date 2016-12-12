@@ -82,7 +82,23 @@ namespace ClinicaFrba.Class{
             }
             return id;
         }
-
+        public static decimal verificarUsuarioPorCodigo(decimal codigo)
+        {
+            decimal id = -1;
+            try
+            {
+                SqlConnection conn = conectar();
+                SqlCommand MiComando = new SqlCommand();
+                MiComando.Connection = conn;
+                MiComando.CommandText = "Select usua_codigo From ESE_CU_ELE.Usuario Where usua_codigo = '" + codigo + "' AND usua_habilitado = 1";
+                id = (decimal)MiComando.ExecuteScalar();
+                conn.Close();
+            }
+            catch
+            {
+            }
+            return id;
+        }
         public static int sumarIntentoFallido(decimal idUser)
         {
             try

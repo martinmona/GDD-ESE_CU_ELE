@@ -21,7 +21,7 @@ namespace ClinicaFrba.Config
         }
         public static SqlConnection ObtenerConexion()
         {
-            string datosConexion = @"Data Source=localhost\SQLSERVER2012; Initial Catalog=GD2C2016; Persist Security Info=True; user id=gd; password=gd2016;";
+            string datosConexion = ConfigurationManager.AppSettings["connection-string"];
             SqlConnection con = new SqlConnection(datosConexion);
             return con;
         }

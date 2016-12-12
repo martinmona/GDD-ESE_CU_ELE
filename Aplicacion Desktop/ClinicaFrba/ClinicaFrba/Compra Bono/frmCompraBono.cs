@@ -106,18 +106,24 @@ namespace ClinicaFrba.Compra_Bono
 
         private void btnComprar_Click(object sender, EventArgs e)
         {
-
-            Compra laCompra = new Compra();
-            laCompra.total = _totalPagar;
-            for (int i = 0; i < Convert.ToInt32(dudCantidad.Text); i++)
+            if (usuarioDataAccess.verificarUsuarioPorCodigo(_afiliadoComprador.codigoPersona)!=-1)
             {
-                Bono unBono = new Bono();
-                unBono.precio = Convert.ToInt32(txtCosto.Text);
-                laCompra.bonos.Add(unBono);
+                Compra laCompra = new Compra();
+                laCompra.total = _totalPagar;
+                for (int i = 0; i < Convert.ToInt32(dudCantidad.Text); i++)
+                {
+                    Bono unBono = new Bono();
+                    unBono.precio = Convert.ToInt32(txtCosto.Text);
+                    laCompra.bonos.Add(unBono);
+                }
+                if (compraDataAccess.AgregarCompra(laCompra, _afiliadoComprador))
+                {
+                    MessageBox.Show("Compra de bonos concretada", "COMPRA BONOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
-            if (compraDataAccess.AgregarCompra(laCompra, _afiliadoComprador))
+            else
             {
-                MessageBox.Show("Compra de bonos concretada","COMPRA BONOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("El usuario se encuentra inhabilitado", "COMPRA BONOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 

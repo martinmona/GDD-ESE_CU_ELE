@@ -105,8 +105,15 @@ namespace ClinicaFrba
                             else
                             {
                                 MessageBox.Show("Se ingresó al sistema");
-                                Rol rol = roles[0];
-                                irAForm(rol.codigo);
+                                try
+                                {
+                                    Rol rol = roles[0];
+                                    irAForm(rol.codigo);
+                                }
+                                catch
+                                {
+                                    MessageBox.Show("El usuario no posee ningun rol asignado");
+                                }
                             }
                         }
                         else

@@ -116,7 +116,7 @@ insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('ABM de Profesion
 insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('ABM de Especialidades Medicas')--Admin *No implementar
 insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('ABM de Plan')--Admin *No Implementar
 insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('Registrar Agenda Profesional')--Admin y Profesional *No implementar
-insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('Compra de Bonos')--Afiliado
+insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('Compra de Bonos')--Afiliado y Admin
 insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('Pedir Turno')--Afiliado
 insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('Regsitro de Llegada para Atencion Medica')--Admin
 insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('Cancelar Atencion Medica')--Afiliado y Profesional
@@ -401,7 +401,7 @@ go
 /*	SI LA AGENDA ESTÁ DENTRO DE LA FRANJA HORARIA SE ELIMINA.
 	SI FINALIZA DENTRO DEL RANGO SE MODIFICA LA FECHA DE FINALIZACION
 	SI INICIA DENTRO DEL RANGO SE MODIFICA LA FECHA DE INICIO
-	SI LA FRANJA DE CANCELACION ESTA DENTRO DEL INICIO Y FIN DE AGENDA, SE MODIFICARÁ EL FIN DE LA AGENDA Y SE INSERTARÁ UNA NUEVA CON INICIO IGUAL AL FIN DE LA FRANJA
+	SI LA FRANJA DE CANCELACION ESTA DENTRO DEL INICIO Y FIN DE AGENDA, SE MODIFICARÁ EL FIN DE LA AGENDA ORIGINAL Y SE INSERTARÁ UNA NUEVA CON INICIO IGUAL AL DÏA SIGUIENTE DEL FIN DE LA FRANJA
 */
 create procedure ESE_CU_ELE.SPCancelarTurnoProfesional(@profesional numeric(18,0), @fechaDesde datetime,@fechaHasta datetime,@tipo numeric(18,0),@motivo varchar(255))
 as
