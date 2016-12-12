@@ -52,6 +52,7 @@
             this.dgvTurnos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvTurnos.Size = new System.Drawing.Size(539, 210);
             this.dgvTurnos.TabIndex = 3;
+            this.dgvTurnos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTurnos_CellContentClick);
             // 
             // label1
             // 

@@ -317,6 +317,14 @@ namespace ClinicaFrba.Abm_Afiliado
         private void btnBaja_Click(object sender, EventArgs e)
         {
             Afiliado selected = (Afiliado)dataGridAfiliados.SelectedRows[0].DataBoundItem;
+
+            List<Turno> listaTurnos = turnoDataAccess.obtenerTurnosxAfiliado(selected.codigoPersona, "and turn_estado LIKE'%edido%' OR turn_estado LIKE '%sperando%'");
+            foreach (Turno turnito in listaTurnos)
+            {
+                turnoDataAccess.CancelarTurnoAfiliado(turnito.codigo, 3, "Baja de usuario");
+            }
+
+
             string habilitado = (string)dataGridAfiliados.SelectedRows[0].Cells[10].Value;
             if (habilitado == "False")
             {
@@ -326,7 +334,9 @@ namespace ClinicaFrba.Abm_Afiliado
             if (usuarioDataAccess.deshabilitar(selected.codigoPersona))
             {
                 MessageBox.Show("Se deshabilito el afiliado seleccionado correctamente");
-                filtrar();
+                string where = filtrar();
+                List<Afiliado> afiliados = afiliadoDataAccess.ObtenerAfiliados(where);
+                ActualizarGrilla(afiliados);
             }
             else
             {

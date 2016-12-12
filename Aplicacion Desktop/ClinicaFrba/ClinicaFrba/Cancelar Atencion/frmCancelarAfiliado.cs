@@ -102,5 +102,10 @@ namespace ClinicaFrba.Cancelar_Atencion
                 MessageBox.Show("Seleccione un turno y/o complete el campo motivo","ATENCION",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
             }
         }
+
+        private void dgvTurnos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
