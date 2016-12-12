@@ -17,6 +17,8 @@ namespace ClinicaFrba.Class
         private List<Turno> _turnos;
         private List<Compra> _compras;
         private int _cantidadFamiliares;
+        private string _habilitado;
+        
 
         public string estadoCivil
         {
@@ -66,6 +68,11 @@ namespace ClinicaFrba.Class
         {
             get { return _cantidadFamiliares; }
             set { _cantidadFamiliares = value; }
+        }
+        public string habilitado
+        {
+            get { return _habilitado; }
+            set { _habilitado = value; }
         }
     }
 }

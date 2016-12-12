@@ -138,5 +138,15 @@ namespace ClinicaFrba.AbmRol
             this.Hide();
         }
 
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtNombre_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

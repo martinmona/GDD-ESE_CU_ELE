@@ -11,7 +11,7 @@ namespace ClinicaFrba.Class
         private decimal _codigo;
         private DateTime _fecha;
         private string _motivo;
-        private Plan _planAntiguo;
+        private string _planAntiguo;
         private decimal _afiliado;
 
         public decimal codigo
@@ -29,7 +29,7 @@ namespace ClinicaFrba.Class
             get { return _motivo; }
             set { _motivo = value; }
         }
-        public Plan planAntiguo
+        public string planAntiguo
         {
             get { return _planAntiguo; }
             set { _planAntiguo = value; }

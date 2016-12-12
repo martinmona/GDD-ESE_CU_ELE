@@ -45,6 +45,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abm Afiliado\alta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Afiliado\alta.Designer.cs">
+      <DependentUpon>alta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Afiliado\historial.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Afiliado\historial.Designer.cs">
+      <DependentUpon>historial.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Afiliado\Listado.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -204,6 +216,12 @@
     <Compile Include="Registro Resultado\frmResultados.Designer.cs">
       <DependentUpon>frmResultados.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Abm Afiliado\alta.resx">
+      <DependentUpon>alta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Afiliado\historial.resx">
+      <DependentUpon>historial.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Abm Afiliado\Listado.resx">
       <DependentUpon>Listado.cs</DependentUpon>
     </EmbeddedResource>

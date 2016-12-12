@@ -175,6 +175,26 @@ namespace ClinicaFrba.Class{
             }
         }
 
+        public static bool agregarUsuario(decimal codigoPers)
+        {
+            try
+            {
+                SqlConnection conn = conectar();
+                SqlCommand MiComando = new SqlCommand();
+                MiComando.Connection = conn;
+                MiComando.CommandText = "insert into ESE_CU_ELE.Usuario (usua_codigo,usua_username,usua_contrasena,usua_habilitado,usua_intentos) select pers_codigo,CONCAT(pers_nombre,pers_codigo),HASHBYTES('SHA2_256', pers_apellido),1,0 from ESE_CU_ELE.Persona where pers_codigo ="+codigoPers.ToString();
+                MiComando.ExecuteNonQuery();
+                MiComando.CommandText = "insert into ESE_CU_ELE.RolXUsuario (rolxu_rol_codigo,rolxu_usua_codigo)  VALUES(1,"+codigoPers.ToString()+")";
+                MiComando.ExecuteNonQuery();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
+
 
 
     }
