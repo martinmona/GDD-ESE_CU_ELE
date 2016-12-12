@@ -315,8 +315,6 @@ namespace ClinicaFrba.Abm_Afiliado
         private void btnHabilitar_Click(object sender, EventArgs e)
         {
             usuarioDataAccess.habilitar(afiliadoModificar.codigoPersona);
-            Abm_Afiliado.Listado abm = new Abm_Afiliado.Listado();
-            abm.Show();
             this.Hide();
         }
 
