@@ -32,7 +32,7 @@ namespace ClinicaFrba.Registro_Llegada
             ActualizarComboBoxEsp(especialidades);
             List<Profesional> profesionales = profesionalDataAccess.ObtenerProfesionalesXEspecialidad(((Especialidad)cbEspecialidadProfesional.SelectedItem).codigo);
             ActualizarComboBoxProf(profesionales);
-
+            dtpFecha.Value = BD.obtenerFecha();
             habilitaEventocb = true;
         }
 

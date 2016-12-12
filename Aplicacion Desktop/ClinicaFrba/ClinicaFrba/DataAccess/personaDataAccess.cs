@@ -11,17 +11,12 @@ namespace ClinicaFrba.DataAccess
 {
     class personaDataAccess
     {
-        public static SqlConnection conectar()
-        {
-            SqlConnection connection = BD.ObtenerConexion();
-            connection.Open();
-            return connection;
-        }
+
 
         public static string ObtenerTipoPersona(decimal idPersona )
         {
             string tipo="";
-            SqlConnection conn = conectar();
+            SqlConnection conn = BD.conectar();
             SqlCommand MiComando = new SqlCommand();
             MiComando.Connection = conn;
             MiComando.CommandText = "select pers_tipo from ESE_CU_ELE.Persona where pers_codigo = " + idPersona;

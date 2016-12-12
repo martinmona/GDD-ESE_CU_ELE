@@ -11,17 +11,12 @@ namespace ClinicaFrba.Class
 
     public class rolDataAccess
     {
-        public static SqlConnection conectar()
-        {
-            SqlConnection connection = BD.ObtenerConexion();
-            connection.Open();
-            return connection;
-        }
+
 
         public static List<Rol> ObtenerRolesPorUsuario(decimal idUser)
         {
             List<Rol> listaRoles = new List<Rol>();
-            SqlConnection conn = conectar();
+            SqlConnection conn = BD.conectar();
             SqlCommand MiComando = new SqlCommand();
             MiComando.Connection = conn;
             MiComando.CommandText = "select rol.* from ESE_CU_ELE.RolXUsuario rolxusu join ESE_CU_ELE.Rol rol on rolxusu.rolxu_rol_codigo=rol.rol_codigo where rolxusu.rolxu_usua_codigo="+idUser+" and rol.rol_habilitado = 1";
@@ -41,7 +36,7 @@ namespace ClinicaFrba.Class
         public static List<Rol> ObtenerRoles(string where)
         {
             List<Rol> listaRoles = new List<Rol>();
-            SqlConnection conn = conectar();
+            SqlConnection conn = BD.conectar();
             SqlCommand MiComando = new SqlCommand();
             MiComando.Connection = conn;
             MiComando.CommandText = "select * from ESE_CU_ELE.Rol "+ where;
@@ -64,7 +59,7 @@ namespace ClinicaFrba.Class
             try
             {
                 decimal codigoRol = obtenerUltimoCodigo() +1;
-                SqlConnection conn = conectar();
+                SqlConnection conn = BD.conectar();
                 SqlCommand MiComando = new SqlCommand();
                 MiComando.Connection = conn;
                 MiComando.CommandText = "INSERT INTO ESE_CU_ELE.Rol(rol_nombre,rol_habilitado) VALUES('" + nombre + "',1)";
@@ -88,7 +83,7 @@ namespace ClinicaFrba.Class
             decimal codigo = 1;
             try
             {
-                SqlConnection conn = conectar();
+                SqlConnection conn = BD.conectar();
                 SqlCommand MiComando = new SqlCommand();
                 MiComando.Connection = conn;
                 MiComando.CommandText = "SELECT TOP 1 rol_codigo from ESE_CU_ELE.Rol order by rol_codigo DESC";
@@ -104,7 +99,7 @@ namespace ClinicaFrba.Class
         {
             try
             {
-                SqlConnection conn = conectar();
+                SqlConnection conn = BD.conectar();
                 SqlCommand MiComando = new SqlCommand();
                 MiComando.Connection = conn;
                 MiComando.CommandText = "DELETE FROM ESE_CU_ELE.RolXFuncionalidad where rolxf_rol_codigo = " + codigo;
@@ -124,7 +119,7 @@ namespace ClinicaFrba.Class
         {
             try
             {
-                SqlConnection conn = conectar();
+                SqlConnection conn = BD.conectar();
                 SqlCommand MiComando = new SqlCommand();
                 MiComando.Connection = conn;
                 MiComando.CommandText = "DELETE FROM ESE_CU_ELE.RolXFuncionalidad where rolxf_rol_codigo = " + codigo;

@@ -39,6 +39,7 @@ namespace ClinicaFrba.Pedir_Turno
             List<Profesional> profesionales = profesionalDataAccess.ObtenerProfesionalesXEspecialidad(((Especialidad)cmbEspecialidad.SelectedItem).codigo);
             actualizarComboBoxProf(profesionales);
             dtpDia.MinDate = BD.obtenerFecha();
+            dtpDia.Value = BD.obtenerFecha();
             actualizarGrilla(dtpDia.Value);
             estoyCargandoTodo = false;
         }

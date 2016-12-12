@@ -19,9 +19,14 @@ namespace ClinicaFrba.Registro_Resultado
         public frmResultados(Turno unTurno)
         {
             _turno = unTurno;
-            //dtpHora.Value = BD.obtenerFecha();
+            
             InitializeComponent();
             lblPaciente.Text = "Se esta atendiendo al paciente: "+_turno.afiliadoNombre;
+            dtpHora.Format = DateTimePickerFormat.Custom;
+            dtpHora.CustomFormat = "HH:mm"; 
+            dtpHora.ShowUpDown = true;
+            dtpHora.Value = BD.obtenerFecha();
+            dtpFecha.Value = BD.obtenerFecha();
         }
 
         private void frmResultados_Load(object sender, EventArgs e)

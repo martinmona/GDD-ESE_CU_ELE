@@ -11,18 +11,13 @@ namespace ClinicaFrba.DataAccess
 {
     class cancelacionDataAccess
     {
-        public static SqlConnection conectar()
-        {
-            SqlConnection connection = BD.ObtenerConexion();
-            connection.Open();
-            return connection;
-        }
+
 
 
         public static List<TipoCancelacion> ObtenerTipoCancelacion()
         {
             List<TipoCancelacion> listaTipos = new List<TipoCancelacion>();
-            SqlConnection conn = conectar();
+            SqlConnection conn = BD.conectar();
             SqlCommand MiComando = new SqlCommand();
             MiComando.Connection = conn;
             MiComando.CommandText = "SELECT tipoc_codigo,tipoc_descripcion from ESE_CU_ELE.TipoCancelacion";

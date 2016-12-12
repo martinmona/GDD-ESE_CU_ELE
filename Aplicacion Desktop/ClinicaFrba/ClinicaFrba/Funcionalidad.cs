@@ -122,6 +122,10 @@ namespace ClinicaFrba
                     Registro_Resultado.frmElegirTurno formElegirTurno = new Registro_Resultado.frmElegirTurno(unaPersona);
                     formElegirTurno.ShowDialog();
                     break;
+                case "13":
+                    Listados.frmListados formListados= new Listados.frmListados();
+                    formListados.ShowDialog();
+                    break;
                 default:
                     MessageBox.Show("Funcionalidad no implementada","INFO",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
                     break;

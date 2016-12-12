@@ -13,17 +13,12 @@ namespace ClinicaFrba.DataAccess
 {
     class consultaMedicaDataAccess
     {
-        public static SqlConnection conectar()
-        {
-            SqlConnection connection = BD.ObtenerConexion();
-            connection.Open();
-            return connection;
-        }
+
 
         public static ConsultaMedica ObtenerConsulta(decimal turnoCodigo)
         {
             ConsultaMedica consulta = new ConsultaMedica();
-            SqlConnection conn = conectar();
+            SqlConnection conn = BD.conectar();
             SqlCommand MiComando = new SqlCommand();
             MiComando.Connection = conn;
             MiComando.CommandText = "select cons_turno,cons_sintomas,cons_hora_llegada,cons_enfermedades from ESE_CU_ELE.Consulta_Medica where cons_turno="+turnoCodigo;
@@ -49,7 +44,7 @@ namespace ClinicaFrba.DataAccess
         {
             try
             {
-                SqlConnection conn = conectar();
+                SqlConnection conn = BD.conectar();
                 SqlCommand MiComando = new SqlCommand("ESE_CU_ELE.SPRegistrarResultado", conn);
                 MiComando.Connection = conn;
                 MiComando.CommandType = CommandType.StoredProcedure;

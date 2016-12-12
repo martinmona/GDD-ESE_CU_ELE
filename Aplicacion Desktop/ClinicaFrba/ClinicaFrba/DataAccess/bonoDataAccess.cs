@@ -12,16 +12,11 @@ namespace ClinicaFrba.DataAccess
 {
     class bonoDataAccess
     {
-        public static SqlConnection conectar()
-        {
-            SqlConnection connection = BD.ObtenerConexion();
-            connection.Open();
-            return connection;
-        }
+
 
         public static bool AgregarBono(Bono nuevoBono, Afiliado elAfiliado)
         {
-            using (SqlConnection con = conectar())
+            using (SqlConnection con = BD.conectar())
             {
                 using (SqlCommand cmd = new SqlCommand("ESE_CU_ELE.SPAgregarBono", con))
                 {
@@ -41,7 +36,7 @@ namespace ClinicaFrba.DataAccess
         }
         public static List<Bono> obtenerBonosSinUsar(Afiliado elAfiliado)
         {
-            using (SqlConnection con = conectar())
+            using (SqlConnection con = BD.conectar())
             {
                 
                 using (SqlCommand cmd = new SqlCommand("ESE_CU_ELE.SPObtenerBonosSinUsar", con))

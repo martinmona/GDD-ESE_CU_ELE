@@ -10,17 +10,11 @@ namespace ClinicaFrba.DataAccess
 {
     public class funcionalidadDataAccess
     {
-        public static SqlConnection conectar()
-        {
-            SqlConnection connection = BD.ObtenerConexion();
-            connection.Open();
-            return connection;
-        }
 
         public static List<Funcionalidad> obtenerFuncionalidadesPorRol(decimal idRol)
         {
             List<Class.Funcionalidad> listaFuncionalidades = new List<Class.Funcionalidad>();
-            SqlConnection conn = conectar();
+            SqlConnection conn = BD.conectar();
             SqlCommand MiComando = new SqlCommand();
             MiComando.Connection = conn;
             MiComando.CommandText = "select func.* from ESE_CU_ELE.RolXFuncionalidad rolxfunc join ESE_CU_ELE.Funcionalidad func on rolxfunc.rolxf_func_codigo=func.func_codigo where rolxfunc.rolxf_rol_codigo=" + idRol;
@@ -41,7 +35,7 @@ namespace ClinicaFrba.DataAccess
         public static List<Funcionalidad> obtenerFuncionalidadesFiltradas(string where)
         {
             List<Class.Funcionalidad> listaFuncionalidades = new List<Class.Funcionalidad>();
-            SqlConnection conn = conectar();
+            SqlConnection conn = BD.conectar();
             SqlCommand MiComando = new SqlCommand();
             MiComando.Connection = conn;
             MiComando.CommandText = "select * from ESE_CU_ELE.Funcionalidad "+ where;

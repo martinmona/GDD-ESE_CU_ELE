@@ -102,7 +102,7 @@
             // dtpHora
             // 
             this.dtpHora.CustomFormat = "HH:mm";
-            this.dtpHora.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpHora.Format = System.Windows.Forms.DateTimePickerFormat.Time;
             this.dtpHora.Location = new System.Drawing.Point(370, 83);
             this.dtpHora.Name = "dtpHora";
             this.dtpHora.Size = new System.Drawing.Size(82, 20);

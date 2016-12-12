@@ -12,12 +12,6 @@ namespace ClinicaFrba.DataAccess
 {
     class compraDataAccess
     {
-        public static SqlConnection conectar()
-        {
-            SqlConnection connection = BD.ObtenerConexion();
-            connection.Open();
-            return connection;
-        }
 
         public static bool AgregarCompra(Compra laCompra, Afiliado elAfiliado)
         {
@@ -25,7 +19,7 @@ namespace ClinicaFrba.DataAccess
             try
             {
                 laCompra.fecha = BD.obtenerFecha();
-                SqlConnection conn = conectar();
+                SqlConnection conn = BD.conectar();
                 SqlCommand MiComando = new SqlCommand("insert into ESE_CU_ELE.Compra (comp_afiliado,comp_fecha,comp_total) values(@codigoPersona,@fecha,@total)", conn);
                 MiComando.Parameters.AddWithValue("@codigoPersona", elAfiliado.codigoPersona);
                 MiComando.Parameters.AddWithValue("@fecha", laCompra.fecha);

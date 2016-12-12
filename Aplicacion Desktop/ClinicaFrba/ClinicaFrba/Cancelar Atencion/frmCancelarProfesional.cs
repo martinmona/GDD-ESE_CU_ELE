@@ -29,6 +29,8 @@ namespace ClinicaFrba.Cancelar_Atencion
             dtpHasta.Enabled = false;
             dtpDesde.MinDate = BD.obtenerFecha().AddDays(1);
             dtpDesde.Value= BD.obtenerFecha().AddDays(1);
+            dtpHasta.MinDate = BD.obtenerFecha().AddDays(1);
+            dtpHasta.Value = BD.obtenerFecha().AddDays(1);
             ActualizarComboBoxTipos(cancelacionDataAccess.ObtenerTipoCancelacion());
 
         }
@@ -103,6 +105,11 @@ namespace ClinicaFrba.Cancelar_Atencion
             {
                 MessageBox.Show("Elija una fecha posterior a hoy y/o complete el campo motivo", "ATENCION", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
+        }
+
+        private void dtpHasta_ValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

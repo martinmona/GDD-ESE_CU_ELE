@@ -40,7 +40,7 @@ CREATE TABLE ESE_CU_ELE.Turno (turn_codigo numeric(18,0) primary key, turn_codig
 --LOS TIPOS DE CANCELACION SON POR ENFERMEDAD, PERSONALES Y OTROS
 CREATE TABLE ESE_CU_ELE.TipoCancelacion (tipoc_codigo numeric(18,0) primary key identity(1,1), tipoc_descripcion varchar(255))
 
-CREATE TABLE ESE_CU_ELE.Cancelacion (canc_codigo_turno numeric(18,0) foreign key references ESE_CU_ELE.Turno(turn_codigo), canc_tipo numeric(18,0) foreign key references ESE_CU_ELE.TipoCancelacion (tipoc_codigo), canc_detalle varchar(255),primary key(canc_codigo_turno))
+CREATE TABLE ESE_CU_ELE.Cancelacion (canc_codigo_turno numeric(18,0) foreign key references ESE_CU_ELE.Turno(turn_codigo), canc_tipo numeric(18,0) foreign key references ESE_CU_ELE.TipoCancelacion (tipoc_codigo), canc_detalle varchar(255),canc_fecha datetime,primary key(canc_codigo_turno))
 
 CREATE TABLE ESE_CU_ELE.Consulta_Medica (cons_turno numeric(18,0) foreign key references ESE_CU_ELE.Turno(turn_codigo), cons_hora_llegada datetime, cons_sintomas varchar(255), cons_enfermedades varchar(255),primary key(cons_turno))
 
@@ -201,7 +201,7 @@ begin
 	set @cantidadHoras = (isnull((select sum(t.suma) as columna from 
 																	(select sum(datediff(minute,agen_hora_inicio,agen_hora_fin))/count(*) as suma 
 																		from ESE_CU_ELE.Agenda a1
-																		where (agen_profesional=5578 
+																		where (agen_profesional=@profesional 
 																			and ((convert(date,agen_fecha_inicio,111) <= @fechaInicio and convert(date,agen_fecha_fin,111) >=@fechaFin)
 																			or (convert(date,agen_fecha_fin,111)>=@fechaInicio and convert(date,agen_fecha_fin,111)<=@fechaFin)
 																			or(convert(date,agen_fecha_inicio,111)>=@fechaInicio and convert(date, agen_fecha_inicio, 111)<=@fechaFin)) )
@@ -375,7 +375,7 @@ begin
 	BEGIN TRANSACTION;
 	BEGIN TRY
 		update ESE_CU_ELE.Turno set turn_estado ='Cancelado' where turn_codigo=@turno
-		insert into ESE_CU_ELE.Cancelacion (canc_codigo_turno,canc_tipo,canc_detalle) values (@turno,@tipo,@motivo) 
+		insert into ESE_CU_ELE.Cancelacion (canc_codigo_turno,canc_tipo,canc_detalle,canc_fecha) values (@turno,@tipo,@motivo,ESE_CU_ELE.ObtenerFecha()) 
 		
     COMMIT TRANSACTION;
 	END TRY
@@ -417,7 +417,7 @@ begin
 		Begin
 			--ACTUALIZA EL ESTADO DE LOS TURNOS A CANCELADO Y GENERA EL TIPO Y DETALLE DE CANCELACION
 			update ESE_CU_ELE.Turno set turn_estado ='Cancelado' where turn_codigo=@turno
-			insert into ESE_CU_ELE.Cancelacion (canc_codigo_turno,canc_tipo,canc_detalle) values (@turno,@tipo,@motivo) 	
+			insert into ESE_CU_ELE.Cancelacion (canc_codigo_turno,canc_tipo,canc_detalle,canc_fecha) values (@turno,@tipo,@motivo,ESE_CU_ELE.ObtenerFecha()) 	
 			fetch next from unCursor into @turno
 		End
 		close unCursor
@@ -481,4 +481,80 @@ begin
 END CATCH;
 end
 
+go
+
+--LISTADOS
+
+--TOP 5 especialidades con más cancelaciones
+CREATE PROCEDURE ESE_CU_ELE.SPListadoCancelaciones (@fechaDesde datetime, @fechaHasta datetime)
+as
+begin
+		select top 5 espe_descripcion, count(turn_codigo) as cantidadCancelaciones
+		from ESE_CU_ELE.Especialidad, ESE_CU_ELE.Cancelacion,ESE_CU_ELE.Turno
+		where espe_codigo=turn_especialidad and turn_codigo=canc_codigo_turno and canc_fecha>=@fechaDesde and canc_fecha<=@fechaHasta
+		group by espe_descripcion
+		order by count(turn_codigo) desc
+end
+go
+
+--TOP 5 Profesionales más consultados por plan
+
+CREATE PROCEDURE ESE_CU_ELE.SPListadoProfesionalesPorPlan(@fechaDesde datetime, @fechaHasta datetime, @plan decimal(18,0))
+as
+begin
+		select top 5 pers_nombre,pers_apellido,prof_codigo_matricula, espe_descripcion, count(turn_codigo) as cantidad_consultas
+		from ESE_CU_ELE.Bono,ESE_CU_ELE.Turno,ESE_CU_ELE.Consulta_Medica,ESE_CU_ELE.Especialidad,ESE_CU_ELE.Profesional, ESE_CU_ELE.Persona
+		where bono_plan=@plan and bono_turno_consulta=cons_turno and cons_turno=turn_codigo and cons_hora_llegada>=@fechaDesde and cons_hora_llegada<=@fechaHasta
+				and turn_especialidad=espe_codigo and turn_profesional=pers_codigo and prof_codigo_persona=prof_codigo_persona
+		group by prof_codigo_matricula, pers_nombre,pers_apellido, espe_descripcion
+		order by count(turn_codigo) desc
+end
+go
+
+--TOP 5 Profesionales que menos horas trabajaron por especialidad
+
+CREATE PROCEDURE ESE_CU_ELE.ListadoProfesionalesMenosHoras (@fechaDesde datetime, @fechaHasta datetime, @especialidad decimal(18,0))
+as
+begin
+	select top 5 pers_nombre,pers_apellido,prof_codigo_matricula, isnull((select sum(t.suma)*(datepart(week,@fechaHasta)-datepart(week,@fechaDesde)+1) as columna from 
+																(select sum(datediff(minute,agen_hora_inicio,agen_hora_fin))/count(*) as suma 
+																	from ESE_CU_ELE.Agenda a1
+																	where (agen_profesional=p1.prof_codigo_persona and agen_especialidad=@especialidad
+																		and ((convert(date,agen_fecha_inicio,111) <= @fechaDesde and convert(date,agen_fecha_fin,111) >=@fechaHasta)
+																		or (convert(date,agen_fecha_fin,111)>=@fechaDesde and convert(date,agen_fecha_fin,111)<=@fechaHasta)
+																		or(convert(date,agen_fecha_inicio,111)>=@fechaDesde and convert(date, agen_fecha_inicio, 111)<=@fechaHasta)) )
+																	group by agen_dia,agen_especialidad,agen_hora_fin,agen_hora_inicio) t ),0) as cantidadHoras
+		from ESE_CU_ELE.Profesional p1, ESE_CU_ELE.EspecialidadXProfesional,ESE_CU_ELE.Especialidad,ESE_CU_ELE.Persona
+		where  espe_codigo= @especialidad and espexp_codigo_especialidad=@especialidad and espexp_codigo_profesional=prof_codigo_persona and pers_codigo=prof_codigo_persona
+		group by pers_nombre,pers_apellido,prof_codigo_matricula
+		order by 4 asc
+end
+go
+
+
+--TOP 5 Afiliados con mayor cantidad de bonos
+CREATE PROCEDURE ESE_CU_ELE.ListadoAfiliadosBonos (@fechaDesde datetime, @fechaHasta datetime)			
+as
+Begin
+	select top 5 pers_nombre,pers_apellido,afil_numero,afil_numero_familiar, (select isnull(count(*),0) from ESE_CU_ELE.Bono, ESE_CU_ELE.Afiliado a3 where a3.afil_numero=a1.afil_numero and bono_afiliado=a3.afil_codigo_persona and bono_fecha_compra >= @fechaDesde and bono_fecha_compra<=@fechaHasta) as cantidad_bonos,
+	( select case when isnull(count(*), 0) = 0 then 'NO' else 'SI' end
+		from ESE_CU_ELE.Afiliado a2
+		where a2.afil_numero=a1.afil_numero) as perteneceGrupoFamiliar
+	from ESE_CU_ELE.Afiliado a1,ESE_CU_ELE.Persona
+	where pers_codigo=afil_codigo_persona
+	group by pers_nombre,pers_apellido,afil_numero,afil_numero_familiar
+	order by 5 desc
+End
+go
+
+ --TOP 5 Especialidades con mas bonos usados
+CREATE PROCEDURE ESE_CU_ELE.ListadoEspecialidadesBonos (@fechaDesde datetime, @fechaHasta datetime)
+as
+Begin
+	select top 5 espe_descripcion, count(bono_codigo) as cantidad_bonos
+	from ESE_CU_ELE.Especialidad,ESE_CU_ELE.Turno,ESE_CU_ELE.Bono
+	where espe_codigo=turn_especialidad and bono_turno_consulta=turn_codigo and turn_fecha>=@fechaDesde and turn_fecha<=@fechaHasta
+	group by espe_descripcion
+	order by count(bono_codigo) desc
+End
 go

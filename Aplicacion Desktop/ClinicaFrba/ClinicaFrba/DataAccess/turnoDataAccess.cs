@@ -14,16 +14,11 @@ namespace ClinicaFrba.DataAccess
 {
     class turnoDataAccess
     {
-        public static SqlConnection conectar()
-        {
-            SqlConnection connection = BD.ObtenerConexion();
-            connection.Open();
-            return connection;
-        }
+
         public static List<Turno> obtenerTurnosxAfiliado(decimal codigoAfiliado, string where)
         {
             List<Turno> listaTurnos = new List<Turno>();
-            SqlConnection conn = conectar();
+            SqlConnection conn = BD.conectar();
             SqlCommand MiComando = new SqlCommand();
             MiComando.Connection = conn;
             MiComando.CommandText = "select turn_codigo,turn_fecha,turn_codigo_afiliado, turn_especialidad,turn_estado from ESE_CU_ELE.Turno where turn_codigo_afiliado =" + codigoAfiliado+" "+where;
@@ -56,7 +51,7 @@ namespace ClinicaFrba.DataAccess
         {
                 
             List<Turno> listaTurnos = new List<Turno>();
-            SqlConnection conn = conectar();
+            SqlConnection conn = BD.conectar();
             SqlCommand MiComando = new SqlCommand();
             MiComando.Connection = conn;
             MiComando.CommandText = "select turn_codigo,turn_fecha,turn_codigo_afiliado,turn_especialidad, turn_estado from ESE_CU_ELE.Turno where CONVERT(date, turn_fecha) >= CONVERT(date, '" + fechaDesde+ "') and CONVERT(date, turn_fecha) <= CONVERT(date, '" + fechaHasta + "') and turn_especialidad =" + codigoEspecialidad+" and turn_profesional ="+ codigoProfesional+" "+where;
@@ -84,7 +79,8 @@ namespace ClinicaFrba.DataAccess
         {
             try
             {
-                SqlConnection conn = conectar();
+                BD.obtenerFecha();
+                SqlConnection conn = BD.conectar();
                 SqlCommand MiComando = new SqlCommand("ESE_CU_ELE.SPRegistrarLlegada", conn);
                 MiComando.Connection = conn;
                 MiComando.CommandType = CommandType.StoredProcedure;
@@ -108,7 +104,7 @@ namespace ClinicaFrba.DataAccess
         {
             try
             {
-                SqlConnection conn = conectar();
+                SqlConnection conn = BD.conectar();
                 SqlCommand MiComando = new SqlCommand();
                 MiComando.Connection = conn;
                 MiComando.CommandText = "update from ESE_CU_ELE.Turno turn_estado = '"+estado+"' where turn_codigo ="+codigoTurno;
@@ -128,7 +124,8 @@ namespace ClinicaFrba.DataAccess
         {
             try
             {
-                SqlConnection conn = conectar();
+                BD.obtenerFecha();
+                SqlConnection conn = BD.conectar();
                 SqlCommand MiComando = new SqlCommand("ESE_CU_ELE.SPCancelarTurnoAfiliado", conn);
                 MiComando.Connection = conn;
                 MiComando.CommandType = CommandType.StoredProcedure;
@@ -149,7 +146,8 @@ namespace ClinicaFrba.DataAccess
         {
             try
             {
-                SqlConnection conn = conectar();
+                BD.obtenerFecha();
+                SqlConnection conn = BD.conectar();
                 SqlCommand MiComando = new SqlCommand("ESE_CU_ELE.SPCancelarTurnoProfesional", conn);
                 MiComando.Connection = conn;
                 MiComando.CommandType = CommandType.StoredProcedure;
@@ -177,7 +175,7 @@ namespace ClinicaFrba.DataAccess
         {
             try
             {
-                SqlConnection conn = conectar();
+                SqlConnection conn = BD.conectar();
                 SqlCommand MiComando = new SqlCommand();
                 MiComando.Connection = conn;
                 MiComando.Parameters.AddWithValue("@afiliado", nuevoTurno.afiliado.codigoPersona);

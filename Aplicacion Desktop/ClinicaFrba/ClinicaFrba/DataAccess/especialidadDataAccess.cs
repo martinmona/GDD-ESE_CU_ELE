@@ -11,17 +11,12 @@ namespace ClinicaFrba.DataAccess
 {
     class especialidadDataAccess
     {
-        public static SqlConnection conectar()
-        {
-            SqlConnection connection = BD.ObtenerConexion();
-            connection.Open();
-            return connection;
-        }
+
 
         public static List<Especialidad> ObtenerEspecialidades(string where)
         {
             List<Especialidad> listaEspecialidades = new List<Especialidad>();
-            SqlConnection conn = conectar();
+            SqlConnection conn = BD.conectar();
             SqlCommand MiComando = new SqlCommand();
             MiComando.Connection = conn;
             MiComando.CommandText = " Select espe_codigo,espe_descripcion from ESE_CU_ELE.Especialidad " + where+" order by 2";
@@ -40,7 +35,7 @@ namespace ClinicaFrba.DataAccess
         public static List<Especialidad> ObtenerEspecialidadesXProfesional(decimal codigoProfesional)
         {
             List<Especialidad> listaEspecialidades = new List<Especialidad>();
-            SqlConnection conn = conectar();
+            SqlConnection conn = BD.conectar();
             SqlCommand MiComando = new SqlCommand();
             MiComando.Connection = conn;
             MiComando.CommandText = " Select espe_codigo,espe_descripcion from ESE_CU_ELE.Especialidad, ESE_CU_ELE.EspecialidadXProfesional where espexp_codigo_profesional = " + codigoProfesional+ " and espexp_codigo_especialidad=espe_codigo" ;

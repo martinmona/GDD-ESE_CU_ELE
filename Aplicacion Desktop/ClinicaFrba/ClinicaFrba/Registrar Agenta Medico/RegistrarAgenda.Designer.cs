@@ -170,6 +170,7 @@
             this.dtpHoraFin.Name = "dtpHoraFin";
             this.dtpHoraFin.Size = new System.Drawing.Size(83, 20);
             this.dtpHoraFin.TabIndex = 14;
+            this.dtpHoraFin.ValueChanged += new System.EventHandler(this.dtpHoraFin_ValueChanged);
             // 
             // groupBox1
             // 

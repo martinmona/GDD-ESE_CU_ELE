@@ -10,35 +10,13 @@ namespace ClinicaFrba.Class{
 
     public class usuarioDataAccess
     {
-        public static SqlConnection conectar()
-        {
-            SqlConnection connection = BD.ObtenerConexion();
-            try
-            {
-                connection.Open();
-            }
-            catch (SqlException e)
-            {
-                if (e.Number == 18487 || e.Number == 18488)
-                {
-                    SqlConnection.ChangePassword(connection.ConnectionString, "gd2016");
-                }
-            }
-            finally
-            {
-                //connection.Close();
-            }
-
-
-            return connection;
-        }
-
+     
         public static Usuario login(string user, string pass) 
         {
             Usuario myuser = new Usuario();
             try
             {
-                SqlConnection conn = conectar();
+                SqlConnection conn = BD.conectar();
                 SqlCommand MiComando = new SqlCommand();
                 MiComando.Connection = conn;
                 MiComando.CommandText = "Select * From ESE_CU_ELE.Usuario Where usua_username = '" + user + "' AND usua_contrasena = HASHBYTES('SHA2_256', '"+ pass+"')";
@@ -70,7 +48,7 @@ namespace ClinicaFrba.Class{
             decimal id = -1;
             try
             {
-                SqlConnection conn = conectar();
+                SqlConnection conn = BD.conectar();
                 SqlCommand MiComando = new SqlCommand();
                 MiComando.Connection = conn;
                 MiComando.CommandText = "Select usua_codigo From ESE_CU_ELE.Usuario Where usua_username = '" + user + "' AND usua_habilitado = 1";
@@ -87,7 +65,7 @@ namespace ClinicaFrba.Class{
             decimal id = -1;
             try
             {
-                SqlConnection conn = conectar();
+                SqlConnection conn = BD.conectar();
                 SqlCommand MiComando = new SqlCommand();
                 MiComando.Connection = conn;
                 MiComando.CommandText = "Select usua_codigo From ESE_CU_ELE.Usuario Where usua_codigo = '" + codigo + "' AND usua_habilitado = 1";
@@ -103,7 +81,7 @@ namespace ClinicaFrba.Class{
         {
             try
             {
-                SqlConnection conn = conectar();
+                SqlConnection conn = BD.conectar();
                 SqlCommand MiComando = new SqlCommand();
                 MiComando.Connection = conn;
                 MiComando.CommandText = "UPDATE ESE_CU_ELE.Usuario SET usua_intentos = (usua_intentos + 1)  Where usua_codigo = " + idUser;
@@ -125,7 +103,7 @@ namespace ClinicaFrba.Class{
         {
             try
             {
-                SqlConnection conn = conectar();
+                SqlConnection conn = BD.conectar();
                 SqlCommand MiComando = new SqlCommand();
                 MiComando.Connection = conn;
                 MiComando.CommandText = "UPDATE ESE_CU_ELE.Usuario SET usua_intentos = 0  Where usua_codigo = " + idUser;
@@ -143,10 +121,10 @@ namespace ClinicaFrba.Class{
         {
             try
             {
-                SqlConnection conn = conectar();
+                SqlConnection conn = BD.conectar();
                 SqlCommand MiComando = new SqlCommand();
                 MiComando.Connection = conn;
-                MiComando.CommandText = "UPDATE ESE_CU_ELE.Usuario SET usua_habilitado = 0  Where usua_codigo = " + idUser;
+                MiComando.CommandText = "UPDATE ESE_CU_ELE.Usuario SET usua_habilitado = 0, usua_fecha_inhabilitado='"+BD.obtenerFecha()+"' Where usua_codigo = " + idUser;
                 MiComando.ExecuteNonQuery();
                 conn.Close();
                 return true;
@@ -161,7 +139,7 @@ namespace ClinicaFrba.Class{
         {
             try
             {
-                SqlConnection conn = conectar();
+                SqlConnection conn = BD.conectar();
                 SqlCommand MiComando = new SqlCommand();
                 MiComando.Connection = conn;
                 MiComando.CommandText = "UPDATE ESE_CU_ELE.Usuario SET usua_habilitado = 1  Where usua_codigo = " + idUser;
