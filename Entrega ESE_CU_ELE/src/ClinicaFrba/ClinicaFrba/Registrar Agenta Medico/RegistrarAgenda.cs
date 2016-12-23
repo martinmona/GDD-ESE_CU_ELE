@@ -45,6 +45,7 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
 
         private void cargarTodo()
         {
+            //CARGA LOS DÍAS Y COMBOBOX. DA FORMATO A LOS DATETIMEPICKER
             dataSource = new List<Dia>();
             dataSource.Add(new Dia() { Name = "Lunes", Value = 1 });
             dataSource.Add(new Dia() { Name = "Martes", Value = 2 });
@@ -60,8 +61,6 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
 
             List<Profesional> profesionales = profesionalDataAccess.ObtenerProfesionales("");
             ActualizarComboBoxProf(profesionales);
-            //List<Especialidad> especialidades = especialidadDataAccess.ObtenerEspecialidadesXProfesional((decimal)cbProfesional.SelectedValue);
-            //ActualizarComboBoxEsp(especialidades);
             dtpHoraInicio.ShowUpDown = true;
             dtpHoraInicio.CustomFormat = "HH:mm";
             dtpHoraInicio.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
@@ -125,6 +124,7 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
 
         private void dtpHoraInicio_ValueChanged(object sender, EventArgs e)
         {
+            //PARA MOVERSE POR HORA O 30 MINUTOS
             if (!mBusy1)
             {
                 mBusy1 = true;
@@ -152,6 +152,7 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
         {
             if (dtpHoraFin.Value > dtpHoraInicio.Value && dtpFin.Value>=dtpInicio.Value && cbDia.SelectedIndex>=0 && cbDia.SelectedIndex<6)
             {
+                //CARGO LA NUEVA AGENDA AL OBJETO
                 Profesional prof = new Profesional();
                 prof = (Profesional)cbProfesional.SelectedItem;
                 Agenda nuevaAgenda = new Agenda();

@@ -36,6 +36,8 @@
             this.lblPersona = new System.Windows.Forms.Label();
             this.cbTipo = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.lblAfiliado = new System.Windows.Forms.Label();
+            this.cbAfiliado = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTurnos)).BeginInit();
             this.SuspendLayout();
             // 
@@ -45,7 +47,7 @@
             this.dgvTurnos.AllowUserToDeleteRows = false;
             this.dgvTurnos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvTurnos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvTurnos.Location = new System.Drawing.Point(107, 90);
+            this.dgvTurnos.Location = new System.Drawing.Point(107, 144);
             this.dgvTurnos.MultiSelect = false;
             this.dgvTurnos.Name = "dgvTurnos";
             this.dgvTurnos.ReadOnly = true;
@@ -57,7 +59,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(104, 53);
+            this.label1.Location = new System.Drawing.Point(104, 107);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(151, 13);
             this.label1.TabIndex = 4;
@@ -65,7 +67,7 @@
             // 
             // txtMotivo
             // 
-            this.txtMotivo.Location = new System.Drawing.Point(107, 381);
+            this.txtMotivo.Location = new System.Drawing.Point(107, 435);
             this.txtMotivo.MaxLength = 255;
             this.txtMotivo.Multiline = true;
             this.txtMotivo.Name = "txtMotivo";
@@ -75,7 +77,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(107, 365);
+            this.label2.Location = new System.Drawing.Point(107, 419);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(95, 13);
             this.label2.TabIndex = 6;
@@ -83,7 +85,7 @@
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(526, 515);
+            this.btnCancelar.Location = new System.Drawing.Point(526, 569);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(120, 44);
             this.btnCancelar.TabIndex = 7;
@@ -104,7 +106,7 @@
             // 
             this.cbTipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbTipo.FormattingEnabled = true;
-            this.cbTipo.Location = new System.Drawing.Point(160, 322);
+            this.cbTipo.Location = new System.Drawing.Point(160, 376);
             this.cbTipo.Name = "cbTipo";
             this.cbTipo.Size = new System.Drawing.Size(121, 21);
             this.cbTipo.TabIndex = 9;
@@ -112,17 +114,38 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(107, 329);
+            this.label3.Location = new System.Drawing.Point(107, 383);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(28, 13);
             this.label3.TabIndex = 10;
             this.label3.Text = "Tipo";
             // 
+            // lblAfiliado
+            // 
+            this.lblAfiliado.AutoSize = true;
+            this.lblAfiliado.Location = new System.Drawing.Point(110, 49);
+            this.lblAfiliado.Name = "lblAfiliado";
+            this.lblAfiliado.Size = new System.Drawing.Size(41, 13);
+            this.lblAfiliado.TabIndex = 11;
+            this.lblAfiliado.Text = "Afiliado";
+            // 
+            // cbAfiliado
+            // 
+            this.cbAfiliado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbAfiliado.FormattingEnabled = true;
+            this.cbAfiliado.Location = new System.Drawing.Point(200, 41);
+            this.cbAfiliado.Name = "cbAfiliado";
+            this.cbAfiliado.Size = new System.Drawing.Size(191, 21);
+            this.cbAfiliado.TabIndex = 12;
+            this.cbAfiliado.SelectedIndexChanged += new System.EventHandler(this.cbAfiliado_SelectedIndexChanged);
+            // 
             // frmCancelarAfiliado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(911, 579);
+            this.ClientSize = new System.Drawing.Size(955, 693);
+            this.Controls.Add(this.cbAfiliado);
+            this.Controls.Add(this.lblAfiliado);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.cbTipo);
             this.Controls.Add(this.lblPersona);
@@ -150,5 +173,7 @@
         private System.Windows.Forms.Label lblPersona;
         private System.Windows.Forms.ComboBox cbTipo;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblAfiliado;
+        private System.Windows.Forms.ComboBox cbAfiliado;
     }
 }

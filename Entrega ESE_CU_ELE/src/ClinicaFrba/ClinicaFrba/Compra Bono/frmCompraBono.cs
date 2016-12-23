@@ -32,6 +32,7 @@ namespace ClinicaFrba.Compra_Bono
             _totalPagar = 0;
             List<Afiliado> listaAfiliados = afiliadoDataAccess.ObtenerAfiliados(" where usua_habilitado=1");
             ActualizarComboBoxAfiliado(listaAfiliados);
+            //VERIFICA SI ACCEDIO UN AFILIADO PARA INHABILITAR LA COMPRA A NOMBRE DE OTRO AFILIADO
             if(_unaPersona.GetType() == typeof(Afiliado))
             {
                 btnBuscar.Enabled = false;
@@ -78,6 +79,7 @@ namespace ClinicaFrba.Compra_Bono
             try
             {
                 habilitaEventoCmb = false;
+                //OBTENGO SOLO LOS HABILITADOS QUE CONCUERDEN CON LA BUSQUEDA
                 _afiliadoComprador = afiliadoDataAccess.ObtenerAfiliados(" where usua_habilitado=1 and CONCAT(afil_numero,afil_numero_familiar) = " + txtNumero.Text)[0];
                 cmbAfiliado.SelectedValue = _afiliadoComprador.codigoPersona;
                 actualizarCampos();
@@ -112,6 +114,7 @@ namespace ClinicaFrba.Compra_Bono
                 laCompra.total = _totalPagar;
                 for (int i = 0; i < Convert.ToInt32(dudCantidad.Text); i++)
                 {
+                    //ITERO POR LA CANTIDAD DE BONOS A COMPRAR, ASÍ AGREGARLOS A LA LISTA
                     Bono unBono = new Bono();
                     unBono.precio = Convert.ToInt32(txtCosto.Text);
                     laCompra.bonos.Add(unBono);

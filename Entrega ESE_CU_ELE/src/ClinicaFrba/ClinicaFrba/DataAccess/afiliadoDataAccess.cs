@@ -96,7 +96,7 @@ namespace ClinicaFrba.DataAccess
                 SqlConnection conn = BD.conectar();
                 SqlCommand MiComando = new SqlCommand();
                 MiComando.Connection = conn;
-                MiComando.CommandText = "insert into ESE_CU_ELE.Persona(pers_nombre,pers_apellido,pers_sexo,pers_fecha_nacimiento,pers_tipo_documento,pers_numero_documento,pers_mail,pers_direccion,pers_telefono,pers_tipo) VALUES('" + afiliado.nombre + "','" + afiliado.apellido + "','" + afiliado.sexo + "','" + afiliado.fechaNacimiento.ToString() + "','" + afiliado.tipoDocumento + "'," + afiliado.numeroDocumento.ToString() + ",'" + afiliado.mail + "','" + afiliado.direccion + "',"+afiliado.telefono.ToString()+",'Afiliado')";
+                MiComando.CommandText = "insert into ESE_CU_ELE.Persona(pers_nombre,pers_apellido,pers_sexo,pers_fecha_nacimiento,pers_tipo_documento,pers_numero_documento,pers_mail,pers_direccion,pers_telefono,pers_tipo) VALUES('" + afiliado.nombre + "','" + afiliado.apellido + "','" + afiliado.sexo + "','" + afiliado.fechaNacimiento.Date + "','" + afiliado.tipoDocumento + "'," + afiliado.numeroDocumento.ToString() + ",'" + afiliado.mail + "','" + afiliado.direccion + "',"+afiliado.telefono.ToString()+",'Afiliado')";
                 MiComando.ExecuteNonQuery();
                 decimal codigoPersona;
                 decimal codigoAfiliado;

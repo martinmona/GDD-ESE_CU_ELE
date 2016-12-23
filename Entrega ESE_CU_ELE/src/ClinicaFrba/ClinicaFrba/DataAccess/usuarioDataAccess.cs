@@ -144,7 +144,7 @@ namespace ClinicaFrba.Class{
                 SqlConnection conn = BD.conectar();
                 SqlCommand MiComando = new SqlCommand();
                 MiComando.Connection = conn;
-                MiComando.CommandText = "UPDATE ESE_CU_ELE.Usuario SET usua_habilitado = 1, usua_fecha_inhabilitado = NULL  Where usua_codigo = " + idUser;
+                MiComando.CommandText = "UPDATE ESE_CU_ELE.Usuario SET usua_habilitado = 1, usua_intentos=0,usua_fecha_inhabilitado = NULL  Where usua_codigo = " + idUser;
                 MiComando.ExecuteNonQuery();
                 conn.Close();
                 return true;

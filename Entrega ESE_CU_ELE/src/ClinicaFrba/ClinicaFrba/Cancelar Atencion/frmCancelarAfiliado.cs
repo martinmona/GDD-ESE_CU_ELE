@@ -15,18 +15,48 @@ namespace ClinicaFrba.Cancelar_Atencion
 {
     public partial class frmCancelarAfiliado : Form
     {
+        bool cargando;
         private Afiliado _afiliado;
-        public frmCancelarAfiliado(Afiliado unafi)
+        public frmCancelarAfiliado(Persona unafi)
         {
-            _afiliado = unafi;
             InitializeComponent();
-            lblPersona.Text = "TURNOS DEL PACIENTE: " + _afiliado.nombre;
+            cargando = true;
+            //Si ingreso un afiliado solo puede cancelar sus turnos. Sino se elige a que afiliado se le cancelará el turno
+            if (unafi.GetType() == typeof(Afiliado))
+            {
+                _afiliado = (Afiliado)unafi;
+                lblPersona.Text = "TURNOS DEL PACIENTE: " + _afiliado.nombre;
+                lblPersona.Visible = true;
+                lblAfiliado.Visible = false;
+                cbAfiliado.Visible = false;
+            }
+            else
+            {
+                lblPersona.Visible = false;
+                lblAfiliado.Visible = true;
+                cbAfiliado.Visible = true;
+                List<Afiliado> listaAfiliados = afiliadoDataAccess.ObtenerAfiliados(" where usua_habilitado=1"); //Obtengo solo los habilitados
+                ActualizarComboBoxAfiliado(listaAfiliados);
+                _afiliado = (Afiliado)cbAfiliado.SelectedItem;
+            }
+            cargando = false;
         }
 
         private void frmCancelarAfiliado_Load(object sender, EventArgs e)
         {
             ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxAfiliado(_afiliado.codigoPersona, " and turn_estado='Pedido' and CONVERT(date, turn_fecha)> '" + BD.obtenerFecha().Date +"'"));
             ActualizarComboBoxTipos(cancelacionDataAccess.ObtenerTipoCancelacion());
+
+        }
+        private void ActualizarComboBoxAfiliado(List<Afiliado> afiliados)
+        {
+
+            cbAfiliado.DataSource = null;
+            cbAfiliado.Items.Clear();
+
+            cbAfiliado.DataSource = afiliados;
+            cbAfiliado.ValueMember = "codigoPersona";
+            cbAfiliado.DisplayMember = "nombreCompleto";
 
         }
         private void ActualizarComboBoxTipos(List<TipoCancelacion> tipos)
@@ -106,6 +136,16 @@ namespace ClinicaFrba.Cancelar_Atencion
         private void dgvTurnos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void cbAfiliado_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!cargando)
+            {
+                _afiliado = (Afiliado)cbAfiliado.SelectedItem;
+                ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxAfiliado(_afiliado.codigoPersona, " and turn_estado='Pedido' and CONVERT(date, turn_fecha)> '" + BD.obtenerFecha().Date + "'"));
+                ActualizarComboBoxTipos(cancelacionDataAccess.ObtenerTipoCancelacion());
+            }
         }
     }
 }

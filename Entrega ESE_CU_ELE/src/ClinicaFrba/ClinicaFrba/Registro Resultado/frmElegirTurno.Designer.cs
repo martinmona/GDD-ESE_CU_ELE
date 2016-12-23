@@ -34,6 +34,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.lblProf = new System.Windows.Forms.Label();
+            this.lblCBProf = new System.Windows.Forms.Label();
+            this.cbProfesionales = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTurnos)).BeginInit();
             this.SuspendLayout();
             // 
@@ -43,7 +45,7 @@
             this.dgvTurnos.AllowUserToDeleteRows = false;
             this.dgvTurnos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvTurnos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvTurnos.Location = new System.Drawing.Point(71, 107);
+            this.dgvTurnos.Location = new System.Drawing.Point(73, 181);
             this.dgvTurnos.MultiSelect = false;
             this.dgvTurnos.Name = "dgvTurnos";
             this.dgvTurnos.ReadOnly = true;
@@ -54,7 +56,7 @@
             // 
             // dtpFecha
             // 
-            this.dtpFecha.Location = new System.Drawing.Point(71, 70);
+            this.dtpFecha.Location = new System.Drawing.Point(73, 144);
             this.dtpFecha.Name = "dtpFecha";
             this.dtpFecha.Size = new System.Drawing.Size(221, 20);
             this.dtpFecha.TabIndex = 1;
@@ -64,7 +66,7 @@
             // 
             this.cbEspecialidad.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbEspecialidad.FormattingEnabled = true;
-            this.cbEspecialidad.Location = new System.Drawing.Point(386, 71);
+            this.cbEspecialidad.Location = new System.Drawing.Point(388, 145);
             this.cbEspecialidad.Name = "cbEspecialidad";
             this.cbEspecialidad.Size = new System.Drawing.Size(222, 21);
             this.cbEspecialidad.TabIndex = 2;
@@ -73,7 +75,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(71, 54);
+            this.label1.Location = new System.Drawing.Point(73, 128);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(37, 13);
             this.label1.TabIndex = 3;
@@ -82,7 +84,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(383, 54);
+            this.label2.Location = new System.Drawing.Point(385, 128);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(67, 13);
             this.label2.TabIndex = 4;
@@ -97,11 +99,32 @@
             this.lblProf.TabIndex = 5;
             this.lblProf.Text = "label3";
             // 
+            // lblCBProf
+            // 
+            this.lblCBProf.AutoSize = true;
+            this.lblCBProf.Location = new System.Drawing.Point(73, 69);
+            this.lblCBProf.Name = "lblCBProf";
+            this.lblCBProf.Size = new System.Drawing.Size(59, 13);
+            this.lblCBProf.TabIndex = 6;
+            this.lblCBProf.Text = "Profesional";
+            // 
+            // cbProfesionales
+            // 
+            this.cbProfesionales.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbProfesionales.FormattingEnabled = true;
+            this.cbProfesionales.Location = new System.Drawing.Point(179, 69);
+            this.cbProfesionales.Name = "cbProfesionales";
+            this.cbProfesionales.Size = new System.Drawing.Size(199, 21);
+            this.cbProfesionales.TabIndex = 7;
+            this.cbProfesionales.SelectedIndexChanged += new System.EventHandler(this.cbProfesionales_SelectedIndexChanged);
+            // 
             // frmElegirTurno
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(755, 467);
+            this.ClientSize = new System.Drawing.Size(905, 624);
+            this.Controls.Add(this.cbProfesionales);
+            this.Controls.Add(this.lblCBProf);
             this.Controls.Add(this.lblProf);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -125,5 +148,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblProf;
+        private System.Windows.Forms.Label lblCBProf;
+        private System.Windows.Forms.ComboBox cbProfesionales;
     }
 }

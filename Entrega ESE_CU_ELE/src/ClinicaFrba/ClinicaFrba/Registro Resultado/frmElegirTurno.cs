@@ -15,22 +15,49 @@ namespace ClinicaFrba.Registro_Resultado
 {
     public partial class frmElegirTurno : Form
     {
-        private bool cargando;
+        private bool cargando,cambiaProf;
         private Profesional _profesional;
         public frmElegirTurno(Persona elProf)
         {
-            cargando = true;
-            _profesional = (Profesional)elProf;
             InitializeComponent();
+            cargando = true;
+            cambiaProf = false;
+            //VERIFICO SI LA PERSONA QUE ACCEDIO ES UN PROFESIONAL. SI NO SE DA A ELEGIR EL PROFESIONAL QUE SE DESEA
+            if (elProf.GetType() == typeof(Profesional))
+            {
+                _profesional = (Profesional)elProf;
+                cbProfesionales.Visible = false;
+                lblCBProf.Visible = false;
+                lblProf.Visible = true;
+            }
+            else //ACCEDIO UN AFILIADO O ADMINISTRADOR
+            {
+                List<Profesional> profesionales = profesionalDataAccess.ObtenerProfesionales("");
+                ActualizarComboBoxProf(profesionales);
+                _profesional = (Profesional)cbProfesionales.SelectedItem;
+                cbProfesionales.Visible = true;
+                lblCBProf.Visible = true;
+                lblProf.Visible = false;
+            }
+            
+            //CARGA LAS ESPECIALIDADES DEL PROFESIONAL
             dtpFecha.Value = BD.obtenerFecha();
             List<Especialidad> especialidades = especialidadDataAccess.ObtenerEspecialidadesXProfesional(_profesional.codigoPersona);
-
             ActualizarComboBoxEsp(especialidades);
             lblProf.Text = "Turnos del profesional: "+_profesional.nombre;
             ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxFecha(dtpFecha.Value, (decimal)cbEspecialidad.SelectedValue, _profesional.codigoPersona, "and turn_estado = 'Esperando'"));
             cargando = false;
         }
+        private void ActualizarComboBoxProf(List<Profesional> profesionales)
+        {
+            cbProfesionales.DataSource = null;
+            cbProfesionales.Items.Clear();
 
+            cbProfesionales.DataSource = profesionales;
+            cbProfesionales.ValueMember = "codigoPersona";
+            cbProfesionales.DisplayMember = "nombre";
+
+        }
         private void frmElegirTurno_Load(object sender, EventArgs e)
         {
 
@@ -94,7 +121,7 @@ namespace ClinicaFrba.Registro_Resultado
 
         private void cbEspecialidad_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(!cargando)
+            if(!cargando && !cambiaProf)
                 ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxFecha(dtpFecha.Value, (decimal)cbEspecialidad.SelectedValue, _profesional.codigoPersona, "and turn_estado = 'Esperando'"));
         }
 
@@ -119,6 +146,19 @@ namespace ClinicaFrba.Registro_Resultado
         {
             if (!cargando)
                 ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxFecha(dtpFecha.Value, (decimal)cbEspecialidad.SelectedValue, _profesional.codigoPersona, "and turn_estado = 'Esperando'"));
+        }
+
+        private void cbProfesionales_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!cargando)
+            {
+                cambiaProf = true;
+                _profesional = (Profesional)cbProfesionales.SelectedItem;
+                List<Especialidad> especialidades = especialidadDataAccess.ObtenerEspecialidadesXProfesional(_profesional.codigoPersona);
+                ActualizarComboBoxEsp(especialidades);
+                ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxFecha(dtpFecha.Value, (decimal)cbEspecialidad.SelectedValue, _profesional.codigoPersona, "and turn_estado = 'Esperando'"));
+                cambiaProf = false;
+            }
         }
     }
 }

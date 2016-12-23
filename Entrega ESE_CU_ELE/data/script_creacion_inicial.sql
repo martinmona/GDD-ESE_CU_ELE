@@ -45,7 +45,7 @@ CREATE TABLE ESE_CU_ELE.Cancelacion (canc_codigo_turno numeric(18,0) foreign key
 CREATE TABLE ESE_CU_ELE.Consulta_Medica (cons_turno numeric(18,0) foreign key references ESE_CU_ELE.Turno(turn_codigo), cons_hora_llegada datetime, cons_sintomas varchar(255), cons_enfermedades varchar(255),primary key(cons_turno))
 
 --El bono usado tiene un valor en numero de consulta medica y en turno
-CREATE TABLE ESE_CU_ELE.Bono (bono_codigo numeric(18,0) primary key, bono_turno_consulta numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Consulta_Medica(cons_turno), bono_numero_consulta_medica numeric(18,0), bono_plan numeric(18,0),bono_fecha_compra datetime, bono_afiliado numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Afiliado(afil_codigo_persona), bono_precio decimal(8,2))
+CREATE TABLE ESE_CU_ELE.Bono (bono_codigo numeric(18,0) primary key, bono_turno_consulta numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Consulta_Medica(cons_turno), bono_numero_consulta_medica numeric(18,0), bono_plan numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Planes(plan_codigo),bono_fecha_compra datetime, bono_afiliado numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Afiliado(afil_codigo_persona), bono_precio decimal(8,2))
 
 CREATE TABLE ESE_CU_ELE.Compra (comp_codigo numeric(18,0) primary key IDENTITY(1,1), comp_afiliado numeric(18,0) FOREIGN KEY REFERENCES ESE_CU_ELE.Afiliado(afil_codigo_persona), comp_fecha datetime, comp_total decimal(8,2))
 
@@ -103,10 +103,12 @@ insert into ESE_CU_ELE.Rol (rol_nombre, rol_habilitado) values('Afiliado',1)
 insert into ESE_CU_ELE.Rol (rol_nombre, rol_habilitado) values('Administrativo',1)
 insert into ESE_CU_ELE.Rol (rol_nombre, rol_habilitado) values('Profesional',1)
 
---Asigno roles a los usuarios
+--Asigno roles a los usuarios. El admin tiene los 3
 insert into ESE_CU_ELE.RolXUsuario (rolxu_rol_codigo,rolxu_usua_codigo) select 1,afil_codigo_persona from ESE_CU_ELE.Afiliado
 insert into ESE_CU_ELE.RolXUsuario (rolxu_rol_codigo,rolxu_usua_codigo) select 3,prof_codigo_persona from ESE_CU_ELE.Profesional
+insert into ESE_CU_ELE.RolXUsuario (rolxu_rol_codigo,rolxu_usua_codigo) values (1,(select pers_codigo from ESE_CU_ELE.Persona where pers_tipo='Admin'))
 insert into ESE_CU_ELE.RolXUsuario (rolxu_rol_codigo,rolxu_usua_codigo) values (2,(select pers_codigo from ESE_CU_ELE.Persona where pers_tipo='Admin'))
+insert into ESE_CU_ELE.RolXUsuario (rolxu_rol_codigo,rolxu_usua_codigo) values (3,(select pers_codigo from ESE_CU_ELE.Persona where pers_tipo='Admin'))
 
 --Creo las funcionalidades
 insert into ESE_CU_ELE.Funcionalidad (func_descripcion) values('ABM de Rol')--Admin

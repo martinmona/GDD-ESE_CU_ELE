@@ -57,15 +57,15 @@ namespace ClinicaFrba
 
         private void btnFunc_Click(object sender, EventArgs e)
         {
-            //try
-            //{
+            try
+            {
                 irAFuncionalidad((decimal)cmbFuncionalidades.SelectedValue);
-            /*}
+            }
             catch
             {
                 MessageBox.Show("Se produjo un error", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            */
+            
             
         }
 
@@ -80,35 +80,34 @@ namespace ClinicaFrba
         {
             switch (idFunc.ToString())
             {
-                case "1":
+                case "1": //ABM ROL
                     AbmRol.Listado formRol = new AbmRol.Listado();
                     formRol.ShowDialog();
                     break;
-                case "3":
+                case "3": //ABM AFILIADO
                     Abm_Afiliado.Listado formAfi = new Abm_Afiliado.Listado();
                     formAfi.ShowDialog();
                     break;
-                case "7":
+                case "7": //REGISTRAR AGENDA
                     Registrar_Agenta_Medico.RegistrarAgenda formRegAg= new Registrar_Agenta_Medico.RegistrarAgenda(unaPersona);
                     formRegAg.ShowDialog();
                     break;
-                case "8":
+                case "8": //COMPRA DE BONOS
                     Compra_Bono.frmCompraBono formCompraBono = new Compra_Bono.frmCompraBono(unaPersona);
                     formCompraBono.ShowDialog();
                     break;
-                case "9":
+                case "9": //PEDIR TURNO
                     Pedir_Turno.frmPedirTurno formPedirTurno = new Pedir_Turno.frmPedirTurno(unaPersona);
                     formPedirTurno.ShowDialog();
                     break;
-                case "10":
+                case "10": //REGISTRO DE LLEGADA
                     Registro_Llegada.frmRegistroLlegada formRegistroLlegada = new Registro_Llegada.frmRegistroLlegada();
                     formRegistroLlegada.ShowDialog();
                     break;
-                case "11":
-                    if (unaPersona.GetType() == typeof(Afiliado))
+                case "11": //CANCELAR ATENCION
+                    if (unaPersona.GetType() == typeof(Afiliado) || unaPersona.GetType() == typeof(Administrador))
                     {
-                        Afiliado unAfiliado = (Afiliado)unaPersona;
-                        Cancelar_Atencion.frmCancelarAfiliado formCancelarAfiliado = new Cancelar_Atencion.frmCancelarAfiliado(unAfiliado);
+                        Cancelar_Atencion.frmCancelarAfiliado formCancelarAfiliado = new Cancelar_Atencion.frmCancelarAfiliado(unaPersona);
                         formCancelarAfiliado.ShowDialog();
                     }
                     else if (unaPersona.GetType() == typeof(Profesional))
@@ -118,11 +117,11 @@ namespace ClinicaFrba
                         formCancelarProfesional.ShowDialog();
                     }
                     break;
-                case "12":
+                case "12": //ELEGIR TURNO
                     Registro_Resultado.frmElegirTurno formElegirTurno = new Registro_Resultado.frmElegirTurno(unaPersona);
                     formElegirTurno.ShowDialog();
                     break;
-                case "13":
+                case "13": //LISTADOS ESTADISTICOS
                     Listados.frmListados formListados= new Listados.frmListados();
                     formListados.ShowDialog();
                     break;

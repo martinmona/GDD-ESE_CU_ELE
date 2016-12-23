@@ -21,20 +21,19 @@ namespace ClinicaFrba.Abm_Afiliado
         public alta(Afiliado afil, int opcion)
         {
             InitializeComponent();
+            
             afiliadoModificar = afil;
             opcionelegida = opcion;
             txtNombre.CharacterCasing = CharacterCasing.Upper;
             txtApellido.CharacterCasing = CharacterCasing.Normal;
             cargarPlanes();
-            if (opcion == 1)/*DANDO DE ALTA UN AFILIADO*/
+            if (opcion == 1) //Alta de nuevo afiliado
             {
                 btnHabilitar.Visible = false;
                 cmbPlan.Enabled = true;
-                button1.Visible = false;/*
-                cmbSexo.SelectedText = "No especificado";
-                cmbEstadoCivil.SelectedValue = "No Especifica";*/
+                button1.Visible = false;
             }
-            else if (opcion == 2) /*MODIFICANDO USUARIO*/
+            else if (opcion == 2) //Modificacion de usuario
             {
                 
                 comboBox1.Enabled = false;
@@ -54,13 +53,13 @@ namespace ClinicaFrba.Abm_Afiliado
                 dtpFecha.Enabled = false;
                 planactual = (Plan)cmbPlan.SelectedItem;
                 
-                //ckbEstado.Checked = usuario.Activo;
                 cmbSexo.Text = afiliadoModificar.sexo;
                 cmbPlan.Enabled = true;
                 button1.Visible = true;
                 if (afiliadoModificar.codigoFamiliar == 1)
                 {
                     button1.Visible = true;
+                    afiliadoNuevoo = afiliadoModificar;
                 }
                 else
                 {
@@ -73,8 +72,8 @@ namespace ClinicaFrba.Abm_Afiliado
             }
             else if (opcion == 3 || opcion == 4)
             {
-                //SE ESTA AGREGANDO UN FAMILIAR (EL NRO DE AFILIADO ES EL MISMO QUE LE PASO CON EL AFILIADO POR PARAMETRO, SE LE SUMA 1 DIRECTO EN LA BASE)
-                if (opcion == 3)/*ESTA AGREGANDO A SU CONYUGE*/
+                //Agrega un familiar. El código se obtiene del último en la base
+                if (opcion == 3)//Se agrega a conyugue
                 {
                     cmbEstadoCivil.Text = "Casado/a";
                     cmbEstadoCivil.Enabled = false;
@@ -84,11 +83,15 @@ namespace ClinicaFrba.Abm_Afiliado
                 cmbPlan.Enabled = false;
                 button1.Visible = false;
             }
+            txtNombre.Focus();
         }
 
         private void alta_Load(object sender, EventArgs e)
         {
             dtpFecha.Value = BD.obtenerFecha();
+            txtNombre.Focus();
+            lblMotivo.Visible = false;
+            txtMotivo.Visible = false;
         }
 
         private void cargarPlanes()
@@ -206,10 +209,6 @@ namespace ClinicaFrba.Abm_Afiliado
                         {
                             Abm_Afiliado.alta formAlta = new Abm_Afiliado.alta(afiliadoNuevo, 3);
                             formAlta.ShowDialog();
-                        }
-                        else if (dialogResult == DialogResult.No)
-                        {
-                            //do something else
                         }
                     }
                    
@@ -354,6 +353,11 @@ namespace ClinicaFrba.Abm_Afiliado
             {
                 e.Handled = true;
             }
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -20,11 +20,37 @@ namespace ClinicaFrba.Pedir_Turno
         private bool estoyCargandoTodo;
         public frmPedirTurno(Persona afi)
         {
-            
-            _elAfiliado = (Afiliado)afi;
             InitializeComponent();
+            estoyCargandoTodo = true;
+            //SI ENTRO UN AFILIADO PEDIRA TURNOS POR EL SOLO. SINO SE DARÁ A ELEGIR EL AFILIADO QUE OBTENDRA EL TURNO
+            if (afi.GetType() == typeof(Afiliado))
+            {
+                _elAfiliado = (Afiliado)afi;
+                cbAfiliado.Visible = false;
+                lblAfiliado.Visible = false;
+
+            }
+            else
+            {
+                List<Afiliado> listaAfiliados = afiliadoDataAccess.ObtenerAfiliados(" where usua_habilitado=1");
+                ActualizarComboBoxAfiliado(listaAfiliados);
+                _elAfiliado = (Afiliado)cbAfiliado.SelectedItem;
+                cbAfiliado.Visible = true;
+                lblAfiliado.Visible = true;
+            }
+            estoyCargandoTodo = false;
         }
-        
+        private void ActualizarComboBoxAfiliado(List<Afiliado> afiliados)
+        {
+            
+            cbAfiliado.DataSource = null;
+            cbAfiliado.Items.Clear();
+
+            cbAfiliado.DataSource = afiliados;
+            cbAfiliado.ValueMember = "codigoPersona";
+            cbAfiliado.DisplayMember = "nombreCompleto";
+            
+        }
 
         private void Turno_Load(object sender, EventArgs e)
         {
@@ -168,6 +194,14 @@ namespace ClinicaFrba.Pedir_Turno
                     MessageBox.Show("Turno reservado correctamente", "Registro de Agenda", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     actualizarGrilla(dtpDia.Value);
                 }
+            }
+        }
+
+        private void cbAfiliado_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!estoyCargandoTodo)
+            {
+                _elAfiliado = (Afiliado)cbAfiliado.SelectedItem;
             }
         }
     }

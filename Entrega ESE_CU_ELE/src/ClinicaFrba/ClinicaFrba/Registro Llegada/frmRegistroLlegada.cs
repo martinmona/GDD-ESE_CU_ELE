@@ -26,9 +26,9 @@ namespace ClinicaFrba.Registro_Llegada
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            //CARGA LOS COMBOBOX Y DEMAS
             dtpFecha.Value = BD.obtenerFecha();
             List<Especialidad> especialidades = especialidadDataAccess.ObtenerEspecialidades("");
-
             ActualizarComboBoxEsp(especialidades);
             List<Profesional> profesionales = profesionalDataAccess.ObtenerProfesionalesXEspecialidad(((Especialidad)cbEspecialidadProfesional.SelectedItem).codigo);
             ActualizarComboBoxProf(profesionales);
@@ -112,11 +112,15 @@ namespace ClinicaFrba.Registro_Llegada
                             formElegirBono.Text = "Seleccionar bono del Afiliado";
                             formElegirBono.Owner = this;
                             formElegirBono.ShowDialog(this);
-                            if (turnoDataAccess.registrarLlegada(turnoElegido.afiliado.codigoPersona, bonoElegido.codigo, turnoElegido.codigo))
+                            try //Puede ocurrir que se cierre la ventana sin elegir un bono
                             {
-                                MessageBox.Show("Se registró la llegada del afiliado", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxFecha(dtpFecha.Value, (decimal)cbEspecialidadProfesional.SelectedValue, (decimal)cbNombreProfesional.SelectedValue, "and turn_estado not like 'Cancelado'"));
+                                if (turnoDataAccess.registrarLlegada(turnoElegido.afiliado.codigoPersona, bonoElegido.codigo, turnoElegido.codigo))
+                                {
+                                    MessageBox.Show("Se registró la llegada del afiliado", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    ActualizarGrillaTurnos(turnoDataAccess.obtenerTurnosxFecha(dtpFecha.Value, (decimal)cbEspecialidadProfesional.SelectedValue, (decimal)cbNombreProfesional.SelectedValue, "and turn_estado not like 'Cancelado'"));
+                                }
                             }
+                            catch { }
 
                         }
                         else
